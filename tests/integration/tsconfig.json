@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "../../dist/tests/integration",
+    "tsBuildInfoFile": "../../dist/tests/integration/tsconfig.tsbuildinfo",
+    "types": ["jest", "node"]
+  },
+  "references": [
+    { "path": "../../packages/contracts" },
+    { "path": "../../packages/test-data" }
+  ],
+  "include": ["**/*.ts"]
+}

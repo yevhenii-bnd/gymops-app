@@ -1,0 +1,39 @@
+{
+  "name": "gymops",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GymOps monorepo foundation for the Lean MVP.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier . --check",
+    "typecheck": "tsc -b --pretty false",
+    "test:unit": "jest --config jest.unit.config.cjs",
+    "test:integration": "jest --config jest.integration.config.cjs",
+    "test:api": "playwright test --config tests/api/playwright.config.ts",
+    "test:ui": "playwright test --config tests/ui/playwright.config.ts",
+    "build": "tsc -b --pretty false",
+    "verify:phase1": "npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:api && npm run test:ui && npm run build"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@playwright/test": "^1.54.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.1.0",
+    "eslint": "^9.32.0",
+    "globals": "^16.3.0",
+    "jest": "^30.0.5",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
+  }
+}
