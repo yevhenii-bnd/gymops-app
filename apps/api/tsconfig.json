@@ -3,6 +3,8 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "references": [{ "path": "../../packages/contracts" }],
