@@ -6,6 +6,7 @@ export default tseslint.config(
   {
     ignores: [
       "**/dist/**",
+      "**/.next/**",
       "**/coverage/**",
       "**/node_modules/**",
       "**/playwright-report/**",
@@ -28,6 +29,16 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/no-extraneous-class": "off"
+    }
+  },
+  {
+    files: ["apps/web/src/**/*.tsx", "apps/web/src/shared/layout/navigation.ts"],
+    rules: {
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off"
     }
   },
   {

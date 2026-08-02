@@ -21,7 +21,7 @@ function requiredValue(values: Record<string, string>, key: string): string {
   return value;
 }
 
-export function loadApiConfig(source: NodeJS.ProcessEnv = process.env) {
+export function loadApiConfig(source: Record<string, string | undefined> = process.env) {
   const result = validateEnv(apiEnvSchema, source);
 
   if (result.missing.length > 0) {

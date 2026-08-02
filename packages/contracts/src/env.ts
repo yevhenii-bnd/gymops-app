@@ -7,7 +7,7 @@ export type EnvValidationResult = {
 
 export function validateEnv(
   schema: EnvSchema,
-  source: NodeJS.ProcessEnv = process.env
+  source: Record<string, string | undefined> = process.env
 ): EnvValidationResult {
   const values: Record<string, string> = {};
   const missing: string[] = [];
