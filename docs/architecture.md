@@ -44,29 +44,29 @@ Phase A: Modular monolith
 
 ## 3. Технологічний стек
 
-| Область | Технологія |
-|---|---|
-| Мова | TypeScript |
-| Frontend | Next.js, React, TypeScript |
-| UI framework | HeroUI |
-| Styling | Tailwind CSS |
-| Backend | NestJS, TypeScript |
-| API | REST + OpenAPI/Swagger |
-| Database | PostgreSQL |
-| ORM | Prisma |
-| Backend unit/integration tests | Jest |
-| API/UI automation | Playwright + TypeScript |
-| Package manager | npm |
-| Repository | GitHub monorepo |
-| Local containers | Docker + Docker Compose |
-| CI/CD | Jenkins Multibranch Pipeline + Jenkinsfile |
-| Cloud runtime | AWS ECS Fargate |
-| Container registry | AWS ECR |
-| Managed database | AWS RDS PostgreSQL |
-| Logs/metrics | AWS CloudWatch |
-| Secrets | AWS Secrets Manager |
-| Jenkins-to-AWS auth | IAM role / STS assume-role; no long-lived static AWS keys |
-| Async messaging post-MVP | Amazon EventBridge або SNS/SQS з DLQ |
+| Область                        | Технологія                                                |
+| ------------------------------ | --------------------------------------------------------- |
+| Мова                           | TypeScript                                                |
+| Frontend                       | Next.js, React, TypeScript                                |
+| UI framework                   | HeroUI                                                    |
+| Styling                        | Tailwind CSS                                              |
+| Backend                        | NestJS, TypeScript                                        |
+| API                            | REST + OpenAPI/Swagger                                    |
+| Database                       | PostgreSQL                                                |
+| ORM                            | Prisma                                                    |
+| Backend unit/integration tests | Jest                                                      |
+| API/UI automation              | Playwright + TypeScript                                   |
+| Package manager                | npm                                                       |
+| Repository                     | GitHub monorepo                                           |
+| Local containers               | Docker + Docker Compose                                   |
+| CI/CD                          | Jenkins Multibranch Pipeline + Jenkinsfile                |
+| Cloud runtime                  | AWS ECS Fargate                                           |
+| Container registry             | AWS ECR                                                   |
+| Managed database               | AWS RDS PostgreSQL                                        |
+| Logs/metrics                   | AWS CloudWatch                                            |
+| Secrets                        | AWS Secrets Manager                                       |
+| Jenkins-to-AWS auth            | IAM role / STS assume-role; no long-lived static AWS keys |
+| Async messaging post-MVP       | Amazon EventBridge або SNS/SQS з DLQ                      |
 
 ### Не додавати без окремого ADR
 
@@ -680,8 +680,8 @@ features/
 └── audit/
 ```
 
-
 <!-- BEGIN GENERATED FIGMA FRONTEND CONTRACT -->
+
 ### UI contract, Figma MCP та frontend naming
 
 Canonical mapping зберігається в `ui-contract.md`:
@@ -716,6 +716,7 @@ apps/frontend/src/
 ├── shared/layout/             # AppShell and layouts
 └── shared/ui/                 # reusable GymOps wrappers over HeroUI
 ```
+
 <!-- END GENERATED FIGMA FRONTEND CONTRACT -->
 
 ### Frontend rules
@@ -1050,7 +1051,6 @@ Canonical sequence:
 ```text
 Local MVP -> Docker Compose -> Jenkins PR CI -> AWS staging -> Jenkins CD -> post-deploy/nightly QA
 ```
-
 
 ### Jenkins Pull Request workflow
 

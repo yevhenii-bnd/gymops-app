@@ -63,7 +63,9 @@ describe("Hs256JwtTokenService", () => {
     const service = new Hs256JwtTokenService();
     const signed = service.signAccessToken(staff);
 
-    expect(() => service.verifyAccessToken(signed.token)).toThrow(new JwtVerificationError("expired"));
+    expect(() => service.verifyAccessToken(signed.token)).toThrow(
+      new JwtVerificationError("expired")
+    );
   });
 
   it("rejects tokens with non-access claims", async () => {

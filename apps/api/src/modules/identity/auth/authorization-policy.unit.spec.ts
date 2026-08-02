@@ -33,8 +33,11 @@ describe("authorization policy", () => {
   });
 
   it("allows super admins across branches", () => {
-    expect(canAccessBranch({ ...gymAdminSession, role: "SUPER_ADMIN" }, "99999999-9999-4999-8999-999999999999")).toBe(
-      true
-    );
+    expect(
+      canAccessBranch(
+        { ...gymAdminSession, role: "SUPER_ADMIN" },
+        "99999999-9999-4999-8999-999999999999"
+      )
+    ).toBe(true);
   });
 });

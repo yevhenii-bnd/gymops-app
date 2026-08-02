@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Headers, HttpCode, Post, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 
-import type { AuthRefreshResponse, AuthSessionResponse, StaffIdentityResponse } from "./auth.types.js";
+import type {
+  AuthRefreshResponse,
+  AuthSessionResponse,
+  StaffIdentityResponse
+} from "./auth.types.js";
 import { AuthService } from "./auth.service.js";
 import { StaffLoginDto } from "./staff-login.dto.js";
 
@@ -38,7 +42,9 @@ export class AuthController {
   }
 
   @Get("me")
-  async me(@Headers("authorization") authorizationHeader: string | undefined): Promise<StaffIdentityResponse> {
+  async me(
+    @Headers("authorization") authorizationHeader: string | undefined
+  ): Promise<StaffIdentityResponse> {
     return this.authService.me(authorizationHeader);
   }
 }

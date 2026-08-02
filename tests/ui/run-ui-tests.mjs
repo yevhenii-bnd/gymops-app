@@ -58,14 +58,18 @@ async function findExistingServer() {
 const existingServerUrl = await findExistingServer();
 const server =
   existingServerUrl === null
-    ? spawn(process.execPath, [nextBin, "dev", webDir, "--hostname", "127.0.0.1", "--port", "3100"], {
-        cwd: rootDir,
-        env: {
-          ...process.env,
-          NEXT_TELEMETRY_DISABLED: "1"
-        },
-        stdio: "inherit"
-      })
+    ? spawn(
+        process.execPath,
+        [nextBin, "dev", webDir, "--hostname", "127.0.0.1", "--port", "3100"],
+        {
+          cwd: rootDir,
+          env: {
+            ...process.env,
+            NEXT_TELEMETRY_DISABLED: "1"
+          },
+          stdio: "inherit"
+        }
+      )
     : null;
 
 let isStopping = false;
