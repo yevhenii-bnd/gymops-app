@@ -71,14 +71,16 @@ export function SystemStatusPanel() {
 
   if (status.kind === "error") {
     return (
-      <ErrorState
-        correlationId={status.correlationId}
-        description={status.detail}
-        retryAction={() => {
-          void refresh();
-        }}
-        title={status.title}
-      />
+      <section aria-label="System status">
+        <ErrorState
+          correlationId={status.correlationId}
+          description={status.detail}
+          retryAction={() => {
+            void refresh();
+          }}
+          title={status.title}
+        />
+      </section>
     );
   }
 
