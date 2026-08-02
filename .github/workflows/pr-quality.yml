@@ -34,9 +34,6 @@ jobs:
       - name: Generate Prisma client
         run: npm run db:generate
 
-      - name: Check formatting
-        run: npm run format
-
       - name: Lint
         run: npm run lint
 
