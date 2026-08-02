@@ -6,3 +6,4 @@ execFileSync("git", ["config", "core.hooksPath", ".githooks"], {
 });
 
 chmodSync(".githooks/pre-commit", 0o755);
+chmodSync(".githooks/pre-push", 0o755);

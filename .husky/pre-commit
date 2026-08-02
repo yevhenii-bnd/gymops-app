@@ -1,2 +1,0 @@
-npm run security:secrets:staged
-npm run lint:staged

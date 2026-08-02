@@ -132,4 +132,4 @@ Dependabot PRs should go through the same required checks as regular pull reques
 
 ## Local Guards
 
-The root `prepare` script configures Git to use `.githooks`. The pre-commit hook runs `npm run format` so formatting debt is caught before it reaches CI.
+The root `prepare` script configures Git to use `.githooks`. The pre-commit hook runs staged secret scanning and staged lint/format fixes; the pre-push hook runs the local pre-push verification gate.

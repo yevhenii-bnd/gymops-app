@@ -202,13 +202,13 @@ Pre-commit should not run the full database, API, or UI suite. Those belong in p
 
 Current implementation:
 
-- `husky` for Git hook wiring;
+- native Git hooks stored in `.githooks`;
+- `prepare` script configures `core.hooksPath=.githooks` after `npm install`;
 - `lint-staged` for staged-file formatting/lint checks;
 - staged `*.ts`, `*.tsx`, `*.js`, `*.mjs`, `*.cjs` files: ESLint;
 - staged supported text files: Prettier check or write;
 - staged files: high-confidence secret pattern scan before commit;
 - tracked files: high-confidence secret pattern scan before push;
-- `prepare` script: installs Husky hooks after `npm install`;
 - `lint:staged` script: runs `lint-staged`;
 - `security:secrets:staged` script: scans staged files for API keys, GitHub tokens, private keys, cloud keys, auth state files, and local secret config files;
 - `security:secrets` script: scans tracked files for the same high-confidence secret patterns;
