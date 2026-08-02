@@ -35,16 +35,17 @@ The goal is not to rely on one large test suite. Each layer should catch the typ
 
 Quality targets define the expected minimum bar. They are intentionally split by test level because code coverage is useful for unit-testable logic, while integration/API/UI quality is better measured by contract, scenario, and critical-flow coverage.
 
-| Area                    | Current minimum                                                                            | MVP hardening target                                                                       | Mature target                                                  |
-| ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
-| Unit code coverage      | `75/65/75/75` for statements/branches/functions/lines                                      | `80/75/80/80`                                                                              | `85/80/85/85` for stable business logic packages               |
-| Critical business rules | 100% of implemented rules have at least one positive or negative test at the correct level | Positive, negative, and boundary coverage for every MVP rule                               | Mutation or defect-seeding evidence for critical rules         |
-| Database migrations     | 100% of committed migrations run in CI against an empty PostgreSQL database                | Upgrade path evidence for MVP release candidates                                           | Rollback/forward-fix plan documented for release changes       |
-| Database invariants     | Critical implemented constraints covered by integration tests                              | 100% of MVP critical invariants covered                                                    | Concurrency tests for all high-risk write flows                |
-| API contract coverage   | System/auth endpoints covered where implemented                                            | 100% of MVP API endpoints covered by happy path, validation, and authorization/error tests | Contract tests for every public endpoint and stable error code |
-| UI smoke coverage       | Current shell/auth/system routes covered where implemented                                 | 100% of MVP critical user journeys covered by smoke or E2E tests                           | Browser regression coverage for critical role-based journeys   |
-| Security gate coverage  | 100% of PRs run dependency audit and Trivy scan                                            | 0 critical runtime dependency advisories accepted without documented risk                  | Scheduled security scan review and dependency update SLA       |
-| Release evidence        | Commands and test results reported for meaningful changes                                  | Full phase verify evidence for MVP release candidates                                      | Automated artifacts for reports, traces, and post-deploy smoke |
+| Area                    | Current minimum                                                                               | MVP hardening target                                                                       | Mature target                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| Unit code coverage      | `75/65/75/75` for statements/branches/functions/lines                                         | `80/75/80/80`                                                                              | `85/80/85/85` for stable business logic packages               |
+| Critical business rules | 100% of implemented rules have at least one positive or negative test at the correct level    | Positive, negative, and boundary coverage for every MVP rule                               | Mutation or defect-seeding evidence for critical rules         |
+| Database migrations     | 100% of committed migrations run in CI against an empty PostgreSQL database                   | Upgrade path evidence for MVP release candidates                                           | Rollback/forward-fix plan documented for release changes       |
+| Database invariants     | Critical implemented constraints covered by integration tests                                 | 100% of MVP critical invariants covered                                                    | Concurrency tests for all high-risk write flows                |
+| API contract coverage   | System/auth endpoints covered where implemented                                               | 100% of MVP API endpoints covered by happy path, validation, and authorization/error tests | Contract tests for every public endpoint and stable error code |
+| UI smoke coverage       | Current shell/auth/system routes covered where implemented                                    | 100% of MVP critical user journeys covered by smoke or E2E tests                           | Browser regression coverage for critical role-based journeys   |
+| Secret leakage          | 100% of commits pass staged local secret scan before commit and tracked-file scan before push | 100% of PRs pass blocking Gitleaks secret scanning                                         | GitHub secret protection enabled and reviewed periodically     |
+| Security gate coverage  | 100% of PRs run dependency audit, Gitleaks, and Trivy scan                                    | 0 critical runtime dependency advisories accepted without documented risk                  | Scheduled security scan review and dependency update SLA       |
+| Release evidence        | Commands and test results reported for meaningful changes                                     | Full phase verify evidence for MVP release candidates                                      | Automated artifacts for reports, traces, and post-deploy smoke |
 
 The unit coverage target is a quality gate. The other percentages are coverage of requirements, contracts, scenarios, or release evidence, not line coverage.
 
@@ -93,6 +94,12 @@ Purpose: prove critical routes render in a real browser and semantic accessibili
 Runs `npm audit --omit=dev --audit-level=critical`.
 
 Purpose: block merges for critical runtime dependency advisories while leaving high advisories visible for triage.
+
+#### `Security / gitleaks`
+
+Runs Gitleaks against repository history and pull request changes.
+
+Purpose: block hardcoded secrets before they are merged into the public repository. If a real secret is detected, removing the line is not enough; the credential must be rotated because it may already exist in Git history.
 
 #### `Security / trivy-scan`
 
@@ -181,27 +188,52 @@ Implemented first hook set:
 
 ```text
 pre-commit
+  -> npm run security:secrets:staged
   -> npm run lint:staged
+  -> block obvious staged secrets and dangerous local files before commit
   -> run ESLint/Prettier only on staged files
 
 pre-push
   -> npm run verify:pre-push
-  -> npm run typecheck && npm run test:unit:coverage
+  -> npm run security:secrets && npm run typecheck && npm run test:unit:coverage
 ```
 
 Pre-commit should not run the full database, API, or UI suite. Those belong in pre-push, local phase verification, or CI.
 
 Current implementation:
 
-- `husky` for Git hook wiring;
+- native Git hooks stored in `.githooks`;
+- `prepare` script configures `core.hooksPath=.githooks` after `npm install`;
 - `lint-staged` for staged-file formatting/lint checks;
 - staged `*.ts`, `*.tsx`, `*.js`, `*.mjs`, `*.cjs` files: ESLint;
 - staged supported text files: Prettier check or write;
-- `prepare` script: installs Husky hooks after `npm install`;
+- staged files: high-confidence secret pattern scan before commit;
+- tracked files: high-confidence secret pattern scan before push;
 - `lint:staged` script: runs `lint-staged`;
-- `verify:pre-push` script: runs `npm run typecheck && npm run test:unit:coverage`.
+- `security:secrets:staged` script: scans staged files for API keys, GitHub tokens, private keys, cloud keys, auth state files, and local secret config files;
+- `security:secrets` script: scans tracked files for the same high-confidence secret patterns;
+- `verify:pre-push` script: runs `npm run security:secrets && npm run typecheck && npm run test:unit:coverage`.
 
 Because the repository still has formatting baseline debt, repository-wide `prettier . --check` should not be used as a hook until a separate formatting baseline PR has been merged.
+
+#### Public Repository Safety
+
+This repository is intended to be public portfolio evidence, so secret leakage is treated as a merge-blocking defect.
+
+Current protections:
+
+- `.gitignore` blocks local environment files, npm auth config, private keys, browser auth state, local database files, dumps, HAR files, logs, and generated output;
+- local `pre-commit` blocks staged high-confidence secrets before a commit is created;
+- local `pre-push` scans all tracked files before pushing to GitHub;
+- `Security / gitleaks` blocks PRs with committed secrets;
+- `Security / trivy-scan` uploads additional secret/misconfiguration evidence to GitHub Code Scanning.
+
+Rules:
+
+- never commit real tokens, passwords, cookies, `.env` files, private keys, browser storage state, production dumps, or HAR files;
+- keep real secrets in local environment variables, GitHub repository secrets, or a future cloud secret manager;
+- if a real secret is committed even once, rotate it immediately because Git history may preserve it;
+- use `.env.example` only for placeholder variable names and non-sensitive example values.
 
 ## Test Strategy
 
@@ -332,13 +364,15 @@ Dependency update PRs should be reviewed for:
 
 Security quality is enforced through:
 
+- local staged and tracked-file secret scanning;
+- blocking Gitleaks pull request secret scanning;
 - critical production dependency audit;
 - Trivy filesystem scan;
 - GitHub Code Scanning SARIF upload;
 - no secrets in repository, Docker images, logs, or generated artifacts;
 - least-privilege secrets and tokens for future deployment automation.
 
-Security findings should be triaged by severity, exploitability, affected runtime surface, and whether the alert touches changed code.
+Security findings should be triaged by severity, exploitability, affected runtime surface, and whether the alert touches changed code. Confirmed secret findings require credential rotation, not only code removal.
 
 ## Release Evidence
 
