@@ -9,7 +9,7 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky",
+    "prepare": "node scripts/configure-git-hooks.mjs",
     "lint": "eslint .",
     "lint:staged": "lint-staged",
     "format": "prettier . --check",

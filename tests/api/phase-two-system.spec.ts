@@ -18,7 +18,9 @@ async function getFreePort(): Promise<number> {
   return address.port;
 }
 
-async function startApiServer(databaseUrl: string): Promise<{ process: ChildProcess; baseURL: string }> {
+async function startApiServer(
+  databaseUrl: string
+): Promise<{ process: ChildProcess; baseURL: string }> {
   const port = await getFreePort();
   const child = spawn("node", ["apps/api/dist/main.js"], {
     cwd: process.cwd(),
@@ -76,7 +78,8 @@ async function stopApiServer(child: ChildProcess): Promise<void> {
 
 test.describe("Phase 2 system API", () => {
   const databaseUrl =
-    process.env["DATABASE_URL"] ?? "postgresql://gymops:gymops@localhost:54329/gymops?schema=public";
+    process.env["DATABASE_URL"] ??
+    "postgresql://gymops:gymops@localhost:54329/gymops?schema=public";
   let apiProcess: ChildProcess;
   let baseURL: string;
 
@@ -142,7 +145,9 @@ test.describe("Phase 2 system API", () => {
   });
 
   test("GET /ready returns Problem Details when database is unavailable", async () => {
-    const unavailable = await startApiServer("postgresql://gymops:gymops@127.0.0.1:1/missing?schema=public");
+    const unavailable = await startApiServer(
+      "postgresql://gymops:gymops@127.0.0.1:1/missing?schema=public"
+    );
     const api = await request.newContext({ baseURL: unavailable.baseURL });
     const response = await api.get("/ready");
 

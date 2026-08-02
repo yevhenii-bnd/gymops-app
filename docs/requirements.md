@@ -87,19 +87,19 @@ GymOps допомагає мережі спортзалів керувати:
 
 ## 3. Терміни
 
-| Термін | Значення |
-|---|---|
-| Organization | Компанія або мережа спортзалів |
-| Branch | Окрема філія спортзалу |
-| Staff User | Працівник, який має обліковий запис і входить у систему |
-| Client | Клієнт спортзалу; у MVP це CRM-запис без власного login |
-| Membership Plan | Шаблон типу абонемента |
-| Membership | Абонемент, призначений конкретному клієнту |
-| Locker Key | Ключ від роздягальні або шафки |
-| Visit Session | Одне відвідування/тренування клієнта |
-| Active Visit | Відвідування без часу завершення |
-| Incident | Проблемна ситуація: втрачений ключ, пошкодження, некоректний check-out тощо |
-| Audit Log | Незмінювана історія важливих дій |
+| Термін          | Значення                                                                    |
+| --------------- | --------------------------------------------------------------------------- |
+| Organization    | Компанія або мережа спортзалів                                              |
+| Branch          | Окрема філія спортзалу                                                      |
+| Staff User      | Працівник, який має обліковий запис і входить у систему                     |
+| Client          | Клієнт спортзалу; у MVP це CRM-запис без власного login                     |
+| Membership Plan | Шаблон типу абонемента                                                      |
+| Membership      | Абонемент, призначений конкретному клієнту                                  |
+| Locker Key      | Ключ від роздягальні або шафки                                              |
+| Visit Session   | Одне відвідування/тренування клієнта                                        |
+| Active Visit    | Відвідування без часу завершення                                            |
+| Incident        | Проблемна ситуація: втрачений ключ, пошкодження, некоректний check-out тощо |
+| Audit Log       | Незмінювана історія важливих дій                                            |
 
 ---
 
@@ -156,8 +156,8 @@ GymOps допомагає мережі спортзалів керувати:
 
 ---
 
-
 <!-- BEGIN GENERATED UI TRACEABILITY RULES -->
+
 ## 5.1. UI/Figma/frontend traceability rules
 
 The canonical naming registry is stored in `ui-contract.md`.
@@ -183,31 +183,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 4  
 **Depends on:** Technical foundation from Phases 1–3  
 **Primary module:** Identity  
-**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks  
+**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-AUTH-001`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-AUTH-001/Auth/StaffLogin/Desktop/Default`.
 - Frontend route scope: `/login`.
 - Required frontend components: `StaffLoginPage, StaffLoginForm`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-003`, `DB-AUD-001`.
 - Physical tables/read models: `identity.staff_users`, `identity.refresh_tokens`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-001` `POST /api/v1/auth/login`, `API-AUTH-004` `GET /api/v1/auth/me`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** увійти за email та password,  
@@ -239,31 +247,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 4  
 **Depends on:** AUTH-01  
 **Primary module:** Identity  
-**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks  
+**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-PROFILE-001`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-PROFILE-001/Staff/Profile/Desktop/Default`.
 - Frontend route scope: `/app/profile`.
 - Required frontend components: `AppShell, ProfileMenu, LogoutAction`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-003`, `DB-AUD-001`.
 - Physical tables/read models: `identity.refresh_tokens`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-003` `POST /api/v1/auth/logout`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** вийти із системи,  
@@ -285,33 +301,41 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 4  
 **Depends on:** AUTH-01  
 **Primary module:** Identity  
-**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks  
+**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-AUTH-001`.
 - Overlay UI IDs: `OVL-AUTH-001`.
 - Exact Figma roots: `Screen/SCR-AUTH-001/Auth/StaffLogin/Desktop/Default`, `Overlay/OVL-AUTH-001/Auth/SessionExpired/Default`.
 - Frontend route scope: `/login`.
 - Required frontend components: `SessionProvider, SessionExpiredModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-003`.
 - Physical tables/read models: `identity.refresh_tokens`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: staff refresh-token rotation, expiry, revocation and replay-detection tests against real PostgreSQL.
 - Client Portal refresh is a separate Phase 19 contract owned by `PORTAL-01`.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-002` `POST /api/v1/auth/refresh`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: staff refresh rotation, expired/revoked/malformed token cases, replay detection and cookie-policy tests.
 - Client Portal refresh is not part of this story and is implemented only with `PORTAL-01` in Phase 19.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** продовжити активну сесію без повторного login,  
@@ -333,31 +357,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 4  
 **Depends on:** AUTH-01  
 **Primary module:** Identity  
-**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks  
+**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-SYS-403`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-SYS-403/System/Forbidden/Desktop/Default`.
 - Frontend route scope: `/403`.
 - Required frontend components: `AppShell, RoleGuard, ForbiddenPage`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-002`.
 - Physical tables/read models: `identity.staff_users`, `identity.staff_branch_assignments`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-004` `GET /api/v1/auth/me`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** власник платформи,  
 **я хочу** обмежувати функції за ролями,  
@@ -381,10 +413,12 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 15  
 **Depends on:** AUTH-04, BRANCH-01, STAFF-03  
 **Primary module:** Identity  
-**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks  
+**Required verification:** Unit, integration, API; UI smoke for critical session and access flows; security/negative authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-SYS-403`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-SYS-403/System/Forbidden/Desktop/Default`.
@@ -392,21 +426,27 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 - Required frontend components: `BranchSelector, BranchGuard, ForbiddenPage`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - Later feature screens inherit the same guard contract without becoming prerequisites for this story.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`.
 - Physical tables/read models: `identity.organizations`, `identity.branches`, `identity.staff_users`, `identity.staff_branch_assignments`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-004` `GET /api/v1/auth/me`, `API-BRANCH-001` `GET /api/v1/organizations/{organizationId}/branches`, `API-BRANCH-003` `GET /api/v1/branches/{branchId}`, `API-STAFF-005` `PUT /api/v1/staff/{staffUserId}/branch-assignments`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Gym Admin,  
 **я хочу** призначити працівнику одну або кілька філій,  
@@ -430,31 +470,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** AUTH-01, AUTH-04  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification  
+**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-001`.
 - Overlay UI IDs: `OVL-ORG-001`.
 - Exact Figma roots: `Screen/SCR-ORG-001/SuperAdmin/OrganizationsList/Desktop/Default`, `Overlay/OVL-ORG-001/Organization/Create/Default`.
 - Frontend route scope: `/super-admin/organizations`.
 - Required frontend components: `OrganizationsPage, CreateOrganizationModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-AUD-001`.
 - Physical tables/read models: `identity.organizations`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-ORG-001` `GET /api/v1/organizations`, `API-ORG-002` `POST /api/v1/organizations`, `API-ORG-003` `GET /api/v1/organizations/{organizationId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** SUPER_ADMIN,  
 **я хочу** створити organization,  
@@ -477,31 +525,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** AUTH-04, bootstrap organization from Phase 2  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification  
+**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-001, SCR-ORG-002, SCR-SETTINGS-001`.
 - Overlay UI IDs: `OVL-ORG-002`.
 - Exact Figma roots: `Screen/SCR-ORG-001/SuperAdmin/OrganizationsList/Desktop/Default`, `Screen/SCR-ORG-002/SuperAdmin/OrganizationDetails/Desktop/Overview`, `Screen/SCR-SETTINGS-001/GymAdmin/OrganizationSettings/Desktop/Default`, `Overlay/OVL-ORG-002/Organization/Edit/Default`.
 - Frontend route scope: `organization routes`.
 - Required frontend components: `OrganizationDetailsPage, EditOrganizationModal, OrganizationSettingsPage`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-AUD-001`.
 - Physical tables/read models: `identity.organizations`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-ORG-001` `GET /api/v1/organizations`, `API-ORG-003` `GET /api/v1/organizations/{organizationId}`, `API-ORG-004` `PATCH /api/v1/organizations/{organizationId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** SUPER_ADMIN,  
 **я хочу** редагувати organization,  
@@ -523,31 +579,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** AUTH-04, bootstrap organization from Phase 2  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification  
+**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-001, SCR-ORG-002`.
 - Overlay UI IDs: `OVL-ORG-003`.
 - Exact Figma roots: `Screen/SCR-ORG-001/SuperAdmin/OrganizationsList/Desktop/Default`, `Screen/SCR-ORG-002/SuperAdmin/OrganizationDetails/Desktop/Overview`, `Overlay/OVL-ORG-003/Organization/Deactivate/Default`.
 - Frontend route scope: `organization routes`.
 - Required frontend components: `DeactivateOrganizationAlertDialog, OrganizationStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.organizations`, `identity.branches`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-ORG-001` `GET /api/v1/organizations`, `API-ORG-005` `POST /api/v1/organizations/{organizationId}/deactivate`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** SUPER_ADMIN,  
 **я хочу** деактивувати organization,  
@@ -570,31 +634,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** AUTH-04, bootstrap organization from Phase 2  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification  
+**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-002, SCR-SETTINGS-002`.
 - Overlay UI IDs: `OVL-BRANCH-001, OVL-BRANCH-002`.
 - Exact Figma roots: `Screen/SCR-ORG-002/SuperAdmin/OrganizationDetails/Desktop/Overview`, `Screen/SCR-SETTINGS-002/GymAdmin/BranchSettings/Desktop/Default`, `Overlay/OVL-BRANCH-001/Branch/Create/Default`, `Overlay/OVL-BRANCH-002/Branch/Edit/Default`.
 - Frontend route scope: `branch routes`.
 - Required frontend components: `CreateBranchModal, EditBranchModal, BranchSettingsPage`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.organizations`, `identity.branches`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-BRANCH-001` `GET /api/v1/organizations/{organizationId}/branches`, `API-BRANCH-002` `POST /api/v1/organizations/{organizationId}/branches`, `API-BRANCH-003` `GET /api/v1/branches/{branchId}`, `API-BRANCH-004` `PATCH /api/v1/branches/{branchId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** SUPER_ADMIN або дозволений GYM_ADMIN,  
 **я хочу** створити branch,  
@@ -617,31 +689,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** BRANCH-01, AUTH-04  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification  
+**Required verification:** Integration, API and UI; tenant isolation, authorization and audit verification
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-002, SCR-SETTINGS-002`.
 - Overlay UI IDs: `OVL-BRANCH-003`.
 - Exact Figma roots: `Screen/SCR-ORG-002/SuperAdmin/OrganizationDetails/Desktop/Overview`, `Screen/SCR-SETTINGS-002/GymAdmin/BranchSettings/Desktop/Default`, `Overlay/OVL-BRANCH-003/Branch/Deactivate/Default`.
 - Frontend route scope: `branch routes`.
 - Required frontend components: `DeactivateBranchAlertDialog, BranchStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-002`, `DB-IDN-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.branches`, `identity.staff_branch_assignments`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-BRANCH-001` `GET /api/v1/organizations/{organizationId}/branches`, `API-BRANCH-005` `POST /api/v1/branches/{branchId}/deactivate`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** деактивувати branch,  
@@ -665,10 +745,12 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 14  
 **Depends on:** AUTH-04, bootstrap organization from Phase 2  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; password handling, authorization, tenant isolation and audit  
+**Required verification:** Integration, API and UI; password handling, authorization, tenant isolation and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-ORG-002`.
 - Overlay UI IDs: `OVL-STAFF-001`.
 - Exact Figma roots: `Screen/SCR-ORG-002/SuperAdmin/OrganizationDetails/Desktop/Overview`, `Overlay/OVL-STAFF-001/Staff/CreateGymAdmin/Default`.
@@ -676,21 +758,27 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 - Required frontend components: `OrganizationDetailsPage, CreateGymAdminModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - The organization-wide staff list is introduced in Phase 5 and is not required to complete `STAFF-01`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.staff_users`, `identity.staff_branch_assignments`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-STAFF-001` `GET /api/v1/organizations/{organizationId}/staff`, `API-STAFF-002` `POST /api/v1/organizations/{organizationId}/staff`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** SUPER_ADMIN,  
 **я хочу** створити Gym Admin для organization,  
@@ -714,31 +802,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 5  
 **Depends on:** AUTH-04, bootstrap organization/branch and seeded GYM_ADMIN from Phase 2  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; branch scope, session invalidation and audit  
+**Required verification:** Integration, API and UI; branch scope, session invalidation and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-STAFF-001`.
 - Overlay UI IDs: `OVL-STAFF-002`.
 - Exact Figma roots: `Screen/SCR-STAFF-001/GymAdmin/StaffList/Desktop/Default`, `Overlay/OVL-STAFF-002/Staff/CreateEmployee/Default`.
 - Frontend route scope: `/app/staff`.
 - Required frontend components: `StaffPage, CreateEmployeeModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.staff_users`, `identity.staff_branch_assignments`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-STAFF-001` `GET /api/v1/organizations/{organizationId}/staff`, `API-STAFF-002` `POST /api/v1/organizations/{organizationId}/staff`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** створити працівника рецепції,  
@@ -761,31 +857,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 15  
 **Depends on:** STAFF-02, AUTH-05  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; branch scope, session invalidation and audit  
+**Required verification:** Integration, API and UI; branch scope, session invalidation and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-STAFF-001`.
 - Overlay UI IDs: `DRW-STAFF-001, OVL-STAFF-003`.
 - Exact Figma roots: `Screen/SCR-STAFF-001/GymAdmin/StaffList/Desktop/Default`, `Overlay/DRW-STAFF-001/Staff/Details/Default`, `Overlay/OVL-STAFF-003/Staff/EditEmployee/Default`.
 - Frontend route scope: `/app/staff`.
 - Required frontend components: `StaffDetailsDrawer, EditEmployeeModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.staff_users`, `identity.staff_branch_assignments`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-STAFF-001` `GET /api/v1/organizations/{organizationId}/staff`, `API-STAFF-003` `GET /api/v1/staff/{staffUserId}`, `API-STAFF-004` `PATCH /api/v1/staff/{staffUserId}`, `API-STAFF-005` `PUT /api/v1/staff/{staffUserId}/branch-assignments`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** змінювати дані та branch assignments працівника,  
@@ -807,31 +911,39 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 15  
 **Depends on:** STAFF-02, AUTH-03, AUTH-05  
 **Primary module:** Identity  
-**Required verification:** Integration, API and UI; branch scope, session invalidation and audit  
+**Required verification:** Integration, API and UI; branch scope, session invalidation and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-STAFF-001`.
 - Overlay UI IDs: `DRW-STAFF-001, OVL-STAFF-004`.
 - Exact Figma roots: `Screen/SCR-STAFF-001/GymAdmin/StaffList/Desktop/Default`, `Overlay/DRW-STAFF-001/Staff/Details/Default`, `Overlay/OVL-STAFF-004/Staff/Deactivate/Default`.
 - Frontend route scope: `/app/staff`.
 - Required frontend components: `DeactivateEmployeeAlertDialog, StaffStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-AUD-001`.
 - Physical tables/read models: `identity.staff_users`, `identity.staff_branch_assignments`, `identity.refresh_tokens`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-STAFF-001` `GET /api/v1/organizations/{organizationId}/staff`, `API-STAFF-003` `GET /api/v1/staff/{staffUserId}`, `API-STAFF-006` `POST /api/v1/staff/{staffUserId}/deactivate`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** деактивувати працівника,  
@@ -855,10 +967,12 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 5  
 **Depends on:** AUTH-04, bootstrap organization/branch from Phase 2  
 **Primary module:** CRM  
-**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit  
+**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-001`.
 - Overlay UI IDs: `OVL-CLIENT-001, OVL-CLIENT-003`.
 - Exact Figma roots: `Screen/SCR-CLIENT-001/Staff/ClientsList/Desktop/Default`, `Overlay/OVL-CLIENT-001/Client/Create/Default`, `Overlay/OVL-CLIENT-003/Client/PossibleDuplicate/Default`.
@@ -866,21 +980,27 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 - Required frontend components: `ClientsPage, CreateClientModal, PossibleDuplicateClientModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - Reception reuse is implemented in Phase 7 and is not required to complete this Phase 5 story.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-002` `POST /api/v1/organizations/{organizationId}/clients/duplicate-check`, `API-CLIENT-003` `POST /api/v1/organizations/{organizationId}/clients`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN або EMPLOYEE з permission,  
 **я хочу** створити клієнта,  
@@ -905,10 +1025,12 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 5  
 **Depends on:** CLIENT-01  
 **Primary module:** CRM  
-**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit  
+**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-001`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-CLIENT-001/Staff/ClientsList/Desktop/Default`.
@@ -916,21 +1038,27 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 - Required frontend components: `ClientsPage, ClientSearchField, DataTable`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - The same search capability is reused by the Reception workspace in Phase 7 without changing this story's completion phase.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`.
 - Physical tables/read models: `crm.clients`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-001` `GET /api/v1/organizations/{organizationId}/clients`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** швидко знайти клієнта,  
@@ -953,10 +1081,12 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 **Implementation phase(s):** Phase 7  
 **Depends on:** CLIENT-01  
 **Primary module:** CRM  
-**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit  
+**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-002`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`.
@@ -964,23 +1094,29 @@ Backend-only or concurrency stories may not own a dedicated screen. In that case
 - Required frontend components: `ClientProfilePage, ClientSummaryCard`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - Membership and visit-history sections are completed in Phases 6–7. Incident data may render an explicit empty/not-yet-available state until Phase 17.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`.
 - Physical tables/read models: `crm.clients`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: tenant-safe client lookup and profile retrieval against real PostgreSQL.
 - Membership and visit data are required for story completion in Phase 7; incident data is a later Phase 17 extension.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-004` `GET /api/v1/clients/{clientId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: positive/not-found/blocked/tenant-isolation profile tests.
 - Membership and visit endpoints are prerequisites for completing this story in Phase 7; incident endpoints remain a later extension.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** бачити profile клієнта,  
@@ -1011,31 +1147,39 @@ Profile містить:
 **Implementation phase(s):** Phase 15  
 **Depends on:** CLIENT-03  
 **Primary module:** CRM  
-**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit  
+**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-001, SCR-CLIENT-002`.
 - Overlay UI IDs: `OVL-CLIENT-002`.
 - Exact Figma roots: `Screen/SCR-CLIENT-001/Staff/ClientsList/Desktop/Default`, `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/OVL-CLIENT-002/Client/Edit/Default`.
 - Frontend route scope: `client routes`.
 - Required frontend components: `EditClientModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-005` `PATCH /api/v1/clients/{clientId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN або дозволений EMPLOYEE,  
 **я хочу** редагувати profile клієнта,  
@@ -1057,31 +1201,39 @@ Profile містить:
 **Implementation phase(s):** Phase 15  
 **Depends on:** CLIENT-03, AUTH-04  
 **Primary module:** CRM  
-**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit  
+**Required verification:** Unit where business policy exists; integration, API and UI; tenant isolation, search and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-001, SCR-CLIENT-002`.
 - Overlay UI IDs: `OVL-CLIENT-004, OVL-CLIENT-005`.
 - Exact Figma roots: `Screen/SCR-CLIENT-001/Staff/ClientsList/Desktop/Default`, `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/OVL-CLIENT-004/Client/Block/Default`, `Overlay/OVL-CLIENT-005/Client/Unblock/Default`.
 - Frontend route scope: `client routes`.
 - Required frontend components: `BlockClientAlertDialog, UnblockClientAlertDialog, ClientStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-006` `POST /api/v1/clients/{clientId}/block`, `API-CLIENT-007` `POST /api/v1/clients/{clientId}/unblock`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** заблокувати клієнта із причиною,  
@@ -1105,31 +1257,39 @@ Profile містить:
 **Implementation phase(s):** Phase 6  
 **Depends on:** AUTH-04, bootstrap organization from Phase 2  
 **Primary module:** Membership  
-**Required verification:** Unit, integration, API and UI; snapshot and authorization checks  
+**Required verification:** Unit, integration, API and UI; snapshot and authorization checks
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-PLAN-001`.
 - Overlay UI IDs: `OVL-PLAN-001, OVL-PLAN-002`.
 - Exact Figma roots: `Screen/SCR-PLAN-001/GymAdmin/MembershipPlans/Desktop/Default`, `Overlay/OVL-PLAN-001/MembershipPlan/Create/Default`, `Overlay/OVL-PLAN-002/MembershipPlan/Edit/Default`.
 - Frontend route scope: `/app/membership-plans`.
 - Required frontend components: `MembershipPlansPage, CreateMembershipPlanModal, EditMembershipPlanModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-MEM-001`, `DB-MEM-002`, `DB-AUD-001`.
 - Physical tables/read models: `membership.membership_plans`, `membership.membership_plan_branches`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-PLAN-001` `GET /api/v1/organizations/{organizationId}/membership-plans`, `API-PLAN-002` `POST /api/v1/organizations/{organizationId}/membership-plans`, `API-PLAN-003` `GET /api/v1/membership-plans/{membershipPlanId}`, `API-PLAN-004` `PATCH /api/v1/membership-plans/{membershipPlanId}`, `API-PLAN-005` `POST /api/v1/membership-plans/{membershipPlanId}/deactivate`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** створити шаблон абонемента,  
@@ -1157,31 +1317,39 @@ Plan містить:
 **Implementation phase(s):** Phase 6  
 **Depends on:** CLIENT-01, PLAN-01  
 **Primary module:** Membership  
-**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility  
+**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-002`.
 - Overlay UI IDs: `OVL-MEM-001, OVL-MEM-003`.
 - Exact Figma roots: `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/OVL-MEM-001/Membership/Assign/Default`, `Overlay/OVL-MEM-003/Membership/Cancel/Default`.
 - Frontend route scope: `/app/clients/[clientId]`.
 - Required frontend components: `AssignMembershipModal, CancelMembershipAlertDialog`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `membership.membership_plans`, `membership.membership_plan_branches`, `membership.memberships`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-PLAN-001` `GET /api/v1/organizations/{organizationId}/membership-plans`, `API-MEM-001` `GET /api/v1/clients/{clientId}/memberships`, `API-MEM-002` `POST /api/v1/clients/{clientId}/memberships`, `API-MEM-003` `GET /api/v1/memberships/{membershipId}`, `API-MEM-007` `POST /api/v1/memberships/{membershipId}/cancel`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** призначити клієнту абонемент,  
@@ -1205,10 +1373,12 @@ Plan містить:
 **Implementation phase(s):** Phase 6  
 **Depends on:** MEMBERSHIP-01, client status support from CLIENT-01, bootstrap branch from Phase 2  
 **Primary module:** Membership  
-**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility  
+**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-002`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`.
@@ -1216,23 +1386,29 @@ Plan містить:
 - Required frontend components: `MembershipEligibilityPanel`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - `CheckInModal` consumes the completed eligibility contract in Phase 7; it is not required to finish this story.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-005`.
 - Physical tables/read models: `crm.clients`, `membership.membership_plans`, `membership.membership_plan_branches`, `membership.memberships`, `membership.membership_usage_ledger`.
 - `DB-MEM-004 membership_freeze_periods` is introduced with `MEMBERSHIP-03` in Phase 16; MVP eligibility still supports a frozen status/reason through membership state and test fixtures.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-MEM-004` `GET /api/v1/clients/{clientId}/membership-eligibility`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: every stable eligibility reason code, date boundary, branch restriction and blocked-client case.
 - The check-in command revalidates this policy in Phase 7 but is not part of the Phase 6 implementation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** бачити, чи клієнт може тренуватися,  
@@ -1262,31 +1438,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 16  
 **Depends on:** MEMBERSHIP-01  
 **Primary module:** Membership  
-**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility  
+**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-002`.
 - Overlay UI IDs: `OVL-MEM-002`.
 - Exact Figma roots: `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/OVL-MEM-002/Membership/Freeze/Default`.
 - Frontend route scope: `/app/clients/[clientId]`.
 - Required frontend components: `FreezeMembershipModal, MembershipStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-MEM-003`, `DB-MEM-004`, `DB-AUD-001`.
 - Physical tables/read models: `membership.memberships`, `membership.membership_freeze_periods`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-MEM-001` `GET /api/v1/clients/{clientId}/memberships`, `API-MEM-003` `GET /api/v1/memberships/{membershipId}`, `API-MEM-005` `POST /api/v1/memberships/{membershipId}/freeze`, `API-MEM-006` `POST /api/v1/membership-freeze-periods/{freezePeriodId}/end`, `API-MEM-007` `POST /api/v1/memberships/{membershipId}/cancel`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** заморозити абонемент,  
@@ -1308,31 +1492,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** MEMBERSHIP-02, Technical ledger foundation from Phase 6  
 **Primary module:** Membership  
-**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility  
+**Required verification:** Unit, integration, API and UI; date boundaries, transaction, idempotency and branch eligibility
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001`.
 - Overlay UI IDs: `OVL-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`.
 - Frontend route scope: `/app/reception`.
 - Required frontend components: `CheckInModal, MembershipEligibilityPanel`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-002`, `DB-COM-001`.
 - Physical tables/read models: `membership.memberships`, `membership.membership_usage_ledger`, `operations.visit_sessions`, `platform.idempotency_records`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** система,  
 **я хочу** списати відвідування з limited membership,  
@@ -1356,31 +1548,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 6  
 **Depends on:** AUTH-04, bootstrap branch from Phase 2  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-KEY-001`.
 - Overlay UI IDs: `OVL-KEY-001, OVL-KEY-002`.
 - Exact Figma roots: `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/OVL-KEY-001/LockerKey/Add/Default`, `Overlay/OVL-KEY-002/LockerKey/Edit/Default`.
 - Frontend route scope: `/app/locker-keys`.
 - Required frontend components: `LockerKeysPage, AddLockerKeyModal, EditLockerKeyModal`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-002`, `DB-OPS-001`, `DB-AUD-001`.
 - Physical tables/read models: `identity.branches`, `operations.locker_keys`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-KEY-002` `POST /api/v1/branches/{branchId}/locker-keys`, `API-KEY-004` `PATCH /api/v1/locker-keys/{lockerKeyId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** додати locker key,  
@@ -1402,33 +1602,41 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 6  
 **Depends on:** KEY-01  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-KEY-001`.
 - Overlay UI IDs: `DRW-KEY-001`.
 - Exact Figma roots: `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/DRW-KEY-001/LockerKey/Details/Default`.
 - Frontend route scope: `/app/locker-keys`.
 - Required frontend components: `LockerKeysPage, LockerKeyDetailsDrawer`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`.
 - Physical tables/read models: `operations.locker_keys`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: branch-scoped status filters, search and pagination against real PostgreSQL.
 - Active visit/client details for `ISSUED` keys are added by `VISIT-05` in Phase 7.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-KEY-001` `GET /api/v1/branches/{branchId}/locker-keys`, `API-KEY-003` `GET /api/v1/locker-keys/{lockerKeyId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: filters, pagination, branch isolation and unavailable-key visibility.
 - The reception-dashboard endpoint is introduced in Phase 7 and is not required here.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** бачити доступні та видані ключі,  
@@ -1449,32 +1657,40 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 16  
 **Depends on:** KEY-01, AUTH-04  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; uniqueness, branch scope and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-KEY-001`.
 - Overlay UI IDs: `OVL-KEY-003, DRW-KEY-001`.
 - Exact Figma roots: `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/OVL-KEY-003/LockerKey/ChangeStatus/Default`, `Overlay/DRW-KEY-001/LockerKey/Details/Default`.
 - Frontend route scope: `/app/locker-keys`.
 - Required frontend components: `ChangeLockerKeyStatusModal, LockerKeyStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-AUD-001`.
 - Physical tables/read models: `operations.locker_keys`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: allowed/forbidden state transitions, branch scope and transactional audit.
 - Incident creation for lost/damaged keys is owned by `INCIDENT-01..02` in Phase 17.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-KEY-003` `GET /api/v1/locker-keys/{lockerKeyId}`, `API-KEY-004` `PATCH /api/v1/locker-keys/{lockerKeyId}`, `API-KEY-005` `POST /api/v1/locker-keys/{lockerKeyId}/status-transitions`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** змінити status ключа,  
@@ -1498,31 +1714,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** AUTH-01, AUTH-04, technical branch guard foundation, CLIENT-02, MEMBERSHIP-02, MEMBERSHIP-04, KEY-01, KEY-02  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-VISIT-001`.
 - Overlay UI IDs: `OVL-VISIT-001, OVL-VISIT-002`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`, `Overlay/OVL-VISIT-002/Visit/CheckInSuccess/Default`.
 - Frontend route scope: `/app/reception, /app/active-visits`.
 - Required frontend components: `CheckInModal, CheckInSuccessModal, ActiveVisitTable`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `membership.memberships`, `membership.membership_usage_ledger`, `operations.locker_keys`, `operations.visit_sessions`, `platform.idempotency_records`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-MEM-004` `GET /api/v1/clients/{clientId}/membership-eligibility`, `API-KEY-001` `GET /api/v1/branches/{branchId}/locker-keys`, `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** зареєструвати початок тренування та видати ключ,  
@@ -1551,31 +1775,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001`.
 - Overlay UI IDs: `OVL-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`.
 - Frontend route scope: `/app/reception`.
 - Required frontend components: `CheckInModal, ConcurrencyConflictAlert`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-002`, `DB-COM-001`.
 - Physical tables/read models: `operations.visit_sessions`, `platform.idempotency_records`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** система,  
 **я хочу** дозволити лише один одночасний check-in клієнта,  
@@ -1597,31 +1829,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-KEY-001`.
 - Overlay UI IDs: `OVL-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`.
 - Frontend route scope: `/app/reception`.
 - Required frontend components: `CheckInModal, LockerKeyStatusChip, ConcurrencyConflictAlert`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-002`.
 - Physical tables/read models: `operations.locker_keys`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** система,  
 **я хочу** дозволити видати ключ лише одному клієнту,  
@@ -1643,31 +1883,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-01, MEMBERSHIP-04  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001`.
 - Overlay UI IDs: `OVL-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`.
 - Frontend route scope: `/app/reception`.
 - Required frontend components: `CheckInModal, NetworkUncertaintyAlert`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-COM-001`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`.
 - Physical tables/read models: `platform.idempotency_records`, `membership.membership_usage_ledger`, `operations.locker_keys`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** система,  
 **я хочу** безпечно обробляти повторний request,  
@@ -1689,31 +1937,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-VISIT-001, SCR-GYM-001`.
 - Overlay UI IDs: `DRW-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Screen/SCR-GYM-001/GymAdmin/GymDashboard/Desktop/Default`, `Overlay/DRW-VISIT-001/Visit/Details/Default`.
 - Frontend route scope: `/app/active-visits`.
 - Required frontend components: `ActiveVisitsPage, ActiveVisitTable, VisitDetailsDrawer`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002`.
 - Physical tables/read models: `crm.clients`, `operations.locker_keys`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-001` `GET /api/v1/branches/{branchId}/visits`, `API-VISIT-004` `GET /api/v1/visits/{visitId}`, `API-REPORT-002` `GET /api/v1/branches/{branchId}/dashboard/reception`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** бачити всіх активних клієнтів у branch,  
@@ -1742,31 +1998,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-01, VISIT-05  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-VISIT-001`.
 - Overlay UI IDs: `OVL-VISIT-003`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Overlay/OVL-VISIT-003/Visit/CheckoutByKey/Lookup`.
 - Frontend route scope: `reception/visit routes`.
 - Required frontend components: `CheckoutByKeyModal, ActiveVisitTable`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001`.
 - Physical tables/read models: `operations.locker_keys`, `operations.visit_sessions`, `platform.idempotency_records`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-003` `POST /api/v1/branches/{branchId}/visits/checkout-by-key`, `API-VISIT-005` `POST /api/v1/visits/{visitId}/checkout`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** ввести номер повернутого ключа,  
@@ -1793,31 +2057,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-06  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-VISIT-001`.
 - Overlay UI IDs: `OVL-VISIT-003`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Overlay/OVL-VISIT-003/Visit/CheckoutByKey/Lookup`.
 - Frontend route scope: `reception/visit routes`.
 - Required frontend components: `CheckoutByKeyModal, NetworkUncertaintyAlert`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-COM-001`, `DB-OPS-002`.
 - Physical tables/read models: `platform.idempotency_records`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-003` `POST /api/v1/branches/{branchId}/visits/checkout-by-key`, `API-VISIT-005` `POST /api/v1/visits/{visitId}/checkout`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** система,  
 **я хочу** безпечно обробляти повторний checkout,  
@@ -1839,10 +2111,12 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7  
 **Depends on:** VISIT-06, CLIENT-03  
 **Primary module:** Operations  
-**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation  
+**Required verification:** Unit, PostgreSQL integration, API and UI; transaction, concurrency, idempotency, tenant and branch isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-CLIENT-002`.
 - Overlay UI IDs: `DRW-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/DRW-VISIT-001/Visit/Details/Default`.
@@ -1850,21 +2124,27 @@ Response повинен містити machine-readable reason code.
 - Required frontend components: `VisitHistoryTable, VisitDetailsDrawer`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - Client Portal history is owned exclusively by `PORTAL-02` in Phase 19.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-OPS-002`.
 - Physical tables/read models: `crm.clients`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-004` `GET /api/v1/visits/{visitId}`, `API-VISIT-006` `GET /api/v1/clients/{clientId}/visits`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** бачити всі тренування клієнта,  
@@ -1886,31 +2166,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 17  
 **Depends on:** VISIT-06, VISIT-08, AUTH-04, AUDIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit, integration, API and UI; temporal rules, scheduler behavior, permissions and audit  
+**Required verification:** Unit, integration, API and UI; temporal rules, scheduler behavior, permissions and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-VISIT-001, SCR-CLIENT-002`.
 - Overlay UI IDs: `DRW-VISIT-001, OVL-VISIT-004`.
 - Exact Figma roots: `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Screen/SCR-CLIENT-002/Staff/ClientProfile/Desktop/Overview`, `Overlay/DRW-VISIT-001/Visit/Details/Default`, `Overlay/OVL-VISIT-004/Visit/Correct/Default`.
 - Frontend route scope: `visit routes`.
 - Required frontend components: `CorrectVisitModal, AuditEventDiff`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-AUD-001`.
 - Physical tables/read models: `membership.memberships`, `membership.membership_usage_ledger`, `operations.locker_keys`, `operations.visit_sessions`, `operations.visit_corrections`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-004` `GET /api/v1/visits/{visitId}`, `API-VISIT-007` `POST /api/v1/visits/{visitId}/corrections`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** виправити некоректне відвідування,  
@@ -1934,31 +2222,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 17  
 **Depends on:** VISIT-05, VISIT-06  
 **Primary module:** Operations  
-**Required verification:** Unit, integration, API and UI; temporal rules, scheduler behavior, permissions and audit  
+**Required verification:** Unit, integration, API and UI; temporal rules, scheduler behavior, permissions and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-VISIT-001`.
 - Overlay UI IDs: `DRW-VISIT-001`.
 - Exact Figma roots: `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Overlay/DRW-VISIT-001/Visit/Details/Default`.
 - Frontend route scope: `/app/active-visits`.
 - Required frontend components: `ActiveVisitTable, LongRunningVisitIndicator`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-002`, `DB-OPS-002`, `DB-AUD-001`.
 - Physical tables/read models: `identity.branches`, `operations.visit_sessions`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-001` `GET /api/v1/branches/{branchId}/visits`, `API-VISIT-008` `GET /api/v1/branches/{branchId}/visits/long-running`, `API-VISIT-009` `POST /api/v1/visits/{visitId}/auto-close`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** бачити або автоматично закривати аномально довгі visits,  
@@ -1981,31 +2277,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 17  
 **Depends on:** VISIT-01, KEY-03, AUDIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-INCIDENT-001, SCR-REC-001`.
 - Overlay UI IDs: `OVL-INC-001, DRW-INC-001`.
 - Exact Figma roots: `Screen/SCR-INCIDENT-001/Operations/Incidents/Desktop/Default`, `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Overlay/OVL-INC-001/Incident/Report/Default`, `Overlay/DRW-INC-001/Incident/Details/Default`.
 - Frontend route scope: `incident/reception routes`.
 - Required frontend components: `ReportIncidentModal, IncidentDetailsDrawer`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001`.
 - Physical tables/read models: `operations.locker_keys`, `operations.visit_sessions`, `operations.incidents`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-008` `GET /api/v1/clients/{clientId}/incidents`, `API-KEY-005` `POST /api/v1/locker-keys/{lockerKeyId}/status-transitions`, `API-INC-001` `GET /api/v1/branches/{branchId}/incidents`, `API-INC-002` `POST /api/v1/branches/{branchId}/incidents`, `API-INC-003` `GET /api/v1/incidents/{incidentId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE,  
 **я хочу** зареєструвати втрату ключа,  
@@ -2028,31 +2332,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 17  
 **Depends on:** KEY-03, AUDIT-01  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-INCIDENT-001, SCR-KEY-001`.
 - Overlay UI IDs: `OVL-INC-001, DRW-INC-001`.
 - Exact Figma roots: `Screen/SCR-INCIDENT-001/Operations/Incidents/Desktop/Default`, `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/OVL-INC-001/Incident/Report/Default`, `Overlay/DRW-INC-001/Incident/Details/Default`.
 - Frontend route scope: `incident/key routes`.
 - Required frontend components: `ReportIncidentModal, LockerKeyStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-004`, `DB-AUD-001`.
 - Physical tables/read models: `operations.locker_keys`, `operations.incidents`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-CLIENT-008` `GET /api/v1/clients/{clientId}/incidents`, `API-KEY-005` `POST /api/v1/locker-keys/{lockerKeyId}/status-transitions`, `API-INC-001` `GET /api/v1/branches/{branchId}/incidents`, `API-INC-002` `POST /api/v1/branches/{branchId}/incidents`, `API-INC-003` `GET /api/v1/incidents/{incidentId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** EMPLOYEE або GYM_ADMIN,  
 **я хочу** позначити ключ пошкодженим,  
@@ -2074,31 +2386,39 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 17  
 **Depends on:** INCIDENT-01 or INCIDENT-02, KEY-03, AUTH-04  
 **Primary module:** Operations  
-**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit  
+**Required verification:** Unit state-machine tests, integration, API and UI; key consistency, permissions and audit
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-INCIDENT-001`.
 - Overlay UI IDs: `DRW-INC-001, OVL-INC-002`.
 - Exact Figma roots: `Screen/SCR-INCIDENT-001/Operations/Incidents/Desktop/Default`, `Overlay/DRW-INC-001/Incident/Details/Default`, `Overlay/OVL-INC-002/Incident/Resolve/Default`.
 - Frontend route scope: `/app/incidents`.
 - Required frontend components: `ResolveIncidentModal, IncidentStatusChip`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001`.
 - Physical tables/read models: `operations.locker_keys`, `operations.visit_sessions`, `operations.incidents`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-INC-001` `GET /api/v1/branches/{branchId}/incidents`, `API-INC-003` `GET /api/v1/incidents/{incidentId}`, `API-INC-004` `PATCH /api/v1/incidents/{incidentId}`, `API-INC-005` `POST /api/v1/incidents/{incidentId}/resolve`, `API-INC-006` `POST /api/v1/incidents/{incidentId}/cancel`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** закрити incident із resolution,  
@@ -2122,10 +2442,12 @@ Response повинен містити machine-readable reason code.
 **Implementation phase(s):** Phase 7 (completion; foundation starts in Phase 4)  
 **Depends on:** AUTH-01, Correlation/logging foundation from Phase 2  
 **Primary module:** Audit  
-**Required verification:** Integration and API; immutability, tenant scope, correlation ID, old/new values and retry behavior  
+**Required verification:** Integration and API; immutability, tenant scope, correlation ID, old/new values and retry behavior
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `No dedicated screen`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: no user-facing audit browser is required for this storage story.
@@ -2133,24 +2455,31 @@ Response повинен містити machine-readable reason code.
 - Required frontend components: no dedicated component; mutation UIs must propagate/display correlation IDs on failures.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
 - Audit list and details UI are implemented by `AUDIT-02` in Phase 18.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-AUD-001`.
 - Physical tables/read models: `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: append-only behavior, tenant scope, actor/correlation fields and atomic persistence with the owning mutation.
 - Corrections extend audit in Phase 17; transactional outbox/event audit extends it in Phase 20.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: all MVP mutation endpoints completed through Phase 7 must create the required audit event.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: verify audit side effects through integration tests for login, organization/branch/staff, client, membership, key and visit mutations.
 - Audit read endpoints belong to `AUDIT-02` in Phase 18.
+
 <!-- END API IMPLEMENTATION CONTRACT -->
 
-**Extended/hardened in:** Phases 17, 18 and 20  
+**Extended/hardened in:** Phases 17, 18 and 20
 
 **Як** власник системи,  
 **я хочу** мати незмінювану історію важливих дій,  
@@ -2180,31 +2509,39 @@ Audit records не редагуються через звичайний applicat
 **Implementation phase(s):** Phase 18  
 **Depends on:** AUDIT-01, AUTH-04, AUTH-05  
 **Primary module:** Audit  
-**Required verification:** Integration, API and UI; pagination, filters, authorization and tenant isolation  
+**Required verification:** Integration, API and UI; pagination, filters, authorization and tenant isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-AUDIT-001`.
 - Overlay UI IDs: `DRW-AUDIT-001`.
 - Exact Figma roots: `Screen/SCR-AUDIT-001/Admin/AuditLog/Desktop/Default`, `Overlay/DRW-AUDIT-001/Audit/EventDetails/Default`.
 - Frontend route scope: `/app/audit | /super-admin/audit`.
 - Required frontend components: `AuditLogPage, AuditEventDiff`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-AUD-001`, `DB-OPS-003`, `DB-OPS-004`.
 - Physical tables/read models: `audit.audit_logs`, `operations.visit_corrections`, `operations.incidents`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; append-only/event-consumer integrity evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUDIT-001` `GET /api/v1/organizations/{organizationId}/audit-events`, `API-AUDIT-002` `GET /api/v1/audit-events/{auditEventId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN або SUPER_ADMIN,  
 **я хочу** фільтрувати audit records,  
@@ -2226,32 +2563,40 @@ Audit records не редагуються через звичайний applicat
 **Implementation phase(s):** Phase 18  
 **Depends on:** VISIT-05, VISIT-06, VISIT-09, INCIDENT-01  
 **Primary module:** Reporting  
-**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline  
+**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REPORT-001, SCR-REPORT-002`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-REPORT-001/GymAdmin/ReportsLanding/Desktop/Default`, `Screen/SCR-REPORT-002/GymAdmin/DailyVisitsReport/Desktop/Default`.
 - Frontend route scope: `/app/reports/daily-visits`.
 - Required frontend components: `DailyVisitsReportPage, ReportFilterBar`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`.
 - Physical tables/read models: `operations.visit_sessions`, `operations.visit_corrections`, `operations.incidents`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: known-dataset aggregation, branch timezone boundaries and query-plan/index evidence against modular-monolith source tables.
 - Event-driven reporting read models replace these reads only after Phase 20 extraction.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-001` `GET /api/v1/organizations/{organizationId}/dashboard`, `API-REPORT-003` `GET /api/v1/organizations/{organizationId}/reports/daily-visits`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** бачити daily visits report,  
@@ -2281,32 +2626,40 @@ Date/time aggregation використовує branch timezone.
 **Implementation phase(s):** Phase 18  
 **Depends on:** KEY-02, KEY-03, INCIDENT-01, INCIDENT-02  
 **Primary module:** Reporting  
-**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline  
+**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REPORT-001, SCR-REPORT-003`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-REPORT-001/GymAdmin/ReportsLanding/Desktop/Default`, `Screen/SCR-REPORT-003/GymAdmin/KeyStatusReport/Desktop/Default`.
 - Frontend route scope: `/app/reports/key-status`.
 - Required frontend components: `KeyStatusReportPage, ReportFilterBar`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`.
 - Physical tables/read models: `operations.locker_keys`, `operations.visit_sessions`, `operations.incidents`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: known-dataset status aggregation, incident linkage and query-plan/index evidence against modular-monolith source tables.
 - Event-driven reporting read models become the read source only in Phase 20.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-001` `GET /api/v1/organizations/{organizationId}/dashboard`, `API-REPORT-004` `GET /api/v1/organizations/{organizationId}/reports/key-status`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** бачити стан ключів,  
@@ -2327,32 +2680,40 @@ Date/time aggregation використовує branch timezone.
 **Implementation phase(s):** Phase 18  
 **Depends on:** STAFF-02, VISIT-01, VISIT-06, VISIT-09, INCIDENT-03  
 **Primary module:** Reporting  
-**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline  
+**Required verification:** PostgreSQL aggregation integration, API and UI; timezone, known-dataset correctness and performance baseline
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REPORT-001, SCR-REPORT-004`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-REPORT-001/GymAdmin/ReportsLanding/Desktop/Default`, `Screen/SCR-REPORT-004/GymAdmin/EmployeeActivityReport/Desktop/Default`.
 - Frontend route scope: `/app/reports/employee-activity`.
 - Required frontend components: `EmployeeActivityReportPage, ReportFilterBar`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`.
 - Physical tables/read models: `identity.staff_users`, `operations.visit_sessions`, `operations.visit_corrections`, `operations.incidents`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: known-dataset employee/date/branch aggregation and query-plan/index evidence against modular-monolith source tables.
 - Event-driven reporting read models become the read source only in Phase 20.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-001` `GET /api/v1/organizations/{organizationId}/dashboard`, `API-REPORT-005` `GET /api/v1/organizations/{organizationId}/reports/employee-activity`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** GYM_ADMIN,  
 **я хочу** бачити operations працівників,  
@@ -2373,31 +2734,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 19  
 **Depends on:** CLIENT-01, MEMBERSHIP-01, Separate client-auth design decision  
 **Primary module:** Client Portal  
-**Required verification:** Unit, integration, API and UI; separate client auth, IDOR, privacy and responsive smoke  
+**Required verification:** Unit, integration, API and UI; separate client auth, IDOR, privacy and responsive smoke
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-PORTAL-001, SCR-PORTAL-002`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-PORTAL-001/ClientPortal/Login/Mobile/Default`, `Screen/SCR-PORTAL-002/ClientPortal/Dashboard/Mobile/Default`.
 - Frontend route scope: `/portal/login, /portal/dashboard`.
 - Required frontend components: `ClientPortalLoginPage, ClientPortalDashboardPage`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-PORTAL-001`, `DB-IDN-003`, `DB-AUD-001`.
 - Physical tables/read models: `crm.clients`, `identity.client_accounts`, `identity.refresh_tokens`, `audit.audit_logs`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-PORTAL-001` `POST /api/v1/portal/auth/login`, `API-PORTAL-002` `POST /api/v1/portal/auth/refresh`, `API-PORTAL-003` `POST /api/v1/portal/auth/logout`, `API-PORTAL-004` `GET /api/v1/portal/me`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Client,  
 **я хочу** увійти у власний portal,  
@@ -2418,31 +2787,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 19  
 **Depends on:** PORTAL-01, VISIT-08  
 **Primary module:** Client Portal  
-**Required verification:** Unit, integration, API and UI; separate client auth, IDOR, privacy and responsive smoke  
+**Required verification:** Unit, integration, API and UI; separate client auth, IDOR, privacy and responsive smoke
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-PORTAL-002, SCR-PORTAL-003`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-PORTAL-002/ClientPortal/Dashboard/Mobile/Default`, `Screen/SCR-PORTAL-003/ClientPortal/VisitHistory/Mobile/Default`.
 - Frontend route scope: `/portal/dashboard, /portal/visits`.
 - Required frontend components: `ClientVisitHistoryPage, VisitHistoryCard`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-PORTAL-001`, `DB-OPS-002`.
 - Physical tables/read models: `crm.clients`, `identity.client_accounts`, `operations.visit_sessions`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-006` `GET /api/v1/clients/{clientId}/visits`, `API-PORTAL-005` `GET /api/v1/portal/visits`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Client,  
 **я хочу** бачити історію своїх тренувань,  
@@ -2464,31 +2841,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 20  
 **Depends on:** AUDIT-01, VISIT-01, VISIT-06, stable Jenkins staging deployment from Phase 12  
 **Primary module:** Platform Events / Reporting  
-**Required verification:** Unit, outbox/consumer integration, event contract, idempotency, retry, DLQ and resilience tests  
+**Required verification:** Unit, outbox/consumer integration, event contract, idempotency, retry, DLQ and resilience tests
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REPORT-001..004, SCR-AUDIT-001`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-AUDIT-001/Admin/AuditLog/Desktop/Default`.
 - Frontend route scope: `report/audit routes`.
 - Required frontend components: `ConsistencyStatusIndicator (indirect event processing visibility)`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-OPS-002`, `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`.
 - Physical tables/read models: `operations.visit_sessions`, `audit.audit_logs`, `integration.outbox_events`, `integration.processed_events`, `reporting.reporting_visit_facts`, `reporting.reporting_daily_branch_metrics`, `reporting.reporting_employee_daily_metrics`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence; append-only/event-consumer integrity evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-006` `GET /api/v1/organizations/{organizationId}/reports/sync-status`, Internal event contracts EVT-001..007.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Reporting Service,  
 **я хочу** отримувати події check-in/check-out,  
@@ -2511,31 +2896,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 20  
 **Depends on:** EVENT-01, REPORT-01  
 **Primary module:** Platform Events / Reporting  
-**Required verification:** Unit, outbox/consumer integration, event contract, idempotency, retry, DLQ and resilience tests  
+**Required verification:** Unit, outbox/consumer integration, event contract, idempotency, retry, DLQ and resilience tests
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REPORT-001..004`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: resolve the UI IDs through `ui-contract.md`; this story is cross-cutting or has no dedicated root.
 - Frontend route scope: `/app/reports/*`.
 - Required frontend components: `ConsistencyStatusIndicator`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`.
 - Physical tables/read models: `integration.outbox_events`, `integration.processed_events`, `reporting.reporting_sync_state`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; append-only/event-consumer integrity evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-006` `GET /api/v1/organizations/{organizationId}/reports/sync-status`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 **Як** Staff User,  
 **я хочу** розуміти, що звіт може оновитися із затримкою,  
@@ -2549,7 +2942,6 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 
 ---
 
-
 # Epic 12 — Platform, Docker та Jenkins CI/CD
 
 Ці stories є **platform/enabler stories**, а не функціями для кінцевого користувача. Вони починаються тільки після завершення Lean MVP у Phase 8 і визначають перевірювані вимоги до container runtime, Jenkins, AWS staging, deployment, regression та rollback.
@@ -2561,9 +2953,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 9  
 **Depends on:** Phase 8 Lean MVP release candidate  
 **Primary module:** Platform Engineering / Runtime  
-**Required verification:** Clean Docker builds, image inspection, non-root runtime, health checks, environment injection and graceful shutdown  
+**Required verification:** Clean Docker builds, image inspection, non-root runtime, health checks, environment injection and graceful shutdown
 
 **Platform implementation contract:**
+
 - Required artifacts: `apps/web/Dockerfile`, `apps/api/Dockerfile`, `.dockerignore` files and documented local build commands.
 - Images must be multi-stage, production-mode, reproducible from a clean clone and tagged with Git commit SHA.
 - Runtime containers must use a non-root user, receive configuration only through environment/secrets and write logs to stdout/stderr.
@@ -2594,9 +2987,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 9  
 **Depends on:** PLATFORM-01  
 **Primary module:** Platform Engineering / Runtime  
-**Required verification:** Compose boot from clean clone, empty-DB migration, health/readiness, containerized smoke, restart and cleanup tests  
+**Required verification:** Compose boot from clean clone, empty-DB migration, health/readiness, containerized smoke, restart and cleanup tests
 
 **Platform implementation contract:**
+
 - Required artifacts: root `compose.yaml` or equivalent, migration service, PostgreSQL service, web/API services and optional Playwright test-runner service/profile.
 - Required service names: `web`, `api`, `database`, `migration`, optional `test-runner`.
 - Local persistent profile and isolated ephemeral CI profile must be documented separately.
@@ -2626,9 +3020,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 10  
 **Depends on:** PLATFORM-02, NFR-05  
 **Primary module:** Platform Engineering / Jenkins CI  
-**Required verification:** Webhook trigger, blocking gates, clean rerun, artifact publication, GitHub status and intentional-failure test  
+**Required verification:** Webhook trigger, blocking gates, clean rerun, artifact publication, GitHub status and intentional-failure test
 
 **Platform implementation contract:**
+
 - Required artifacts: root `Jenkinsfile`, reusable scripts under `ci/`, Jenkins Multibranch Pipeline configuration and GitHub branch-protection documentation.
 - Mandatory stages: checkout, environment validation, `npm ci`, lint, typecheck, unit, PostgreSQL integration, migrations, build, Docker image build, Compose stack, health/version, OpenAPI validation, API smoke, UI smoke, artifact publication and cleanup.
 - Required evidence: Jenkins build URL, GitHub status check, JUnit/Playwright artifacts, container logs and one intentionally failed blocking gate.
@@ -2659,9 +3054,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 11  
 **Depends on:** CICD-01  
 **Primary module:** Platform Engineering / AWS  
-**Required verification:** IaC plan/apply, network and IAM review, service health, RDS migration path, log delivery and recreation evidence  
+**Required verification:** IaC plan/apply, network and IAM review, service health, RDS migration path, log delivery and recreation evidence
 
 **Platform implementation contract:**
+
 - Required artifacts: version-controlled IaC under `infra/terraform/staging/` or an explicitly approved equivalent.
 - Minimum resources: ECR, ECS Fargate, ALB, RDS PostgreSQL, security groups/networking, Secrets Manager or Parameter Store, CloudWatch logs/alarms and IAM roles for tasks and Jenkins deployment.
 - Kubernetes/EKS, multi-region, production data and complex shared-platform abstractions are out of scope.
@@ -2693,9 +3089,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 12  
 **Depends on:** CICD-01, CLOUD-01  
 **Primary module:** Platform Engineering / Jenkins CD  
-**Required verification:** Green-commit provenance, build-once behavior, ECR push, immutable SHA tags and image metadata evidence  
+**Required verification:** Green-commit provenance, build-once behavior, ECR push, immutable SHA tags and image metadata evidence
 
 **Platform implementation contract:**
+
 - Required artifact: main-branch/deployment path in the root `Jenkinsfile` or approved shared pipeline library.
 - Images must be built once for the exact merged commit, tagged with full/short commit SHA and reused for deployment; rebuilding a different binary during deploy is forbidden.
 - Required evidence: Jenkins build URL, source commit, image digests, ECR tags and stored image metadata.
@@ -2723,9 +3120,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 12  
 **Depends on:** CICD-02, CLOUD-01  
 **Primary module:** Platform Engineering / Jenkins CD  
-**Required verification:** Controlled migration, ECS service update, stability wait, health/readiness/version and deployment metadata checks  
+**Required verification:** Controlled migration, ECS service update, stability wait, health/readiness/version and deployment metadata checks
 
 **Platform implementation contract:**
+
 - Required deployment stages: migration task, ECS task-definition update, service deployment, stability wait, `/health`, `/ready`, `/version`, deployed-SHA verification and evidence publication.
 - Deployment must use the image digests produced by CICD-02.
 - Required evidence: migration task result, ECS task revision, deployed image digest, service events, health responses and version SHA.
@@ -2756,9 +3154,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 12  
 **Depends on:** CICD-03, NFR-05  
 **Primary module:** Quality Engineering / Jenkins CD  
-**Required verification:** Real staging API/UI smoke, isolated data, cleanup, failure artifacts and deployment-status integration  
+**Required verification:** Real staging API/UI smoke, isolated data, cleanup, failure artifacts and deployment-status integration
 
 **Platform implementation contract:**
+
 - Required Jenkins stage/job executes against the newly deployed staging version.
 - Required flow: health/version, staff login, isolated client/membership/key setup, check-in, active visit, checkout, visit history and cleanup.
 - Required evidence: test summary, Playwright report/traces, correlation IDs, deployed SHA and cleanup result.
@@ -2787,9 +3186,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 12  
 **Depends on:** CICD-03, QAOPS-01  
 **Primary module:** Platform Engineering / Release Management  
-**Required verification:** Exercised rollback, previous-version health/smoke, metadata preservation and failure simulation  
+**Required verification:** Exercised rollback, previous-version health/smoke, metadata preservation and failure simulation
 
 **Platform implementation contract:**
+
 - Required artifacts: Jenkins rollback stage/job and `docs/runbooks/staging-rollback.md` or equivalent.
 - Rollback target is the previous known-good ECS task definition and immutable image digest.
 - Destructive automatic database rollback is forbidden; migration compatibility/forward-fix policy must be documented.
@@ -2819,9 +3219,10 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phase 13  
 **Depends on:** QAOPS-01, REL-01  
 **Primary module:** Quality Engineering / Jenkins  
-**Required verification:** Scheduled execution, full MVP regression, multi-browser run, integrity/concurrency checks, scans, cleanup and trend evidence  
+**Required verification:** Scheduled execution, full MVP regression, multi-browser run, integrity/concurrency checks, scans, cleanup and trend evidence
 
 **Platform implementation contract:**
+
 - Required Jenkins jobs: `post-deploy-smoke`, `nightly-mvp-regression` and scheduled quality/security checks, or equivalent clearly separated pipeline branches.
 - Nightly scope: full MVP API regression, full MVP UI regression, Chromium plus one additional browser, concurrency/idempotency, DB integrity, OpenAPI compatibility and basic response-time baseline.
 - Scheduled quality scope: dependency scan, image scan, secret scan, migration drift and flaky-test trend.
@@ -2855,31 +3256,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 8, 13, 18 and 22  
 **Depends on:** Core API and report stories  
 **Primary module:** Cross-cutting  
-**Required verification:** Controlled staging performance baseline, response-time metrics, trend comparison and regression threshold  
+**Required verification:** Controlled staging performance baseline, response-time metrics, trend comparison and regression threshold
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-VISIT-001, SCR-CLIENT-001`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Screen/SCR-CLIENT-001/Staff/ClientsList/Desktop/Default`.
 - Frontend route scope: `critical operational routes`.
 - Required frontend components: `SearchField, DataTable, Skeleton, Pagination`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002`, `DB-AUD-001`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`.
 - Physical tables/read models: `crm.clients`, `operations.locker_keys`, `operations.visit_sessions`, `audit.audit_logs`, `reporting.reporting_visit_facts`, `reporting.reporting_daily_branch_metrics`, `reporting.reporting_employee_daily_metrics`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; query-plan/index evidence against a known dataset.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-REPORT-001` `GET /api/v1/organizations/{organizationId}/dashboard`, `API-REPORT-002` `GET /api/v1/branches/{branchId}/dashboard/reception`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Client search p95 — до 1 секунди в staging target dataset.
 2. Check-in/check-out API p95 — до 1 секунди без зовнішніх деградацій.
@@ -2893,31 +3302,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 2, 9, 10, 11, 12, 13, 20 and 22  
 **Depends on:** Health/readiness foundation and deployment pipelines  
 **Primary module:** Cross-cutting  
-**Required verification:** Health/readiness, failure injection, retry/timeout behavior, recovery and availability evidence  
+**Required verification:** Health/readiness, failure injection, retry/timeout behavior, recovery and availability evidence
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `All operational screens`.
 - Overlay UI IDs: `OVL-AUTH-001`.
 - Exact Figma roots: `Overlay/OVL-AUTH-001/Auth/SessionExpired/Default`.
 - Frontend route scope: `all routes`.
 - Required frontend components: `ErrorState, RetryAction, NetworkUncertaintyAlert`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-IDN-003`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`.
 - Physical tables/read models: `identity.refresh_tokens`, `platform.idempotency_records`, `integration.outbox_events`, `integration.processed_events`, `reporting.reporting_sync_state`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-SYS-001` `GET /health`, `API-SYS-002` `GET /ready`, `API-REPORT-006` `GET /api/v1/organizations/{organizationId}/reports/sync-status`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Health endpoint перевіряє process і database connectivity.
 2. Reporting failure не повинен блокувати check-in після event-driven extraction.
@@ -2931,31 +3348,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 2, 4, 8, 10, 11, 12, 21 and 22  
 **Depends on:** AUTH-04, AUTH-05, All protected stories  
 **Primary module:** Cross-cutting  
-**Required verification:** Auth/RBAC/IDOR tests, validation, rate limiting, secret scanning, dependency/security baseline  
+**Required verification:** Auth/RBAC/IDOR tests, validation, rate limiting, secret scanning, dependency/security baseline
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `All authenticated screens`.
 - Overlay UI IDs: `destructive overlays`.
 - Exact Figma roots: resolve the UI IDs through `ui-contract.md`; this story is cross-cutting or has no dedicated root.
 - Frontend route scope: `all protected routes`.
 - Required frontend components: `AppShell, RoleGuard, BranchGuard, ConfirmAlertDialog`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-AUD-001`, `DB-PORTAL-001`.
 - Physical tables/read models: `identity.organizations`, `identity.branches`, `identity.staff_users`, `identity.staff_branch_assignments`, `identity.refresh_tokens`, `crm.clients`, `audit.audit_logs`, `identity.client_accounts`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUTH-001..004`, All protected endpoints.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Passwords зберігаються як secure hash.
 2. Secrets не комітяться.
@@ -2972,31 +3397,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 4, 7, 17, 18 and 20  
 **Depends on:** AUDIT-01  
 **Primary module:** Audit  
-**Required verification:** Audit completeness, immutability, correlation, old/new values, actor and tenant isolation  
+**Required verification:** Audit completeness, immutability, correlation, old/new values, actor and tenant isolation
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-AUDIT-001 and all mutation flows`.
 - Overlay UI IDs: `DRW-AUDIT-001`.
 - Exact Figma roots: `Overlay/DRW-AUDIT-001/Audit/EventDetails/Default`.
 - Frontend route scope: `audit and mutation routes`.
 - Required frontend components: `AuditEventDetailsDrawer, AuditEventDiff`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-AUD-001`, `DB-MEM-005`, `DB-OPS-003`, `DB-OPS-004`, `DB-EVT-001`.
 - Physical tables/read models: `audit.audit_logs`, `membership.membership_usage_ledger`, `operations.visit_corrections`, `operations.incidents`, `integration.outbox_events`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; append-only/event-consumer integrity evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-AUDIT-001` `GET /api/v1/organizations/{organizationId}/audit-events`, `API-AUDIT-002` `GET /api/v1/audit-events/{auditEventId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Усі критичні operations мають actor, timestamp і correlation ID.
 2. Manual correction завжди має reason.
@@ -3009,31 +3442,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 1, 2, 3, 7, 8, 10 and 13  
 **Depends on:** Technical foundation from Phases 1–3  
 **Primary module:** Cross-cutting  
-**Required verification:** Deterministic tests, stable selectors, API setup, isolated data, CI execution and useful failure evidence  
+**Required verification:** Deterministic tests, stable selectors, API setup, isolated data, CI execution and useful failure evidence
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `All screens and overlays`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: resolve the UI IDs through `ui-contract.md`; this story is cross-cutting or has no dedicated root.
 - Frontend route scope: `all routes`.
 - Required frontend components: `semantic HeroUI components; stable accessible names; no test-only IDs unless required`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-AUD-001`, `DB-PORTAL-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`, `DB-RPT-004`.
 - Physical tables/read models: `identity.organizations`, `identity.branches`, `identity.staff_users`, `identity.staff_branch_assignments`, `identity.refresh_tokens`, `crm.clients`, `membership.membership_plans`, `membership.membership_plan_branches`, `membership.memberships`, `membership.membership_freeze_periods`, `membership.membership_usage_ledger`, `operations.locker_keys`, `operations.visit_sessions`, `operations.visit_corrections`, `operations.incidents`, `platform.idempotency_records`, `audit.audit_logs`, `identity.client_accounts`, `integration.outbox_events`, `integration.processed_events`, `reporting.reporting_visit_facts`, `reporting.reporting_daily_branch_metrics`, `reporting.reporting_employee_daily_metrics`, `reporting.reporting_sync_state`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: all schema changes must be reproducible through migrations and covered by real PostgreSQL integration tests.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-TEST-001` `POST /api/test-support/seed`, `API-TEST-002` `DELETE /api/test-support/test-runs/{testRunId}`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. API має стабільні machine-readable error codes.
 2. UI використовує semantic controls і accessible labels.
@@ -3048,31 +3489,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 2, 9, 11, 12, 13, 20 and 22  
 **Depends on:** Structured logging from Phase 2, EVENT-01  
 **Primary module:** Cross-cutting  
-**Required verification:** Structured logs, metrics, traces, correlation propagation, dashboards and verified alarms  
+**Required verification:** Structured logs, metrics, traces, correlation propagation, dashboards and verified alarms
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `All screens`.
 - Overlay UI IDs: `No dedicated overlay`.
 - Exact Figma roots: resolve the UI IDs through `ui-contract.md`; this story is cross-cutting or has no dedicated root.
 - Frontend route scope: `all routes`.
 - Required frontend components: `ErrorState, CorrelationIdText, environment/version indicators`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`.
 - Physical tables/read models: `audit.audit_logs`, `integration.outbox_events`, `integration.processed_events`, `reporting.reporting_sync_state`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; append-only/event-consumer integrity evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-SYS-001` `GET /health`, `API-SYS-002` `GET /ready`, `API-SYS-003` `GET /version`, `API-REPORT-006` `GET /api/v1/organizations/{organizationId}/reports/sync-status`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Structured JSON logs.
 2. Correlation ID проходить через HTTP і майбутні events.
@@ -3086,31 +3535,39 @@ Report містить check-ins, check-outs, corrections та incidents за emp
 **Implementation phase(s):** Phases 6, 7, 17 and 20  
 **Depends on:** MEMBERSHIP-04, VISIT-01, VISIT-06, EVENT-01  
 **Primary module:** Cross-cutting  
-**Required verification:** Transactions, database constraints, concurrency, idempotency and event-processing consistency  
+**Required verification:** Transactions, database constraints, concurrency, idempotency and event-processing consistency
 
 <!-- BEGIN UI IMPLEMENTATION CONTRACT -->
+
 **UI implementation contract:**
+
 - Screen UI IDs: `SCR-REC-001, SCR-VISIT-001, SCR-KEY-001`.
 - Overlay UI IDs: `OVL-VISIT-001, OVL-VISIT-003`.
 - Exact Figma roots: `Screen/SCR-REC-001/Reception/ReceptionWorkspace/Desktop/Default`, `Screen/SCR-VISIT-001/Operations/ActiveVisits/Desktop/Default`, `Screen/SCR-KEY-001/Operations/LockerKeys/Desktop/Default`, `Overlay/OVL-VISIT-001/Visit/CheckIn/Default`, `Overlay/OVL-VISIT-003/Visit/CheckoutByKey/Lookup`.
 - Frontend route scope: `operations routes`.
 - Required frontend components: `ConcurrencyConflictAlert, NetworkUncertaintyAlert, ConsistencyStatusIndicator`.
 - Naming source of truth: `ui-contract.md`; required child layers: `figma-make-prompts.md`.
+
 <!-- END UI IMPLEMENTATION CONTRACT -->
 <!-- BEGIN DATABASE IMPLEMENTATION CONTRACT -->
+
 **Database implementation contract:**
+
 - Database requirement IDs: `DB-ORG-002`, `DB-IDN-002`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002`.
 - Physical tables/read models: `identity.branches`, `identity.staff_branch_assignments`, `membership.membership_plan_branches`, `membership.memberships`, `membership.membership_freeze_periods`, `membership.membership_usage_ledger`, `operations.locker_keys`, `operations.visit_sessions`, `operations.visit_corrections`, `operations.incidents`, `platform.idempotency_records`, `integration.outbox_events`, `integration.processed_events`.
 - Canonical schema, fields, constraints, indexes and lifecycle: `database-requirements.md`.
 - Required database evidence: real PostgreSQL integration tests for affected constraints, tenant scope and query behavior; transaction/concurrency/idempotency rollback evidence.
+
 <!-- END DATABASE IMPLEMENTATION CONTRACT -->
 <!-- BEGIN API IMPLEMENTATION CONTRACT -->
+
 **API implementation contract:**
+
 - API contracts: `API-VISIT-002` `POST /api/v1/branches/{branchId}/visits/check-in`, `API-VISIT-003` `POST /api/v1/branches/{branchId}/visits/checkout-by-key`, `API-VISIT-005` `POST /api/v1/visits/{visitId}/checkout`, `API-VISIT-007` `POST /api/v1/visits/{visitId}/corrections`, `API-KEY-005` `POST /api/v1/locker-keys/{lockerKeyId}/status-transitions`, `API-MEM-002` `POST /api/v1/clients/{clientId}/memberships`, `API-INC-002` `POST /api/v1/branches/{branchId}/incidents`.
 - Canonical request/response schemas, status codes, error codes, token and header policy: `api-requirements.md`.
 - Required API evidence: OpenAPI schema, positive/negative Playwright API tests, auth/tenant isolation, real PostgreSQL transaction/concurrency/idempotency evidence.
-<!-- END API IMPLEMENTATION CONTRACT -->
 
+<!-- END API IMPLEMENTATION CONTRACT -->
 
 1. Check-in + key assignment — atomic.
 2. Check-out + key release — atomic.

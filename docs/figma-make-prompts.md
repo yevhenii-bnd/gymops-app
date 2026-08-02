@@ -67,8 +67,8 @@ Prompts написані англійською для точнішої гене
 
 ---
 
-
 <!-- BEGIN GENERATED UI NAMING CONTRACT -->
+
 ## 2.1. Canonical UI naming contract for Figma MCP and frontend
 
 Every generated design must follow the canonical registry in `ui-contract.md`.

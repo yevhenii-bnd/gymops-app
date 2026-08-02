@@ -85,7 +85,9 @@ export function ProtectedStaffShell({ children }: ProtectedStaffShellProps) {
       <AppShell
         branches={branches}
         currentBranch={currentBranch}
-        organization={session.staff.organizationId === null ? "GymOps Platform" : "Northstar Fitness"}
+        organization={
+          session.staff.organizationId === null ? "GymOps Platform" : "Northstar Fitness"
+        }
         role={session.staff.role}
         staffName={`${session.staff.firstName} ${session.staff.lastName}`}
         onSignOut={() => {

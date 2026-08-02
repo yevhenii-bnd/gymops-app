@@ -1,4 +1,3 @@
-
 # Database Requirements — GymOps
 
 ## 1. Призначення документа
@@ -56,16 +55,16 @@ Reporting/Audit DB
 
 ### 2.3. PostgreSQL schemas
 
-| Schema | Ownership |
-|---|---|
-| `identity` | Organizations, branches, staff/client authentication |
-| `crm` | Client master data |
-| `membership` | Plans, memberships, freezes, usage ledger |
-| `operations` | Locker keys, visits, corrections, incidents |
-| `platform` | Cross-cutting idempotency |
-| `audit` | Append-only audit |
-| `integration` | Outbox and consumer inbox |
-| `reporting` | Rebuildable reporting read models |
+| Schema        | Ownership                                            |
+| ------------- | ---------------------------------------------------- |
+| `identity`    | Organizations, branches, staff/client authentication |
+| `crm`         | Client master data                                   |
+| `membership`  | Plans, memberships, freezes, usage ledger            |
+| `operations`  | Locker keys, visits, corrections, incidents          |
+| `platform`    | Cross-cutting idempotency                            |
+| `audit`       | Append-only audit                                    |
+| `integration` | Outbox and consumer inbox                            |
+| `reporting`   | Rebuildable reporting read models                    |
 
 Якщо multi-schema setup створює непропорційну tooling-складність на старті, дозволено тимчасово використовувати один physical schema. Logical ownership, DB IDs та table names при цьому не змінюються.
 
@@ -73,19 +72,19 @@ Reporting/Audit DB
 
 ## 3. Реалізація за фазами
 
-| Phase | Tables introduced/completed | Goal |
-|---|---|---|
-| 2 | `organizations`, `branches`, `staff_users`, `staff_branch_assignments`, `refresh_tokens` skeleton | DB connection, first migration, tenant/auth foundation |
-| 4 | identity tables complete; `audit_logs` infrastructure | Auth, organizations, branches, first Gym Admin |
-| 5 | `clients` | Staff and client CRM |
-| 6 | `membership_plans`, `membership_plan_branches`, `memberships`, `membership_freeze_periods`, `membership_usage_ledger` | Membership lifecycle and eligibility |
-| 7 | `locker_keys` | Key inventory |
-| 8 | `visit_sessions`, `idempotency_records`; audit/ledger hardening | Atomic check-in/check-out, concurrency, history |
-| 12 | `visit_corrections`, `incidents` | Corrections and operational incidents |
-| 13 | Index/report-query hardening on source tables | MVP audit and reports |
-| 14 | `client_accounts` and client refresh sessions | Optional client portal |
-| 18 | `outbox_events`, `processed_events`, reporting read models | Event-driven Reporting/Audit extraction |
-| 19 | Physical database split by service ownership | Independent service persistence |
+| Phase | Tables introduced/completed                                                                                           | Goal                                                   |
+| ----- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| 2     | `organizations`, `branches`, `staff_users`, `staff_branch_assignments`, `refresh_tokens` skeleton                     | DB connection, first migration, tenant/auth foundation |
+| 4     | identity tables complete; `audit_logs` infrastructure                                                                 | Auth, organizations, branches, first Gym Admin         |
+| 5     | `clients`                                                                                                             | Staff and client CRM                                   |
+| 6     | `membership_plans`, `membership_plan_branches`, `memberships`, `membership_freeze_periods`, `membership_usage_ledger` | Membership lifecycle and eligibility                   |
+| 7     | `locker_keys`                                                                                                         | Key inventory                                          |
+| 8     | `visit_sessions`, `idempotency_records`; audit/ledger hardening                                                       | Atomic check-in/check-out, concurrency, history        |
+| 12    | `visit_corrections`, `incidents`                                                                                      | Corrections and operational incidents                  |
+| 13    | Index/report-query hardening on source tables                                                                         | MVP audit and reports                                  |
+| 14    | `client_accounts` and client refresh sessions                                                                         | Optional client portal                                 |
+| 18    | `outbox_events`, `processed_events`, reporting read models                                                            | Event-driven Reporting/Audit extraction                |
+| 19    | Physical database split by service ownership                                                                          | Independent service persistence                        |
 
 ---
 
@@ -206,20 +205,20 @@ erDiagram
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `code` | `varchar(40)` | NO | `—` | Stable human-readable tenant code; uppercase normalized. |
-| `name` | `varchar(160)` | NO | `—` | Display name. |
-| `legal_name` | `varchar(200)` | YES | `NULL` | Optional legal name. |
-| `status` | `organization_status` | NO | `ACTIVE` | ACTIVE, SUSPENDED, DEACTIVATED. |
-| `default_timezone` | `varchar(64)` | NO | `Europe/Kyiv` | IANA timezone used when a branch does not override it. |
-| `deactivation_reason` | `varchar(500)` | YES | `NULL` | Required when status becomes DEACTIVATED. |
-| `deactivated_at` | `timestamptz` | YES | `NULL` | Set on deactivation. |
-| `created_by_staff_user_id` | `uuid` | YES | `NULL` | Bootstrap may create the first organization before a normal actor exists. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking counter. |
+| Column                     | PostgreSQL type       | Nullable | Default             | Requirement                                                               |
+| -------------------------- | --------------------- | -------: | ------------------- | ------------------------------------------------------------------------- |
+| `id`                       | `uuid`                |       NO | `gen_random_uuid()` | Primary key.                                                              |
+| `code`                     | `varchar(40)`         |       NO | `—`                 | Stable human-readable tenant code; uppercase normalized.                  |
+| `name`                     | `varchar(160)`        |       NO | `—`                 | Display name.                                                             |
+| `legal_name`               | `varchar(200)`        |      YES | `NULL`              | Optional legal name.                                                      |
+| `status`                   | `organization_status` |       NO | `ACTIVE`            | ACTIVE, SUSPENDED, DEACTIVATED.                                           |
+| `default_timezone`         | `varchar(64)`         |       NO | `Europe/Kyiv`       | IANA timezone used when a branch does not override it.                    |
+| `deactivation_reason`      | `varchar(500)`        |      YES | `NULL`              | Required when status becomes DEACTIVATED.                                 |
+| `deactivated_at`           | `timestamptz`         |      YES | `NULL`              | Set on deactivation.                                                      |
+| `created_by_staff_user_id` | `uuid`                |      YES | `NULL`              | Bootstrap may create the first organization before a normal actor exists. |
+| `created_at`               | `timestamptz`         |       NO | `now()`             | UTC.                                                                      |
+| `updated_at`               | `timestamptz`         |       NO | `now()`             | UTC.                                                                      |
+| `version`                  | `integer`             |       NO | `1`                 | Optimistic locking counter.                                               |
 
 #### Required constraints
 
@@ -254,23 +253,23 @@ Status transition is controlled; deactivation is reversible only through an expl
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant FK to organizations. |
-| `code` | `varchar(40)` | NO | `—` | Unique inside organization. |
-| `name` | `varchar(160)` | NO | `—` | Display name. |
-| `address_line_1` | `varchar(200)` | YES | `NULL` | Primary address line. |
-| `address_line_2` | `varchar(200)` | YES | `NULL` | Optional address line. |
-| `city` | `varchar(120)` | YES | `NULL` | City. |
-| `timezone` | `varchar(64)` | NO | `—` | IANA timezone; initialized from organization default. |
-| `status` | `branch_status` | NO | `ACTIVE` | ACTIVE or DEACTIVATED. |
-| `auto_close_after_minutes` | `integer` | YES | `NULL` | Optional threshold for VISIT-10; NULL disables auto-close. |
-| `deactivation_reason` | `varchar(500)` | YES | `NULL` | Required when deactivated. |
-| `deactivated_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                     | PostgreSQL type | Nullable | Default             | Requirement                                                |
+| -------------------------- | --------------- | -------: | ------------------- | ---------------------------------------------------------- |
+| `id`                       | `uuid`          |       NO | `gen_random_uuid()` | Primary key.                                               |
+| `organization_id`          | `uuid`          |       NO | `—`                 | Tenant FK to organizations.                                |
+| `code`                     | `varchar(40)`   |       NO | `—`                 | Unique inside organization.                                |
+| `name`                     | `varchar(160)`  |       NO | `—`                 | Display name.                                              |
+| `address_line_1`           | `varchar(200)`  |      YES | `NULL`              | Primary address line.                                      |
+| `address_line_2`           | `varchar(200)`  |      YES | `NULL`              | Optional address line.                                     |
+| `city`                     | `varchar(120)`  |      YES | `NULL`              | City.                                                      |
+| `timezone`                 | `varchar(64)`   |       NO | `—`                 | IANA timezone; initialized from organization default.      |
+| `status`                   | `branch_status` |       NO | `ACTIVE`            | ACTIVE or DEACTIVATED.                                     |
+| `auto_close_after_minutes` | `integer`       |      YES | `NULL`              | Optional threshold for VISIT-10; NULL disables auto-close. |
+| `deactivation_reason`      | `varchar(500)`  |      YES | `NULL`              | Required when deactivated.                                 |
+| `deactivated_at`           | `timestamptz`   |      YES | `NULL`              | UTC.                                                       |
+| `created_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                                       |
+| `updated_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                                       |
+| `version`                  | `integer`       |       NO | `1`                 | Optimistic locking.                                        |
 
 #### Required constraints
 
@@ -306,28 +305,28 @@ No hard delete after operational references exist.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | YES | `NULL` | NULL only for platform SUPER_ADMIN. |
-| `email` | `varchar(254)` | NO | `—` | Original display email. |
-| `email_normalized` | `varchar(254)` | NO | `—` | Lowercase trimmed email used for uniqueness/login. |
-| `password_hash` | `varchar(255)` | NO | `—` | Strong one-way password hash; never plaintext. |
-| `first_name` | `varchar(100)` | NO | `—` | First name. |
-| `last_name` | `varchar(100)` | NO | `—` | Last name. |
-| `phone` | `varchar(32)` | YES | `NULL` | Display phone. |
-| `phone_normalized` | `varchar(32)` | YES | `NULL` | E.164-like normalized value when possible. |
-| `role` | `staff_role` | NO | `—` | SUPER_ADMIN, GYM_ADMIN, EMPLOYEE. |
-| `status` | `staff_status` | NO | `INVITED` | INVITED, ACTIVE, DEACTIVATED, LOCKED. |
-| `failed_login_count` | `integer` | NO | `0` | Security counter. |
-| `locked_until` | `timestamptz` | YES | `NULL` | Temporary lock expiration. |
-| `last_login_at` | `timestamptz` | YES | `NULL` | Last successful login. |
-| `password_changed_at` | `timestamptz` | YES | `NULL` | Password rotation timestamp. |
-| `deactivated_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `created_by_staff_user_id` | `uuid` | YES | `NULL` | Self-reference; bootstrap may be NULL. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                     | PostgreSQL type | Nullable | Default             | Requirement                                        |
+| -------------------------- | --------------- | -------: | ------------------- | -------------------------------------------------- |
+| `id`                       | `uuid`          |       NO | `gen_random_uuid()` | Primary key.                                       |
+| `organization_id`          | `uuid`          |      YES | `NULL`              | NULL only for platform SUPER_ADMIN.                |
+| `email`                    | `varchar(254)`  |       NO | `—`                 | Original display email.                            |
+| `email_normalized`         | `varchar(254)`  |       NO | `—`                 | Lowercase trimmed email used for uniqueness/login. |
+| `password_hash`            | `varchar(255)`  |       NO | `—`                 | Strong one-way password hash; never plaintext.     |
+| `first_name`               | `varchar(100)`  |       NO | `—`                 | First name.                                        |
+| `last_name`                | `varchar(100)`  |       NO | `—`                 | Last name.                                         |
+| `phone`                    | `varchar(32)`   |      YES | `NULL`              | Display phone.                                     |
+| `phone_normalized`         | `varchar(32)`   |      YES | `NULL`              | E.164-like normalized value when possible.         |
+| `role`                     | `staff_role`    |       NO | `—`                 | SUPER_ADMIN, GYM_ADMIN, EMPLOYEE.                  |
+| `status`                   | `staff_status`  |       NO | `INVITED`           | INVITED, ACTIVE, DEACTIVATED, LOCKED.              |
+| `failed_login_count`       | `integer`       |       NO | `0`                 | Security counter.                                  |
+| `locked_until`             | `timestamptz`   |      YES | `NULL`              | Temporary lock expiration.                         |
+| `last_login_at`            | `timestamptz`   |      YES | `NULL`              | Last successful login.                             |
+| `password_changed_at`      | `timestamptz`   |      YES | `NULL`              | Password rotation timestamp.                       |
+| `deactivated_at`           | `timestamptz`   |      YES | `NULL`              | UTC.                                               |
+| `created_by_staff_user_id` | `uuid`          |      YES | `NULL`              | Self-reference; bootstrap may be NULL.             |
+| `created_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                               |
+| `updated_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                               |
+| `version`                  | `integer`       |       NO | `1`                 | Optimistic locking.                                |
 
 #### Required constraints
 
@@ -364,17 +363,17 @@ INVITED → ACTIVE → DEACTIVATED; LOCKED is temporary/security-driven.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant scope duplicated for composite FKs. |
-| `staff_user_id` | `uuid` | NO | `—` | Staff user. |
-| `branch_id` | `uuid` | NO | `—` | Allowed branch. |
-| `is_primary` | `boolean` | NO | `false` | Primary branch for default UI context. |
-| `assigned_by_staff_user_id` | `uuid` | YES | `NULL` | Actor. |
-| `assigned_at` | `timestamptz` | NO | `now()` | UTC. |
-| `revoked_by_staff_user_id` | `uuid` | YES | `NULL` | Actor who revoked. |
-| `revoked_at` | `timestamptz` | YES | `NULL` | NULL means active assignment. |
+| Column                      | PostgreSQL type | Nullable | Default             | Requirement                                |
+| --------------------------- | --------------- | -------: | ------------------- | ------------------------------------------ |
+| `id`                        | `uuid`          |       NO | `gen_random_uuid()` | Primary key.                               |
+| `organization_id`           | `uuid`          |       NO | `—`                 | Tenant scope duplicated for composite FKs. |
+| `staff_user_id`             | `uuid`          |       NO | `—`                 | Staff user.                                |
+| `branch_id`                 | `uuid`          |       NO | `—`                 | Allowed branch.                            |
+| `is_primary`                | `boolean`       |       NO | `false`             | Primary branch for default UI context.     |
+| `assigned_by_staff_user_id` | `uuid`          |      YES | `NULL`              | Actor.                                     |
+| `assigned_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                       |
+| `revoked_by_staff_user_id`  | `uuid`          |      YES | `NULL`              | Actor who revoked.                         |
+| `revoked_at`                | `timestamptz`   |      YES | `NULL`              | NULL means active assignment.              |
 
 #### Required constraints
 
@@ -409,20 +408,20 @@ Assignments are revoked, not deleted.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Session/token identifier. |
-| `staff_user_id` | `uuid` | YES | `NULL` | Exactly one principal FK is required. |
-| `client_account_id` | `uuid` | YES | `NULL` | Post-MVP principal. |
-| `token_hash` | `varchar(255)` | NO | `—` | Only hash is stored. |
-| `family_id` | `uuid` | NO | `gen_random_uuid()` | Supports rotation/reuse detection. |
-| `issued_at` | `timestamptz` | NO | `now()` | UTC. |
-| `expires_at` | `timestamptz` | NO | `—` | UTC. |
-| `revoked_at` | `timestamptz` | YES | `NULL` | Set on logout/deactivation/reuse. |
-| `revoke_reason` | `varchar(120)` | YES | `NULL` | Reason code. |
-| `replaced_by_token_id` | `uuid` | YES | `NULL` | Rotation chain. |
-| `ip_hash` | `varchar(128)` | YES | `NULL` | Optional privacy-preserving source fingerprint. |
-| `user_agent` | `varchar(500)` | YES | `NULL` | Optional troubleshooting field. |
+| Column                 | PostgreSQL type | Nullable | Default             | Requirement                                     |
+| ---------------------- | --------------- | -------: | ------------------- | ----------------------------------------------- |
+| `id`                   | `uuid`          |       NO | `gen_random_uuid()` | Session/token identifier.                       |
+| `staff_user_id`        | `uuid`          |      YES | `NULL`              | Exactly one principal FK is required.           |
+| `client_account_id`    | `uuid`          |      YES | `NULL`              | Post-MVP principal.                             |
+| `token_hash`           | `varchar(255)`  |       NO | `—`                 | Only hash is stored.                            |
+| `family_id`            | `uuid`          |       NO | `gen_random_uuid()` | Supports rotation/reuse detection.              |
+| `issued_at`            | `timestamptz`   |       NO | `now()`             | UTC.                                            |
+| `expires_at`           | `timestamptz`   |       NO | `—`                 | UTC.                                            |
+| `revoked_at`           | `timestamptz`   |      YES | `NULL`              | Set on logout/deactivation/reuse.               |
+| `revoke_reason`        | `varchar(120)`  |      YES | `NULL`              | Reason code.                                    |
+| `replaced_by_token_id` | `uuid`          |      YES | `NULL`              | Rotation chain.                                 |
+| `ip_hash`              | `varchar(128)`  |      YES | `NULL`              | Optional privacy-preserving source fingerprint. |
+| `user_agent`           | `varchar(500)`  |      YES | `NULL`              | Optional troubleshooting field.                 |
 
 #### Required constraints
 
@@ -458,29 +457,29 @@ Expired and revoked records may be purged by a configurable retention job after 
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `home_branch_id` | `uuid` | YES | `NULL` | Optional preferred branch. |
-| `client_number` | `varchar(40)` | NO | `—` | Human-facing stable identifier unique in organization. |
-| `first_name` | `varchar(100)` | NO | `—` | First name. |
-| `last_name` | `varchar(100)` | NO | `—` | Last name. |
-| `search_name` | `varchar(220)` | NO | `—` | Normalized searchable full name. |
-| `email` | `varchar(254)` | YES | `NULL` | Display email. |
-| `email_normalized` | `varchar(254)` | YES | `NULL` | Lowercase search value; not necessarily unique in MVP. |
-| `phone` | `varchar(32)` | YES | `NULL` | Display phone. |
-| `phone_normalized` | `varchar(32)` | YES | `NULL` | Normalized search value. |
-| `date_of_birth` | `date` | YES | `NULL` | Optional; avoid exposing unnecessarily. |
-| `status` | `client_status` | NO | `ACTIVE` | ACTIVE, BLOCKED, ARCHIVED. |
-| `block_reason` | `varchar(500)` | YES | `NULL` | Required for BLOCKED. |
-| `notes` | `text` | YES | `NULL` | Operational note; must not contain secrets. |
-| `created_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `updated_by_staff_user_id` | `uuid` | YES | `NULL` | Last actor. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `archived_at` | `timestamptz` | YES | `NULL` | No hard delete. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                     | PostgreSQL type | Nullable | Default             | Requirement                                            |
+| -------------------------- | --------------- | -------: | ------------------- | ------------------------------------------------------ |
+| `id`                       | `uuid`          |       NO | `gen_random_uuid()` | Primary key.                                           |
+| `organization_id`          | `uuid`          |       NO | `—`                 | Tenant.                                                |
+| `home_branch_id`           | `uuid`          |      YES | `NULL`              | Optional preferred branch.                             |
+| `client_number`            | `varchar(40)`   |       NO | `—`                 | Human-facing stable identifier unique in organization. |
+| `first_name`               | `varchar(100)`  |       NO | `—`                 | First name.                                            |
+| `last_name`                | `varchar(100)`  |       NO | `—`                 | Last name.                                             |
+| `search_name`              | `varchar(220)`  |       NO | `—`                 | Normalized searchable full name.                       |
+| `email`                    | `varchar(254)`  |      YES | `NULL`              | Display email.                                         |
+| `email_normalized`         | `varchar(254)`  |      YES | `NULL`              | Lowercase search value; not necessarily unique in MVP. |
+| `phone`                    | `varchar(32)`   |      YES | `NULL`              | Display phone.                                         |
+| `phone_normalized`         | `varchar(32)`   |      YES | `NULL`              | Normalized search value.                               |
+| `date_of_birth`            | `date`          |      YES | `NULL`              | Optional; avoid exposing unnecessarily.                |
+| `status`                   | `client_status` |       NO | `ACTIVE`            | ACTIVE, BLOCKED, ARCHIVED.                             |
+| `block_reason`             | `varchar(500)`  |      YES | `NULL`              | Required for BLOCKED.                                  |
+| `notes`                    | `text`          |      YES | `NULL`              | Operational note; must not contain secrets.            |
+| `created_by_staff_user_id` | `uuid`          |       NO | `—`                 | Actor.                                                 |
+| `updated_by_staff_user_id` | `uuid`          |      YES | `NULL`              | Last actor.                                            |
+| `created_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                                   |
+| `updated_at`               | `timestamptz`   |       NO | `now()`             | UTC.                                                   |
+| `archived_at`              | `timestamptz`   |      YES | `NULL`              | No hard delete.                                        |
+| `version`                  | `integer`       |       NO | `1`                 | Optimistic locking.                                    |
 
 #### Required constraints
 
@@ -519,23 +518,23 @@ ACTIVE → BLOCKED/ARCHIVED; records with visits are never hard-deleted.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `code` | `varchar(40)` | NO | `—` | Unique plan code in organization. |
-| `name` | `varchar(160)` | NO | `—` | Display name. |
-| `description` | `text` | YES | `NULL` | Optional. |
-| `plan_type` | `membership_plan_type` | NO | `—` | UNLIMITED, LIMITED_VISITS, SINGLE_VISIT, TRIAL, CORPORATE. |
-| `duration_days` | `integer` | YES | `NULL` | Required for day-based plans. |
-| `visit_limit` | `integer` | YES | `NULL` | Required for limited/single visit types. |
-| `allows_freeze` | `boolean` | NO | `false` | Whether freezing is allowed. |
-| `max_freeze_days` | `integer` | YES | `NULL` | Required or bounded when freeze is enabled. |
-| `status` | `membership_plan_status` | NO | `ACTIVE` | ACTIVE, INACTIVE. |
-| `created_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                     | PostgreSQL type          | Nullable | Default             | Requirement                                                |
+| -------------------------- | ------------------------ | -------: | ------------------- | ---------------------------------------------------------- |
+| `id`                       | `uuid`                   |       NO | `gen_random_uuid()` | Primary key.                                               |
+| `organization_id`          | `uuid`                   |       NO | `—`                 | Tenant.                                                    |
+| `code`                     | `varchar(40)`            |       NO | `—`                 | Unique plan code in organization.                          |
+| `name`                     | `varchar(160)`           |       NO | `—`                 | Display name.                                              |
+| `description`              | `text`                   |      YES | `NULL`              | Optional.                                                  |
+| `plan_type`                | `membership_plan_type`   |       NO | `—`                 | UNLIMITED, LIMITED_VISITS, SINGLE_VISIT, TRIAL, CORPORATE. |
+| `duration_days`            | `integer`                |      YES | `NULL`              | Required for day-based plans.                              |
+| `visit_limit`              | `integer`                |      YES | `NULL`              | Required for limited/single visit types.                   |
+| `allows_freeze`            | `boolean`                |       NO | `false`             | Whether freezing is allowed.                               |
+| `max_freeze_days`          | `integer`                |      YES | `NULL`              | Required or bounded when freeze is enabled.                |
+| `status`                   | `membership_plan_status` |       NO | `ACTIVE`            | ACTIVE, INACTIVE.                                          |
+| `created_by_staff_user_id` | `uuid`                   |       NO | `—`                 | Actor.                                                     |
+| `created_at`               | `timestamptz`            |       NO | `now()`             | UTC.                                                       |
+| `updated_at`               | `timestamptz`            |       NO | `now()`             | UTC.                                                       |
+| `version`                  | `integer`                |       NO | `1`                 | Optimistic locking.                                        |
 
 #### Required constraints
 
@@ -571,13 +570,13 @@ Plans are deactivated, not deleted after assignment.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `membership_plan_id` | `uuid` | NO | `—` | Plan. |
-| `branch_id` | `uuid` | NO | `—` | Allowed branch. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column               | PostgreSQL type | Nullable | Default             | Requirement     |
+| -------------------- | --------------- | -------: | ------------------- | --------------- |
+| `id`                 | `uuid`          |       NO | `gen_random_uuid()` | Primary key.    |
+| `organization_id`    | `uuid`          |       NO | `—`                 | Tenant.         |
+| `membership_plan_id` | `uuid`          |       NO | `—`                 | Plan.           |
+| `branch_id`          | `uuid`          |       NO | `—`                 | Allowed branch. |
+| `created_at`         | `timestamptz`   |       NO | `now()`             | UTC.            |
 
 #### Required constraints
 
@@ -609,26 +608,26 @@ Rows may be added/removed before or after assignment; historical visit validity 
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `client_id` | `uuid` | NO | `—` | Client. |
-| `membership_plan_id` | `uuid` | NO | `—` | Source plan. |
-| `status` | `membership_status` | NO | `ACTIVE` | ACTIVE, FROZEN, EXPIRED, BLOCKED, CANCELLED. |
-| `starts_on` | `date` | NO | `—` | Branch-local business date. |
-| `ends_on` | `date` | YES | `NULL` | NULL only if business rules allow open-ended membership. |
-| `plan_code_snapshot` | `varchar(40)` | NO | `—` | Immutable snapshot. |
-| `plan_name_snapshot` | `varchar(160)` | NO | `—` | Immutable snapshot. |
-| `plan_type_snapshot` | `membership_plan_type` | NO | `—` | Immutable snapshot. |
-| `visit_limit_snapshot` | `integer` | YES | `NULL` | Immutable. |
-| `duration_days_snapshot` | `integer` | YES | `NULL` | Immutable. |
-| `visits_used` | `integer` | NO | `0` | Transactionally updated counter. |
-| `blocked_reason` | `varchar(500)` | YES | `NULL` | Required when BLOCKED. |
-| `assigned_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                      | PostgreSQL type        | Nullable | Default             | Requirement                                              |
+| --------------------------- | ---------------------- | -------: | ------------------- | -------------------------------------------------------- |
+| `id`                        | `uuid`                 |       NO | `gen_random_uuid()` | Primary key.                                             |
+| `organization_id`           | `uuid`                 |       NO | `—`                 | Tenant.                                                  |
+| `client_id`                 | `uuid`                 |       NO | `—`                 | Client.                                                  |
+| `membership_plan_id`        | `uuid`                 |       NO | `—`                 | Source plan.                                             |
+| `status`                    | `membership_status`    |       NO | `ACTIVE`            | ACTIVE, FROZEN, EXPIRED, BLOCKED, CANCELLED.             |
+| `starts_on`                 | `date`                 |       NO | `—`                 | Branch-local business date.                              |
+| `ends_on`                   | `date`                 |      YES | `NULL`              | NULL only if business rules allow open-ended membership. |
+| `plan_code_snapshot`        | `varchar(40)`          |       NO | `—`                 | Immutable snapshot.                                      |
+| `plan_name_snapshot`        | `varchar(160)`         |       NO | `—`                 | Immutable snapshot.                                      |
+| `plan_type_snapshot`        | `membership_plan_type` |       NO | `—`                 | Immutable snapshot.                                      |
+| `visit_limit_snapshot`      | `integer`              |      YES | `NULL`              | Immutable.                                               |
+| `duration_days_snapshot`    | `integer`              |      YES | `NULL`              | Immutable.                                               |
+| `visits_used`               | `integer`              |       NO | `0`                 | Transactionally updated counter.                         |
+| `blocked_reason`            | `varchar(500)`         |      YES | `NULL`              | Required when BLOCKED.                                   |
+| `assigned_by_staff_user_id` | `uuid`                 |       NO | `—`                 | Actor.                                                   |
+| `created_at`                | `timestamptz`          |       NO | `now()`             | UTC.                                                     |
+| `updated_at`                | `timestamptz`          |       NO | `now()`             | UTC.                                                     |
+| `version`                   | `integer`              |       NO | `1`                 | Optimistic locking.                                      |
 
 #### Required constraints
 
@@ -665,19 +664,19 @@ Status changes are audited; no hard delete.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `membership_id` | `uuid` | NO | `—` | Membership. |
-| `starts_on` | `date` | NO | `—` | Inclusive local business date. |
-| `ends_on` | `date` | NO | `—` | Inclusive local business date. |
-| `status` | `membership_freeze_status` | NO | `ACTIVE` | ACTIVE, ENDED, CANCELLED. |
-| `reason` | `varchar(500)` | NO | `—` | Required. |
-| `created_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `ended_by_staff_user_id` | `uuid` | YES | `NULL` | Actor. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                     | PostgreSQL type            | Nullable | Default             | Requirement                    |
+| -------------------------- | -------------------------- | -------: | ------------------- | ------------------------------ |
+| `id`                       | `uuid`                     |       NO | `gen_random_uuid()` | Primary key.                   |
+| `organization_id`          | `uuid`                     |       NO | `—`                 | Tenant.                        |
+| `membership_id`            | `uuid`                     |       NO | `—`                 | Membership.                    |
+| `starts_on`                | `date`                     |       NO | `—`                 | Inclusive local business date. |
+| `ends_on`                  | `date`                     |       NO | `—`                 | Inclusive local business date. |
+| `status`                   | `membership_freeze_status` |       NO | `ACTIVE`            | ACTIVE, ENDED, CANCELLED.      |
+| `reason`                   | `varchar(500)`             |       NO | `—`                 | Required.                      |
+| `created_by_staff_user_id` | `uuid`                     |       NO | `—`                 | Actor.                         |
+| `ended_by_staff_user_id`   | `uuid`                     |      YES | `NULL`              | Actor.                         |
+| `created_at`               | `timestamptz`              |       NO | `now()`             | UTC.                           |
+| `updated_at`               | `timestamptz`              |       NO | `now()`             | UTC.                           |
 
 #### Required constraints
 
@@ -710,19 +709,19 @@ Append/history table; cancellation changes status but does not delete the record
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `membership_id` | `uuid` | NO | `—` | Membership. |
-| `visit_session_id` | `uuid` | YES | `NULL` | Related visit; may be NULL for admin adjustment. |
-| `entry_type` | `membership_usage_type` | NO | `—` | CONSUME, REVERSE, ADJUST. |
-| `quantity` | `integer` | NO | `—` | Signed non-zero amount; CONSUME normally +1, REVERSE -1. |
-| `reason_code` | `varchar(80)` | NO | `—` | Machine-readable reason. |
-| `reason_text` | `varchar(500)` | YES | `NULL` | Required for manual adjustment. |
-| `idempotency_key` | `varchar(160)` | YES | `NULL` | Links command retry protection. |
-| `created_by_staff_user_id` | `uuid` | YES | `NULL` | System jobs may be NULL. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                     | PostgreSQL type         | Nullable | Default             | Requirement                                              |
+| -------------------------- | ----------------------- | -------: | ------------------- | -------------------------------------------------------- |
+| `id`                       | `uuid`                  |       NO | `gen_random_uuid()` | Primary key.                                             |
+| `organization_id`          | `uuid`                  |       NO | `—`                 | Tenant.                                                  |
+| `membership_id`            | `uuid`                  |       NO | `—`                 | Membership.                                              |
+| `visit_session_id`         | `uuid`                  |      YES | `NULL`              | Related visit; may be NULL for admin adjustment.         |
+| `entry_type`               | `membership_usage_type` |       NO | `—`                 | CONSUME, REVERSE, ADJUST.                                |
+| `quantity`                 | `integer`               |       NO | `—`                 | Signed non-zero amount; CONSUME normally +1, REVERSE -1. |
+| `reason_code`              | `varchar(80)`           |       NO | `—`                 | Machine-readable reason.                                 |
+| `reason_text`              | `varchar(500)`          |      YES | `NULL`              | Required for manual adjustment.                          |
+| `idempotency_key`          | `varchar(160)`          |      YES | `NULL`              | Links command retry protection.                          |
+| `created_by_staff_user_id` | `uuid`                  |      YES | `NULL`              | System jobs may be NULL.                                 |
+| `created_at`               | `timestamptz`           |       NO | `now()`             | UTC.                                                     |
 
 #### Required constraints
 
@@ -758,19 +757,19 @@ Retained with membership/visit history.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `branch_id` | `uuid` | NO | `—` | Physical branch. |
-| `key_number` | `varchar(40)` | NO | `—` | Reception-facing identifier. |
-| `locker_number` | `varchar(40)` | YES | `NULL` | Optional locker identifier. |
-| `status` | `locker_key_status` | NO | `AVAILABLE` | AVAILABLE, ISSUED, LOST, DAMAGED, MAINTENANCE, DEACTIVATED. |
-| `status_reason` | `varchar(500)` | YES | `NULL` | Required for LOST/DAMAGED/MAINTENANCE/DEACTIVATED. |
-| `created_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                     | PostgreSQL type     | Nullable | Default             | Requirement                                                 |
+| -------------------------- | ------------------- | -------: | ------------------- | ----------------------------------------------------------- |
+| `id`                       | `uuid`              |       NO | `gen_random_uuid()` | Primary key.                                                |
+| `organization_id`          | `uuid`              |       NO | `—`                 | Tenant.                                                     |
+| `branch_id`                | `uuid`              |       NO | `—`                 | Physical branch.                                            |
+| `key_number`               | `varchar(40)`       |       NO | `—`                 | Reception-facing identifier.                                |
+| `locker_number`            | `varchar(40)`       |      YES | `NULL`              | Optional locker identifier.                                 |
+| `status`                   | `locker_key_status` |       NO | `AVAILABLE`         | AVAILABLE, ISSUED, LOST, DAMAGED, MAINTENANCE, DEACTIVATED. |
+| `status_reason`            | `varchar(500)`      |      YES | `NULL`              | Required for LOST/DAMAGED/MAINTENANCE/DEACTIVATED.          |
+| `created_by_staff_user_id` | `uuid`              |       NO | `—`                 | Actor.                                                      |
+| `created_at`               | `timestamptz`       |       NO | `now()`             | UTC.                                                        |
+| `updated_at`               | `timestamptz`       |       NO | `now()`             | UTC.                                                        |
+| `version`                  | `integer`           |       NO | `1`                 | Optimistic locking.                                         |
 
 #### Required constraints
 
@@ -806,28 +805,28 @@ Never hard-delete after use; DEACTIVATED is terminal unless explicitly restored 
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `branch_id` | `uuid` | NO | `—` | Visit branch. |
-| `client_id` | `uuid` | NO | `—` | Client. |
-| `membership_id` | `uuid` | NO | `—` | Membership used. |
-| `locker_key_id` | `uuid` | NO | `—` | Issued key. |
-| `status` | `visit_status` | NO | `ACTIVE` | ACTIVE, COMPLETED, CANCELLED, AUTO_CLOSED, INCIDENT, CORRECTED. |
-| `started_at` | `timestamptz` | NO | `—` | UTC; entered by employee or server default. |
-| `finished_at` | `timestamptz` | YES | `NULL` | UTC; NULL for active visit. |
-| `duration_seconds` | `integer` | YES | `NULL` | Stored when closed for stable reporting. |
-| `check_in_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `check_out_by_staff_user_id` | `uuid` | YES | `NULL` | Actor or NULL for system auto-close. |
-| `source` | `visit_source` | NO | `RECEPTION` | RECEPTION, ADMIN_CORRECTION, SYSTEM_AUTO_CLOSE, CLIENT_PORTAL_FUTURE. |
-| `membership_snapshot` | `jsonb` | NO | `{}` | Plan code/name/type/limits/status/date snapshot at check-in. |
-| `check_in_correlation_id` | `uuid` | NO | `—` | Traceability. |
-| `check_out_correlation_id` | `uuid` | YES | `NULL` | Traceability. |
-| `closed_reason` | `varchar(500)` | YES | `NULL` | Required for cancel/auto-close/incident as applicable. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                       | PostgreSQL type | Nullable | Default             | Requirement                                                           |
+| ---------------------------- | --------------- | -------: | ------------------- | --------------------------------------------------------------------- |
+| `id`                         | `uuid`          |       NO | `gen_random_uuid()` | Primary key.                                                          |
+| `organization_id`            | `uuid`          |       NO | `—`                 | Tenant.                                                               |
+| `branch_id`                  | `uuid`          |       NO | `—`                 | Visit branch.                                                         |
+| `client_id`                  | `uuid`          |       NO | `—`                 | Client.                                                               |
+| `membership_id`              | `uuid`          |       NO | `—`                 | Membership used.                                                      |
+| `locker_key_id`              | `uuid`          |       NO | `—`                 | Issued key.                                                           |
+| `status`                     | `visit_status`  |       NO | `ACTIVE`            | ACTIVE, COMPLETED, CANCELLED, AUTO_CLOSED, INCIDENT, CORRECTED.       |
+| `started_at`                 | `timestamptz`   |       NO | `—`                 | UTC; entered by employee or server default.                           |
+| `finished_at`                | `timestamptz`   |      YES | `NULL`              | UTC; NULL for active visit.                                           |
+| `duration_seconds`           | `integer`       |      YES | `NULL`              | Stored when closed for stable reporting.                              |
+| `check_in_by_staff_user_id`  | `uuid`          |       NO | `—`                 | Actor.                                                                |
+| `check_out_by_staff_user_id` | `uuid`          |      YES | `NULL`              | Actor or NULL for system auto-close.                                  |
+| `source`                     | `visit_source`  |       NO | `RECEPTION`         | RECEPTION, ADMIN_CORRECTION, SYSTEM_AUTO_CLOSE, CLIENT_PORTAL_FUTURE. |
+| `membership_snapshot`        | `jsonb`         |       NO | `{}`                | Plan code/name/type/limits/status/date snapshot at check-in.          |
+| `check_in_correlation_id`    | `uuid`          |       NO | `—`                 | Traceability.                                                         |
+| `check_out_correlation_id`   | `uuid`          |      YES | `NULL`              | Traceability.                                                         |
+| `closed_reason`              | `varchar(500)`  |      YES | `NULL`              | Required for cancel/auto-close/incident as applicable.                |
+| `created_at`                 | `timestamptz`   |       NO | `now()`             | UTC.                                                                  |
+| `updated_at`                 | `timestamptz`   |       NO | `now()`             | UTC.                                                                  |
+| `version`                    | `integer`       |       NO | `1`                 | Optimistic locking.                                                   |
 
 #### Required constraints
 
@@ -870,18 +869,18 @@ Append/history record. Critical fields change only via explicit state transition
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `visit_session_id` | `uuid` | NO | `—` | Corrected visit. |
-| `correction_type` | `visit_correction_type` | NO | `—` | TIME, KEY, MEMBERSHIP, STATUS, CLIENT, OTHER. |
-| `old_values` | `jsonb` | NO | `—` | Whitelisted pre-change fields. |
-| `new_values` | `jsonb` | NO | `—` | Whitelisted post-change fields. |
-| `reason` | `varchar(1000)` | NO | `—` | Human reason. |
-| `corrected_by_staff_user_id` | `uuid` | NO | `—` | Gym Admin. |
-| `correlation_id` | `uuid` | NO | `—` | Request trace. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                       | PostgreSQL type         | Nullable | Default             | Requirement                                   |
+| ---------------------------- | ----------------------- | -------: | ------------------- | --------------------------------------------- |
+| `id`                         | `uuid`                  |       NO | `gen_random_uuid()` | Primary key.                                  |
+| `organization_id`            | `uuid`                  |       NO | `—`                 | Tenant.                                       |
+| `visit_session_id`           | `uuid`                  |       NO | `—`                 | Corrected visit.                              |
+| `correction_type`            | `visit_correction_type` |       NO | `—`                 | TIME, KEY, MEMBERSHIP, STATUS, CLIENT, OTHER. |
+| `old_values`                 | `jsonb`                 |       NO | `—`                 | Whitelisted pre-change fields.                |
+| `new_values`                 | `jsonb`                 |       NO | `—`                 | Whitelisted post-change fields.               |
+| `reason`                     | `varchar(1000)`         |       NO | `—`                 | Human reason.                                 |
+| `corrected_by_staff_user_id` | `uuid`                  |       NO | `—`                 | Gym Admin.                                    |
+| `correlation_id`             | `uuid`                  |       NO | `—`                 | Request trace.                                |
+| `created_at`                 | `timestamptz`           |       NO | `now()`             | UTC.                                          |
 
 #### Required constraints
 
@@ -915,27 +914,27 @@ Never edited or deleted through application API.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `branch_id` | `uuid` | NO | `—` | Branch. |
-| `visit_session_id` | `uuid` | YES | `NULL` | Related visit. |
-| `client_id` | `uuid` | YES | `NULL` | Related client. |
-| `locker_key_id` | `uuid` | YES | `NULL` | Related key. |
-| `incident_type` | `incident_type` | NO | `—` | LOST_KEY, DAMAGED_KEY, LEFT_WITH_KEY, INCORRECT_ASSIGNMENT, MEMBERSHIP_CONFLICT, OTHER. |
-| `severity` | `incident_severity` | NO | `MEDIUM` | LOW, MEDIUM, HIGH, CRITICAL. |
-| `status` | `incident_status` | NO | `OPEN` | OPEN, IN_PROGRESS, RESOLVED, CANCELLED. |
-| `summary` | `varchar(200)` | NO | `—` | Short description. |
-| `description` | `text` | YES | `NULL` | Details. |
-| `reported_by_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `assigned_to_staff_user_id` | `uuid` | YES | `NULL` | Owner. |
-| `resolved_by_staff_user_id` | `uuid` | YES | `NULL` | Resolver. |
-| `resolution` | `text` | YES | `NULL` | Required for RESOLVED. |
-| `reported_at` | `timestamptz` | NO | `now()` | UTC. |
-| `resolved_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column                      | PostgreSQL type     | Nullable | Default             | Requirement                                                                             |
+| --------------------------- | ------------------- | -------: | ------------------- | --------------------------------------------------------------------------------------- |
+| `id`                        | `uuid`              |       NO | `gen_random_uuid()` | Primary key.                                                                            |
+| `organization_id`           | `uuid`              |       NO | `—`                 | Tenant.                                                                                 |
+| `branch_id`                 | `uuid`              |       NO | `—`                 | Branch.                                                                                 |
+| `visit_session_id`          | `uuid`              |      YES | `NULL`              | Related visit.                                                                          |
+| `client_id`                 | `uuid`              |      YES | `NULL`              | Related client.                                                                         |
+| `locker_key_id`             | `uuid`              |      YES | `NULL`              | Related key.                                                                            |
+| `incident_type`             | `incident_type`     |       NO | `—`                 | LOST_KEY, DAMAGED_KEY, LEFT_WITH_KEY, INCORRECT_ASSIGNMENT, MEMBERSHIP_CONFLICT, OTHER. |
+| `severity`                  | `incident_severity` |       NO | `MEDIUM`            | LOW, MEDIUM, HIGH, CRITICAL.                                                            |
+| `status`                    | `incident_status`   |       NO | `OPEN`              | OPEN, IN_PROGRESS, RESOLVED, CANCELLED.                                                 |
+| `summary`                   | `varchar(200)`      |       NO | `—`                 | Short description.                                                                      |
+| `description`               | `text`              |      YES | `NULL`              | Details.                                                                                |
+| `reported_by_staff_user_id` | `uuid`              |       NO | `—`                 | Actor.                                                                                  |
+| `assigned_to_staff_user_id` | `uuid`              |      YES | `NULL`              | Owner.                                                                                  |
+| `resolved_by_staff_user_id` | `uuid`              |      YES | `NULL`              | Resolver.                                                                               |
+| `resolution`                | `text`              |      YES | `NULL`              | Required for RESOLVED.                                                                  |
+| `reported_at`               | `timestamptz`       |       NO | `now()`             | UTC.                                                                                    |
+| `resolved_at`               | `timestamptz`       |      YES | `NULL`              | UTC.                                                                                    |
+| `updated_at`                | `timestamptz`       |       NO | `now()`             | UTC.                                                                                    |
+| `version`                   | `integer`           |       NO | `1`                 | Optimistic locking.                                                                     |
 
 #### Required constraints
 
@@ -971,23 +970,23 @@ No hard delete; CANCELLED preserves mistaken reports.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `operation` | `varchar(80)` | NO | `—` | CHECK_IN, CHECK_OUT, MEMBERSHIP_ADJUST, etc. |
-| `idempotency_key` | `varchar(160)` | NO | `—` | Client-provided stable key. |
-| `actor_staff_user_id` | `uuid` | YES | `NULL` | Actor. |
-| `request_hash` | `varchar(128)` | NO | `—` | Canonical request payload hash. |
-| `status` | `idempotency_status` | NO | `PROCESSING` | PROCESSING, SUCCEEDED, FAILED. |
-| `resource_type` | `varchar(80)` | YES | `NULL` | Created resource type. |
-| `resource_id` | `uuid` | YES | `NULL` | Created/affected resource. |
-| `response_status` | `integer` | YES | `NULL` | HTTP status snapshot. |
-| `response_body` | `jsonb` | YES | `NULL` | Sanitized response snapshot. |
-| `error_code` | `varchar(100)` | YES | `NULL` | Stable error code. |
-| `expires_at` | `timestamptz` | NO | `—` | Retention expiry. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                | PostgreSQL type      | Nullable | Default             | Requirement                                  |
+| --------------------- | -------------------- | -------: | ------------------- | -------------------------------------------- |
+| `id`                  | `uuid`               |       NO | `gen_random_uuid()` | Primary key.                                 |
+| `organization_id`     | `uuid`               |       NO | `—`                 | Tenant.                                      |
+| `operation`           | `varchar(80)`        |       NO | `—`                 | CHECK_IN, CHECK_OUT, MEMBERSHIP_ADJUST, etc. |
+| `idempotency_key`     | `varchar(160)`       |       NO | `—`                 | Client-provided stable key.                  |
+| `actor_staff_user_id` | `uuid`               |      YES | `NULL`              | Actor.                                       |
+| `request_hash`        | `varchar(128)`       |       NO | `—`                 | Canonical request payload hash.              |
+| `status`              | `idempotency_status` |       NO | `PROCESSING`        | PROCESSING, SUCCEEDED, FAILED.               |
+| `resource_type`       | `varchar(80)`        |      YES | `NULL`              | Created resource type.                       |
+| `resource_id`         | `uuid`               |      YES | `NULL`              | Created/affected resource.                   |
+| `response_status`     | `integer`            |      YES | `NULL`              | HTTP status snapshot.                        |
+| `response_body`       | `jsonb`              |      YES | `NULL`              | Sanitized response snapshot.                 |
+| `error_code`          | `varchar(100)`       |      YES | `NULL`              | Stable error code.                           |
+| `expires_at`          | `timestamptz`        |       NO | `—`                 | Retention expiry.                            |
+| `created_at`          | `timestamptz`        |       NO | `now()`             | UTC.                                         |
+| `updated_at`          | `timestamptz`        |       NO | `now()`             | UTC.                                         |
 
 #### Required constraints
 
@@ -1022,26 +1021,26 @@ Purge after configurable expiry; not part of permanent business history.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | YES | `NULL` | NULL for platform-level events. |
-| `branch_id` | `uuid` | YES | `NULL` | Branch scope when applicable. |
-| `actor_type` | `audit_actor_type` | NO | `STAFF_USER` | STAFF_USER, CLIENT_ACCOUNT, SYSTEM. |
-| `actor_staff_user_id` | `uuid` | YES | `NULL` | Staff actor. |
-| `actor_client_account_id` | `uuid` | YES | `NULL` | Post-MVP client actor. |
-| `actor_role` | `varchar(50)` | YES | `NULL` | Role snapshot. |
-| `action` | `varchar(120)` | NO | `—` | Stable action code. |
-| `entity_type` | `varchar(80)` | NO | `—` | Domain type. |
-| `entity_id` | `uuid` | YES | `NULL` | Target. |
-| `old_values` | `jsonb` | YES | `NULL` | Whitelisted/sanitized previous values. |
-| `new_values` | `jsonb` | YES | `NULL` | Whitelisted/sanitized new values. |
-| `reason` | `varchar(1000)` | YES | `NULL` | Required for correction/deactivation/status override. |
-| `correlation_id` | `uuid` | NO | `—` | Request trace. |
-| `request_id` | `varchar(120)` | YES | `NULL` | External request identifier. |
-| `ip_hash` | `varchar(128)` | YES | `NULL` | Optional privacy-safe fingerprint. |
-| `user_agent` | `varchar(500)` | YES | `NULL` | Optional. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                    | PostgreSQL type    | Nullable | Default             | Requirement                                           |
+| ------------------------- | ------------------ | -------: | ------------------- | ----------------------------------------------------- |
+| `id`                      | `uuid`             |       NO | `gen_random_uuid()` | Primary key.                                          |
+| `organization_id`         | `uuid`             |      YES | `NULL`              | NULL for platform-level events.                       |
+| `branch_id`               | `uuid`             |      YES | `NULL`              | Branch scope when applicable.                         |
+| `actor_type`              | `audit_actor_type` |       NO | `STAFF_USER`        | STAFF_USER, CLIENT_ACCOUNT, SYSTEM.                   |
+| `actor_staff_user_id`     | `uuid`             |      YES | `NULL`              | Staff actor.                                          |
+| `actor_client_account_id` | `uuid`             |      YES | `NULL`              | Post-MVP client actor.                                |
+| `actor_role`              | `varchar(50)`      |      YES | `NULL`              | Role snapshot.                                        |
+| `action`                  | `varchar(120)`     |       NO | `—`                 | Stable action code.                                   |
+| `entity_type`             | `varchar(80)`      |       NO | `—`                 | Domain type.                                          |
+| `entity_id`               | `uuid`             |      YES | `NULL`              | Target.                                               |
+| `old_values`              | `jsonb`            |      YES | `NULL`              | Whitelisted/sanitized previous values.                |
+| `new_values`              | `jsonb`            |      YES | `NULL`              | Whitelisted/sanitized new values.                     |
+| `reason`                  | `varchar(1000)`    |      YES | `NULL`              | Required for correction/deactivation/status override. |
+| `correlation_id`          | `uuid`             |       NO | `—`                 | Request trace.                                        |
+| `request_id`              | `varchar(120)`     |      YES | `NULL`              | External request identifier.                          |
+| `ip_hash`                 | `varchar(128)`     |      YES | `NULL`              | Optional privacy-safe fingerprint.                    |
+| `user_agent`              | `varchar(500)`     |      YES | `NULL`              | Optional.                                             |
+| `created_at`              | `timestamptz`      |       NO | `now()`             | UTC.                                                  |
 
 #### Required constraints
 
@@ -1078,21 +1077,21 @@ Indefinite in portfolio environment; production retention is explicit policy and
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Primary key. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `client_id` | `uuid` | NO | `—` | One-to-one CRM client. |
-| `email` | `varchar(254)` | NO | `—` | Display. |
-| `email_normalized` | `varchar(254)` | NO | `—` | Login key. |
-| `password_hash` | `varchar(255)` | NO | `—` | Never plaintext. |
-| `status` | `client_account_status` | NO | `INVITED` | INVITED, ACTIVE, DEACTIVATED, LOCKED. |
-| `failed_login_count` | `integer` | NO | `0` | Security. |
-| `locked_until` | `timestamptz` | YES | `NULL` | Temporary lock. |
-| `last_login_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
-| `version` | `integer` | NO | `1` | Optimistic locking. |
+| Column               | PostgreSQL type         | Nullable | Default             | Requirement                           |
+| -------------------- | ----------------------- | -------: | ------------------- | ------------------------------------- |
+| `id`                 | `uuid`                  |       NO | `gen_random_uuid()` | Primary key.                          |
+| `organization_id`    | `uuid`                  |       NO | `—`                 | Tenant.                               |
+| `client_id`          | `uuid`                  |       NO | `—`                 | One-to-one CRM client.                |
+| `email`              | `varchar(254)`          |       NO | `—`                 | Display.                              |
+| `email_normalized`   | `varchar(254)`          |       NO | `—`                 | Login key.                            |
+| `password_hash`      | `varchar(255)`          |       NO | `—`                 | Never plaintext.                      |
+| `status`             | `client_account_status` |       NO | `INVITED`           | INVITED, ACTIVE, DEACTIVATED, LOCKED. |
+| `failed_login_count` | `integer`               |       NO | `0`                 | Security.                             |
+| `locked_until`       | `timestamptz`           |      YES | `NULL`              | Temporary lock.                       |
+| `last_login_at`      | `timestamptz`           |      YES | `NULL`              | UTC.                                  |
+| `created_at`         | `timestamptz`           |       NO | `now()`             | UTC.                                  |
+| `updated_at`         | `timestamptz`           |       NO | `now()`             | UTC.                                  |
+| `version`            | `integer`               |       NO | `1`                 | Optimistic locking.                   |
 
 #### Required constraints
 
@@ -1127,22 +1126,22 @@ Optional post-MVP; deactivation revokes refresh tokens.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `id` | `uuid` | NO | `gen_random_uuid()` | Event ID. |
-| `organization_id` | `uuid` | YES | `NULL` | Tenant or platform event. |
-| `aggregate_type` | `varchar(80)` | NO | `—` | Visit, Key, Membership, etc. |
-| `aggregate_id` | `uuid` | NO | `—` | Aggregate. |
-| `event_type` | `varchar(120)` | NO | `—` | Versioned event name. |
-| `event_version` | `integer` | NO | `1` | Schema version. |
-| `payload` | `jsonb` | NO | `—` | Immutable event payload. |
-| `headers` | `jsonb` | NO | `{}` | Correlation/causation/trace metadata. |
-| `status` | `outbox_status` | NO | `PENDING` | PENDING, PUBLISHING, PUBLISHED, FAILED. |
-| `attempt_count` | `integer` | NO | `0` | Retry count. |
-| `available_at` | `timestamptz` | NO | `now()` | Next publish time. |
-| `published_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `last_error` | `text` | YES | `NULL` | Sanitized failure. |
-| `created_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column            | PostgreSQL type | Nullable | Default             | Requirement                             |
+| ----------------- | --------------- | -------: | ------------------- | --------------------------------------- |
+| `id`              | `uuid`          |       NO | `gen_random_uuid()` | Event ID.                               |
+| `organization_id` | `uuid`          |      YES | `NULL`              | Tenant or platform event.               |
+| `aggregate_type`  | `varchar(80)`   |       NO | `—`                 | Visit, Key, Membership, etc.            |
+| `aggregate_id`    | `uuid`          |       NO | `—`                 | Aggregate.                              |
+| `event_type`      | `varchar(120)`  |       NO | `—`                 | Versioned event name.                   |
+| `event_version`   | `integer`       |       NO | `1`                 | Schema version.                         |
+| `payload`         | `jsonb`         |       NO | `—`                 | Immutable event payload.                |
+| `headers`         | `jsonb`         |       NO | `{}`                | Correlation/causation/trace metadata.   |
+| `status`          | `outbox_status` |       NO | `PENDING`           | PENDING, PUBLISHING, PUBLISHED, FAILED. |
+| `attempt_count`   | `integer`       |       NO | `0`                 | Retry count.                            |
+| `available_at`    | `timestamptz`   |       NO | `now()`             | Next publish time.                      |
+| `published_at`    | `timestamptz`   |      YES | `NULL`              | UTC.                                    |
+| `last_error`      | `text`          |      YES | `NULL`              | Sanitized failure.                      |
+| `created_at`      | `timestamptz`   |       NO | `now()`             | UTC.                                    |
 
 #### Required constraints
 
@@ -1177,15 +1176,15 @@ Published events retained for replay/troubleshooting according to configurable p
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `consumer_name` | `varchar(120)` | NO | `—` | Composite PK part. |
-| `event_id` | `uuid` | NO | `—` | Composite PK part. |
-| `event_type` | `varchar(120)` | NO | `—` | Event type. |
-| `event_version` | `integer` | NO | `—` | Version processed. |
-| `status` | `processed_event_status` | NO | `PROCESSED` | PROCESSED, FAILED. |
-| `processed_at` | `timestamptz` | NO | `now()` | UTC. |
-| `error` | `text` | YES | `NULL` | Sanitized error when failed. |
+| Column          | PostgreSQL type          | Nullable | Default     | Requirement                  |
+| --------------- | ------------------------ | -------: | ----------- | ---------------------------- |
+| `consumer_name` | `varchar(120)`           |       NO | `—`         | Composite PK part.           |
+| `event_id`      | `uuid`                   |       NO | `—`         | Composite PK part.           |
+| `event_type`    | `varchar(120)`           |       NO | `—`         | Event type.                  |
+| `event_version` | `integer`                |       NO | `—`         | Version processed.           |
+| `status`        | `processed_event_status` |       NO | `PROCESSED` | PROCESSED, FAILED.           |
+| `processed_at`  | `timestamptz`            |       NO | `now()`     | UTC.                         |
+| `error`         | `text`                   |      YES | `NULL`      | Sanitized error when failed. |
 
 #### Required constraints
 
@@ -1219,24 +1218,24 @@ Retention must be at least as long as replay/deduplication window.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `visit_session_id` | `uuid` | NO | `—` | Primary key, source aggregate ID. |
-| `organization_id` | `uuid` | NO | `—` | Tenant. |
-| `branch_id` | `uuid` | NO | `—` | Branch. |
-| `client_id` | `uuid` | NO | `—` | Client reference only. |
-| `membership_id` | `uuid` | NO | `—` | Membership reference. |
-| `locker_key_id` | `uuid` | NO | `—` | Key reference. |
-| `check_in_staff_user_id` | `uuid` | NO | `—` | Actor. |
-| `check_out_staff_user_id` | `uuid` | YES | `NULL` | Actor. |
-| `status` | `varchar(40)` | NO | `—` | Visit state snapshot. |
-| `started_at` | `timestamptz` | NO | `—` | UTC. |
-| `finished_at` | `timestamptz` | YES | `NULL` | UTC. |
-| `duration_seconds` | `integer` | YES | `NULL` | Duration. |
-| `membership_plan_code` | `varchar(40)` | NO | `—` | Snapshot. |
-| `key_number` | `varchar(40)` | NO | `—` | Snapshot for reporting. |
-| `source_event_version` | `integer` | NO | `—` | Last applied aggregate event version. |
-| `updated_at` | `timestamptz` | NO | `now()` | Read model update time. |
+| Column                    | PostgreSQL type | Nullable | Default | Requirement                           |
+| ------------------------- | --------------- | -------: | ------- | ------------------------------------- |
+| `visit_session_id`        | `uuid`          |       NO | `—`     | Primary key, source aggregate ID.     |
+| `organization_id`         | `uuid`          |       NO | `—`     | Tenant.                               |
+| `branch_id`               | `uuid`          |       NO | `—`     | Branch.                               |
+| `client_id`               | `uuid`          |       NO | `—`     | Client reference only.                |
+| `membership_id`           | `uuid`          |       NO | `—`     | Membership reference.                 |
+| `locker_key_id`           | `uuid`          |       NO | `—`     | Key reference.                        |
+| `check_in_staff_user_id`  | `uuid`          |       NO | `—`     | Actor.                                |
+| `check_out_staff_user_id` | `uuid`          |      YES | `NULL`  | Actor.                                |
+| `status`                  | `varchar(40)`   |       NO | `—`     | Visit state snapshot.                 |
+| `started_at`              | `timestamptz`   |       NO | `—`     | UTC.                                  |
+| `finished_at`             | `timestamptz`   |      YES | `NULL`  | UTC.                                  |
+| `duration_seconds`        | `integer`       |      YES | `NULL`  | Duration.                             |
+| `membership_plan_code`    | `varchar(40)`   |       NO | `—`     | Snapshot.                             |
+| `key_number`              | `varchar(40)`   |       NO | `—`     | Snapshot for reporting.               |
+| `source_event_version`    | `integer`       |       NO | `—`     | Last applied aggregate event version. |
+| `updated_at`              | `timestamptz`   |       NO | `now()` | Read model update time.               |
 
 #### Required constraints
 
@@ -1271,19 +1270,19 @@ Rebuildable from events/source export; not authoritative for operations.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `organization_id` | `uuid` | NO | `—` | Composite PK. |
-| `branch_id` | `uuid` | NO | `—` | Composite PK. |
-| `business_date` | `date` | NO | `—` | Composite PK in branch timezone. |
-| `visit_count` | `integer` | NO | `0` | Completed/started visits according to report definition. |
-| `completed_visit_count` | `integer` | NO | `0` | Completed. |
-| `auto_closed_visit_count` | `integer` | NO | `0` | Auto-closed. |
-| `incident_count` | `integer` | NO | `0` | Related incidents. |
-| `average_duration_seconds` | `integer` | YES | `NULL` | Average completed duration. |
-| `peak_active_visits` | `integer` | NO | `0` | Peak occupancy metric. |
-| `last_event_at` | `timestamptz` | YES | `NULL` | Freshness. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                     | PostgreSQL type | Nullable | Default | Requirement                                              |
+| -------------------------- | --------------- | -------: | ------- | -------------------------------------------------------- |
+| `organization_id`          | `uuid`          |       NO | `—`     | Composite PK.                                            |
+| `branch_id`                | `uuid`          |       NO | `—`     | Composite PK.                                            |
+| `business_date`            | `date`          |       NO | `—`     | Composite PK in branch timezone.                         |
+| `visit_count`              | `integer`       |       NO | `0`     | Completed/started visits according to report definition. |
+| `completed_visit_count`    | `integer`       |       NO | `0`     | Completed.                                               |
+| `auto_closed_visit_count`  | `integer`       |       NO | `0`     | Auto-closed.                                             |
+| `incident_count`           | `integer`       |       NO | `0`     | Related incidents.                                       |
+| `average_duration_seconds` | `integer`       |      YES | `NULL`  | Average completed duration.                              |
+| `peak_active_visits`       | `integer`       |       NO | `0`     | Peak occupancy metric.                                   |
+| `last_event_at`            | `timestamptz`   |      YES | `NULL`  | Freshness.                                               |
+| `updated_at`               | `timestamptz`   |       NO | `now()` | UTC.                                                     |
 
 #### Required constraints
 
@@ -1315,18 +1314,18 @@ Rebuildable aggregate.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `organization_id` | `uuid` | NO | `—` | Composite PK. |
-| `branch_id` | `uuid` | NO | `—` | Composite PK. |
-| `staff_user_id` | `uuid` | NO | `—` | Composite PK. |
-| `business_date` | `date` | NO | `—` | Composite PK. |
-| `check_in_count` | `integer` | NO | `0` | Check-ins. |
-| `check_out_count` | `integer` | NO | `0` | Check-outs. |
-| `correction_count` | `integer` | NO | `0` | Corrections. |
-| `incident_report_count` | `integer` | NO | `0` | Incidents reported. |
-| `last_event_at` | `timestamptz` | YES | `NULL` | Freshness. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                  | PostgreSQL type | Nullable | Default | Requirement         |
+| ----------------------- | --------------- | -------: | ------- | ------------------- |
+| `organization_id`       | `uuid`          |       NO | `—`     | Composite PK.       |
+| `branch_id`             | `uuid`          |       NO | `—`     | Composite PK.       |
+| `staff_user_id`         | `uuid`          |       NO | `—`     | Composite PK.       |
+| `business_date`         | `date`          |       NO | `—`     | Composite PK.       |
+| `check_in_count`        | `integer`       |       NO | `0`     | Check-ins.          |
+| `check_out_count`       | `integer`       |       NO | `0`     | Check-outs.         |
+| `correction_count`      | `integer`       |       NO | `0`     | Corrections.        |
+| `incident_report_count` | `integer`       |       NO | `0`     | Incidents reported. |
+| `last_event_at`         | `timestamptz`   |      YES | `NULL`  | Freshness.          |
+| `updated_at`            | `timestamptz`   |       NO | `now()` | UTC.                |
 
 #### Required constraints
 
@@ -1358,16 +1357,16 @@ Rebuildable aggregate.
 
 #### Fields
 
-| Column | PostgreSQL type | Nullable | Default | Requirement |
-|---|---|---:|---|---|
-| `consumer_name` | `varchar(120)` | NO | `—` | Primary key. |
-| `last_event_id` | `uuid` | YES | `NULL` | Last successfully applied event. |
-| `last_event_created_at` | `timestamptz` | YES | `NULL` | Source event time. |
-| `last_processed_at` | `timestamptz` | YES | `NULL` | Consumer time. |
-| `lag_seconds` | `integer` | NO | `0` | Calculated/stored freshness indicator. |
-| `status` | `reporting_sync_status` | NO | `HEALTHY` | HEALTHY, DELAYED, ERROR. |
-| `last_error` | `text` | YES | `NULL` | Sanitized. |
-| `updated_at` | `timestamptz` | NO | `now()` | UTC. |
+| Column                  | PostgreSQL type         | Nullable | Default   | Requirement                            |
+| ----------------------- | ----------------------- | -------: | --------- | -------------------------------------- |
+| `consumer_name`         | `varchar(120)`          |       NO | `—`       | Primary key.                           |
+| `last_event_id`         | `uuid`                  |      YES | `NULL`    | Last successfully applied event.       |
+| `last_event_created_at` | `timestamptz`           |      YES | `NULL`    | Source event time.                     |
+| `last_processed_at`     | `timestamptz`           |      YES | `NULL`    | Consumer time.                         |
+| `lag_seconds`           | `integer`               |       NO | `0`       | Calculated/stored freshness indicator. |
+| `status`                | `reporting_sync_status` |       NO | `HEALTHY` | HEALTHY, DELAYED, ERROR.               |
+| `last_error`            | `text`                  |      YES | `NULL`    | Sanitized.                             |
+| `updated_at`            | `timestamptz`           |       NO | `now()`   | UTC.                                   |
 
 #### Required constraints
 
@@ -1595,65 +1594,64 @@ Every new high-volume query must include `EXPLAIN (ANALYZE, BUFFERS)` evidence a
 
 The table below is canonical for database impact. A story may read additional tables indirectly, but any write/schema change outside its declared contract requires updating this document and `requirements.md`.
 
-| Story/NFR | Database requirement IDs |
-|---|---|
-| `AUTH-01` | `DB-IDN-001`, `DB-IDN-003`, `DB-AUD-001` |
-| `AUTH-02` | `DB-IDN-003`, `DB-AUD-001` |
-| `AUTH-03` | `DB-IDN-003` |
-| `AUTH-04` | `DB-IDN-001`, `DB-IDN-002` |
-| `AUTH-05` | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002` |
-| `ORG-01` | `DB-ORG-001`, `DB-AUD-001` |
-| `ORG-02` | `DB-ORG-001`, `DB-AUD-001` |
-| `ORG-03` | `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001` |
-| `BRANCH-01` | `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001` |
-| `BRANCH-02` | `DB-ORG-002`, `DB-IDN-002`, `DB-AUD-001` |
-| `STAFF-01` | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001` |
-| `STAFF-02` | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001` |
-| `STAFF-03` | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001` |
-| `STAFF-04` | `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-AUD-001` |
-| `CLIENT-01` | `DB-CRM-001`, `DB-AUD-001` |
-| `CLIENT-02` | `DB-CRM-001` |
-| `CLIENT-03` | `DB-CRM-001`, `DB-MEM-003`, `DB-OPS-002`, `DB-OPS-004` |
-| `CLIENT-04` | `DB-CRM-001`, `DB-AUD-001` |
-| `CLIENT-05` | `DB-CRM-001`, `DB-AUD-001` |
-| `PLAN-01` | `DB-MEM-001`, `DB-MEM-002`, `DB-AUD-001` |
-| `MEMBERSHIP-01` | `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-AUD-001` |
-| `MEMBERSHIP-02` | `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-005` |
-| `MEMBERSHIP-03` | `DB-MEM-003`, `DB-MEM-004`, `DB-AUD-001` |
-| `MEMBERSHIP-04` | `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-002`, `DB-COM-001` |
-| `KEY-01` | `DB-ORG-002`, `DB-OPS-001`, `DB-AUD-001` |
-| `KEY-02` | `DB-OPS-001`, `DB-OPS-002` |
-| `KEY-03` | `DB-OPS-001`, `DB-OPS-004`, `DB-AUD-001` |
-| `VISIT-01` | `DB-CRM-001`, `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001` |
-| `VISIT-02` | `DB-OPS-002`, `DB-COM-001` |
-| `VISIT-03` | `DB-OPS-001`, `DB-OPS-002` |
-| `VISIT-04` | `DB-COM-001`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002` |
-| `VISIT-05` | `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002` |
-| `VISIT-06` | `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001` |
-| `VISIT-07` | `DB-COM-001`, `DB-OPS-002` |
-| `VISIT-08` | `DB-CRM-001`, `DB-OPS-002` |
-| `VISIT-09` | `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-AUD-001` |
-| `VISIT-10` | `DB-ORG-002`, `DB-OPS-002`, `DB-AUD-001` |
-| `INCIDENT-01` | `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001` |
-| `INCIDENT-02` | `DB-OPS-001`, `DB-OPS-004`, `DB-AUD-001` |
-| `INCIDENT-03` | `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001` |
-| `AUDIT-01` | `DB-AUD-001`, `DB-MEM-005`, `DB-OPS-003`, `DB-EVT-001` |
-| `AUDIT-02` | `DB-AUD-001`, `DB-OPS-003`, `DB-OPS-004` |
-| `REPORT-01` | `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-002` |
-| `REPORT-02` | `DB-OPS-001`, `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-002` |
-| `REPORT-03` | `DB-IDN-001`, `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-003` |
-| `PORTAL-01` | `DB-CRM-001`, `DB-PORTAL-001`, `DB-IDN-003`, `DB-AUD-001` |
-| `PORTAL-02` | `DB-CRM-001`, `DB-PORTAL-001`, `DB-OPS-002` |
-| `EVENT-01` | `DB-OPS-002`, `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003` |
-| `EVENT-02` | `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004` |
-| `NFR-01` | `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002`, `DB-AUD-001`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003` |
-| `NFR-02` | `DB-IDN-003`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004` |
-| `NFR-03` | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-AUD-001`, `DB-PORTAL-001` |
-| `NFR-04` | `DB-AUD-001`, `DB-MEM-005`, `DB-OPS-003`, `DB-OPS-004`, `DB-EVT-001` |
-| `NFR-05` | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-AUD-001`, `DB-PORTAL-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`, `DB-RPT-004` |
-| `NFR-06` | `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004` |
-| `NFR-07` | `DB-ORG-002`, `DB-IDN-002`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002` |
-
+| Story/NFR       | Database requirement IDs                                                                                                                                                                                                                                                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `AUTH-01`       | `DB-IDN-001`, `DB-IDN-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `AUTH-02`       | `DB-IDN-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `AUTH-03`       | `DB-IDN-003`                                                                                                                                                                                                                                                                                                                                      |
+| `AUTH-04`       | `DB-IDN-001`, `DB-IDN-002`                                                                                                                                                                                                                                                                                                                        |
+| `AUTH-05`       | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`                                                                                                                                                                                                                                                                                            |
+| `ORG-01`        | `DB-ORG-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `ORG-02`        | `DB-ORG-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `ORG-03`        | `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `BRANCH-01`     | `DB-ORG-001`, `DB-ORG-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `BRANCH-02`     | `DB-ORG-002`, `DB-IDN-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `STAFF-01`      | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `STAFF-02`      | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `STAFF-03`      | `DB-IDN-001`, `DB-IDN-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `STAFF-04`      | `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                                            |
+| `CLIENT-01`     | `DB-CRM-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `CLIENT-02`     | `DB-CRM-001`                                                                                                                                                                                                                                                                                                                                      |
+| `CLIENT-03`     | `DB-CRM-001`, `DB-MEM-003`, `DB-OPS-002`, `DB-OPS-004`                                                                                                                                                                                                                                                                                            |
+| `CLIENT-04`     | `DB-CRM-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `CLIENT-05`     | `DB-CRM-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                                        |
+| `PLAN-01`       | `DB-MEM-001`, `DB-MEM-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `MEMBERSHIP-01` | `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                              |
+| `MEMBERSHIP-02` | `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-005`                                                                                                                                                                                                                                                                              |
+| `MEMBERSHIP-03` | `DB-MEM-003`, `DB-MEM-004`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `MEMBERSHIP-04` | `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-002`, `DB-COM-001`                                                                                                                                                                                                                                                                                            |
+| `KEY-01`        | `DB-ORG-002`, `DB-OPS-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `KEY-02`        | `DB-OPS-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                                        |
+| `KEY-03`        | `DB-OPS-001`, `DB-OPS-004`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `VISIT-01`      | `DB-CRM-001`, `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001`                                                                                                                                                                                                                                                  |
+| `VISIT-02`      | `DB-OPS-002`, `DB-COM-001`                                                                                                                                                                                                                                                                                                                        |
+| `VISIT-03`      | `DB-OPS-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                                        |
+| `VISIT-04`      | `DB-COM-001`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                            |
+| `VISIT-05`      | `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                          |
+| `VISIT-06`      | `DB-OPS-001`, `DB-OPS-002`, `DB-COM-001`, `DB-AUD-001`                                                                                                                                                                                                                                                                                            |
+| `VISIT-07`      | `DB-COM-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                                        |
+| `VISIT-08`      | `DB-CRM-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                                        |
+| `VISIT-09`      | `DB-MEM-003`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                |
+| `VISIT-10`      | `DB-ORG-002`, `DB-OPS-002`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `INCIDENT-01`   | `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001`                                                                                                                                                                                                                                                                                            |
+| `INCIDENT-02`   | `DB-OPS-001`, `DB-OPS-004`, `DB-AUD-001`                                                                                                                                                                                                                                                                                                          |
+| `INCIDENT-03`   | `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-004`, `DB-AUD-001`                                                                                                                                                                                                                                                                                            |
+| `AUDIT-01`      | `DB-AUD-001`, `DB-MEM-005`, `DB-OPS-003`, `DB-EVT-001`                                                                                                                                                                                                                                                                                            |
+| `AUDIT-02`      | `DB-AUD-001`, `DB-OPS-003`, `DB-OPS-004`                                                                                                                                                                                                                                                                                                          |
+| `REPORT-01`     | `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-002`                                                                                                                                                                                                                                                                                                          |
+| `REPORT-02`     | `DB-OPS-001`, `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-002`                                                                                                                                                                                                                                                                                            |
+| `REPORT-03`     | `DB-IDN-001`, `DB-OPS-002`, `DB-RPT-001`, `DB-RPT-003`                                                                                                                                                                                                                                                                                            |
+| `PORTAL-01`     | `DB-CRM-001`, `DB-PORTAL-001`, `DB-IDN-003`, `DB-AUD-001`                                                                                                                                                                                                                                                                                         |
+| `PORTAL-02`     | `DB-CRM-001`, `DB-PORTAL-001`, `DB-OPS-002`                                                                                                                                                                                                                                                                                                       |
+| `EVENT-01`      | `DB-OPS-002`, `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`                                                                                                                                                                                                                                                  |
+| `EVENT-02`      | `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`                                                                                                                                                                                                                                                                                                          |
+| `NFR-01`        | `DB-CRM-001`, `DB-OPS-001`, `DB-OPS-002`, `DB-AUD-001`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`                                                                                                                                                                                                                                                  |
+| `NFR-02`        | `DB-IDN-003`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`                                                                                                                                                                                                                                                                              |
+| `NFR-03`        | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-AUD-001`, `DB-PORTAL-001`                                                                                                                                                                                                                                 |
+| `NFR-04`        | `DB-AUD-001`, `DB-MEM-005`, `DB-OPS-003`, `DB-OPS-004`, `DB-EVT-001`                                                                                                                                                                                                                                                                              |
+| `NFR-05`        | `DB-ORG-001`, `DB-ORG-002`, `DB-IDN-001`, `DB-IDN-002`, `DB-IDN-003`, `DB-CRM-001`, `DB-MEM-001`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-AUD-001`, `DB-PORTAL-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-001`, `DB-RPT-002`, `DB-RPT-003`, `DB-RPT-004` |
+| `NFR-06`        | `DB-AUD-001`, `DB-EVT-001`, `DB-EVT-002`, `DB-RPT-004`                                                                                                                                                                                                                                                                                            |
+| `NFR-07`        | `DB-ORG-002`, `DB-IDN-002`, `DB-MEM-002`, `DB-MEM-003`, `DB-MEM-004`, `DB-MEM-005`, `DB-OPS-001`, `DB-OPS-002`, `DB-OPS-003`, `DB-OPS-004`, `DB-COM-001`, `DB-EVT-001`, `DB-EVT-002`                                                                                                                                                              |
 
 ---
 
@@ -1688,7 +1686,6 @@ These decisions must be confirmed before their first dependent migration, but do
 4. Exact auto-close threshold default per branch.
 5. Whether reporting read models live in a separate PostgreSQL database immediately in Phase 20 or first in a separate schema during extraction.
 6. Production retention periods for audit/outbox/idempotency data.
-
 
 ## 16. API/database contract alignment
 

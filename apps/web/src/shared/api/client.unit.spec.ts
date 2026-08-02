@@ -22,7 +22,10 @@ describe("createGymOpsApiClient", () => {
 
     await expect(client.version()).resolves.toMatchObject({ service: "gymops-api" });
     const [, init] = fetcher.mock.calls[0] ?? [];
-    expect(fetcher).toHaveBeenCalledWith("http://localhost:4000/version", expect.objectContaining({ method: "GET" }));
+    expect(fetcher).toHaveBeenCalledWith(
+      "http://localhost:4000/version",
+      expect.objectContaining({ method: "GET" })
+    );
     expect(init?.credentials).toBe("include");
     expect(init?.headers).toBeInstanceOf(Headers);
     expect((init?.headers as Headers).get("accept")).toBe("application/json");
@@ -75,7 +78,9 @@ describe("createGymOpsApiClient", () => {
     );
     const client = createGymOpsApiClient({ apiOrigin: "http://localhost:4000", fetcher });
 
-    await expect(client.login({ email: "gym.admin@gymops.local", password: "secret" })).resolves.toMatchObject({
+    await expect(
+      client.login({ email: "gym.admin@gymops.local", password: "secret" })
+    ).resolves.toMatchObject({
       accessToken: "access-token",
       csrfToken: "csrf-token"
     });

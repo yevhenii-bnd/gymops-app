@@ -29,7 +29,11 @@ import {
   tokenInvalid,
   tokenMissing
 } from "./auth.errors.js";
-import type { AuthRefreshResponse, AuthSessionResponse, StaffIdentityResponse } from "./auth.types.js";
+import type {
+  AuthRefreshResponse,
+  AuthSessionResponse,
+  StaffIdentityResponse
+} from "./auth.types.js";
 import { AuthAuditService } from "./auth-audit.service.js";
 import { parseCookies, serializeCookie, serializeExpiredCookie } from "./cookie-utils.js";
 import type { StaffLoginDto } from "./staff-login.dto.js";
@@ -61,7 +65,11 @@ export class AuthService {
     private readonly audit: AuthAuditService
   ) {}
 
-  async login(dto: StaffLoginDto, request: Request, response: Response): Promise<AuthSessionResponse> {
+  async login(
+    dto: StaffLoginDto,
+    request: Request,
+    response: Response
+  ): Promise<AuthSessionResponse> {
     const emailNormalized = dto.email.trim().toLowerCase();
     const staff = await this.findStaffByEmail(emailNormalized);
 
@@ -267,7 +275,10 @@ export class AuthService {
     });
   }
 
-  private async buildStaffSession(db: DbClient, staffUserId: string): Promise<StaffIdentityResponse> {
+  private async buildStaffSession(
+    db: DbClient,
+    staffUserId: string
+  ): Promise<StaffIdentityResponse> {
     const staff = await db.staffUser.findUnique({
       where: { id: staffUserId },
       include: {
@@ -350,10 +361,7 @@ export class AuthService {
     };
   }
 
-  private createAuthResponse(
-    staff: StaffIdentityResponse,
-    csrfToken: string
-  ): AuthSessionResponse {
+  private createAuthResponse(staff: StaffIdentityResponse, csrfToken: string): AuthSessionResponse {
     const access = this.jwtTokens.signAccessToken(staff);
 
     return {
@@ -458,7 +466,9 @@ export class AuthService {
   }
 
   private isLocked(staff: Pick<StaffUser, "lockedUntil" | "status">): boolean {
-    return staff.status === "LOCKED" || (staff.lockedUntil !== null && staff.lockedUntil > new Date());
+    return (
+      staff.status === "LOCKED" || (staff.lockedUntil !== null && staff.lockedUntil > new Date())
+    );
   }
 
   private async auditLogout(existing: RefreshTokenWithStaff, request: Request): Promise<void> {
@@ -479,7 +489,7 @@ export class AuthService {
     const forwardedFor = request.header("x-forwarded-for");
     const forwardedIp = forwardedFor?.split(",")[0]?.trim();
 
-    return forwardedIp !== undefined && forwardedIp.length > 0 ? forwardedIp : request.ip ?? null;
+    return forwardedIp !== undefined && forwardedIp.length > 0 ? forwardedIp : (request.ip ?? null);
   }
 
   private hashNullable(value: string | null): string | null {
