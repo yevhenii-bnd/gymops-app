@@ -31,6 +31,23 @@ Post-deploy confidence
 
 The goal is not to rely on one large test suite. Each layer should catch the type of risk it is best suited for.
 
+## Quality Targets
+
+Quality targets define the expected minimum bar. They are intentionally split by test level because code coverage is useful for unit-testable logic, while integration/API/UI quality is better measured by contract, scenario, and critical-flow coverage.
+
+| Area                    | Current minimum                                                                            | MVP hardening target                                                                       | Mature target                                                  |
+| ----------------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| Unit code coverage      | `75/65/75/75` for statements/branches/functions/lines                                      | `80/75/80/80`                                                                              | `85/80/85/85` for stable business logic packages               |
+| Critical business rules | 100% of implemented rules have at least one positive or negative test at the correct level | Positive, negative, and boundary coverage for every MVP rule                               | Mutation or defect-seeding evidence for critical rules         |
+| Database migrations     | 100% of committed migrations run in CI against an empty PostgreSQL database                | Upgrade path evidence for MVP release candidates                                           | Rollback/forward-fix plan documented for release changes       |
+| Database invariants     | Critical implemented constraints covered by integration tests                              | 100% of MVP critical invariants covered                                                    | Concurrency tests for all high-risk write flows                |
+| API contract coverage   | System/auth endpoints covered where implemented                                            | 100% of MVP API endpoints covered by happy path, validation, and authorization/error tests | Contract tests for every public endpoint and stable error code |
+| UI smoke coverage       | Current shell/auth/system routes covered where implemented                                 | 100% of MVP critical user journeys covered by smoke or E2E tests                           | Browser regression coverage for critical role-based journeys   |
+| Security gate coverage  | 100% of PRs run dependency audit and Trivy scan                                            | 0 critical runtime dependency advisories accepted without documented risk                  | Scheduled security scan review and dependency update SLA       |
+| Release evidence        | Commands and test results reported for meaningful changes                                  | Full phase verify evidence for MVP release candidates                                      | Automated artifacts for reports, traces, and post-deploy smoke |
+
+The unit coverage target is a quality gate. The other percentages are coverage of requirements, contracts, scenarios, or release evidence, not line coverage.
+
 ## Current PR Quality Gates
 
 The GitHub Actions pull request gates are documented in `.github/workflows/README.md`.
@@ -120,6 +137,69 @@ npm run db:migrate
 npm run db:seed
 ```
 
+## Local Commands And Focused Tests
+
+Local verification should be fast while code is changing and complete before a pull request is opened or updated.
+
+#### Default Local Flow
+
+Use focused commands while developing:
+
+```powershell
+npm run lint
+npm run typecheck
+npm run test:unit:coverage
+```
+
+Run the current phase gate before opening or updating a PR:
+
+```powershell
+npm run verify:phase4
+```
+
+#### Focused Test Selection
+
+Use the smallest command that covers the risk of the change.
+
+| Change type                                                     | Focused local command                                                                               |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Pure TypeScript, policy, config, security helper, or API client | `npm run test:unit -- --runTestsByPath <path-to-unit-spec>`                                         |
+| Unit-testable logic plus coverage risk                          | `npm run test:unit:coverage`                                                                        |
+| Type or package boundary change                                 | `npm run typecheck && npm run build`                                                                |
+| Prisma schema, migration, seed, or DB invariant                 | `npm run db:generate && npm run db:migrate && npm run db:seed && npm run test:integration`          |
+| API route, validation, auth, or error contract                  | `npm run db:generate && npm run build && npm run test:api`                                          |
+| Browser route, layout shell, auth UI, or accessibility locator  | `npm run test:ui`                                                                                   |
+| Workflow, Dependabot, or security config                        | Review YAML plus run the closest affected local command; final validation happens in GitHub Actions |
+
+Focused tests are not a replacement for required PR checks. They are developer feedback loops.
+
+#### Planned Local Hooks
+
+Local hooks should catch cheap mistakes before they reach CI. They must stay fast enough that developers do not bypass them.
+
+Recommended first hook set:
+
+```text
+pre-commit
+  -> run Prettier/ESLint only on staged files
+
+pre-push
+  -> npm run typecheck
+  -> npm run test:unit:coverage
+```
+
+Pre-commit should not run the full database, API, or UI suite. Those belong in pre-push, local phase verification, or CI.
+
+Recommended implementation:
+
+- `husky` for Git hook wiring;
+- `lint-staged` for staged-file formatting/lint checks;
+- staged `*.ts`, `*.tsx`, `*.js`, `*.mjs`, `*.cjs` files: ESLint;
+- staged supported text files: Prettier check or write;
+- pre-push: `npm run typecheck && npm run test:unit:coverage`.
+
+Because the repository still has formatting baseline debt, repository-wide `prettier . --check` should not be used as a hook until a separate formatting baseline PR has been merged.
+
 ## Test Strategy
 
 GymOps uses different test levels for different risks.
@@ -195,6 +275,7 @@ Current policy:
 - coverage gate is scoped to unit-testable runtime logic;
 - current required threshold is `75/65/75/75`;
 - long-term target is `80/75/80/80`;
+- mature target for stable business logic packages is `85/80/85/85`;
 - coverage must not be raised by adding meaningless tests;
 - code that is better covered by integration/API/UI tests should not be forced into artificial unit tests.
 
