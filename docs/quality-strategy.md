@@ -173,30 +173,33 @@ Use the smallest command that covers the risk of the change.
 
 Focused tests are not a replacement for required PR checks. They are developer feedback loops.
 
-#### Planned Local Hooks
+#### Local Hooks
 
 Local hooks should catch cheap mistakes before they reach CI. They must stay fast enough that developers do not bypass them.
 
-Recommended first hook set:
+Implemented first hook set:
 
 ```text
 pre-commit
-  -> run Prettier/ESLint only on staged files
+  -> npm run lint:staged
+  -> run ESLint/Prettier only on staged files
 
 pre-push
-  -> npm run typecheck
-  -> npm run test:unit:coverage
+  -> npm run verify:pre-push
+  -> npm run typecheck && npm run test:unit:coverage
 ```
 
 Pre-commit should not run the full database, API, or UI suite. Those belong in pre-push, local phase verification, or CI.
 
-Recommended implementation:
+Current implementation:
 
 - `husky` for Git hook wiring;
 - `lint-staged` for staged-file formatting/lint checks;
 - staged `*.ts`, `*.tsx`, `*.js`, `*.mjs`, `*.cjs` files: ESLint;
 - staged supported text files: Prettier check or write;
-- pre-push: `npm run typecheck && npm run test:unit:coverage`.
+- `prepare` script: installs Husky hooks after `npm install`;
+- `lint:staged` script: runs `lint-staged`;
+- `verify:pre-push` script: runs `npm run typecheck && npm run test:unit:coverage`.
 
 Because the repository still has formatting baseline debt, repository-wide `prettier . --check` should not be used as a hook until a separate formatting baseline PR has been merged.
 
