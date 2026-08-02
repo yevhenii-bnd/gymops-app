@@ -1,5 +1,4 @@
-import { Button, Input } from "@heroui/react";
-
+import { StaffLoginForm } from "../../../features/auth/components/StaffLoginForm";
 import { SystemStatusPanel } from "../../../features/system/components/SystemStatusPanel";
 
 export default function StaffLoginPage() {
@@ -14,23 +13,14 @@ export default function StaffLoginPage() {
             GymOps
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--gymops-content-muted)]">
-            Staff login shell for the Lean MVP. Authentication behavior is implemented in Phase 4.
+            Staff access for local MVP workflows.
           </p>
           <div className="mt-8 max-w-xl">
             <SystemStatusPanel />
           </div>
         </div>
 
-        <form className="rounded-md border border-[var(--gymops-border)] bg-[var(--gymops-surface)] p-6 shadow-sm">
-          <h2 className="m-0 text-lg font-semibold">Sign in</h2>
-          <div className="mt-5 grid gap-4">
-            <Input disabled aria-label="Email" placeholder="gym.admin@gymops.local" type="email" />
-            <Input disabled aria-label="Password" placeholder="phase-4-pending" type="password" />
-            <Button isDisabled type="submit" variant="primary">
-              Continue
-            </Button>
-          </div>
-        </form>
+        <StaffLoginForm />
       </section>
     </main>
   );

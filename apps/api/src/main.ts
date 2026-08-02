@@ -61,6 +61,64 @@ function createOpenApiDocument(config: ApiConfig) {
             }
           }
         }
+      },
+      "/api/v1/auth/login": {
+        post: {
+          summary: "Staff login",
+          responses: {
+            "200": {
+              description: "Returns an access token, CSRF token, staff context and refresh cookies."
+            },
+            "401": {
+              description: "Invalid credentials or inactive staff user."
+            },
+            "429": {
+              description: "Temporary lockout after repeated failed login attempts."
+            }
+          }
+        }
+      },
+      "/api/v1/auth/refresh": {
+        post: {
+          summary: "Rotate staff refresh token",
+          responses: {
+            "200": {
+              description: "Returns a new access token and rotated refresh cookies."
+            },
+            "401": {
+              description: "Missing, invalid, expired or reused refresh token."
+            },
+            "403": {
+              description: "Missing or invalid CSRF token."
+            }
+          }
+        }
+      },
+      "/api/v1/auth/logout": {
+        post: {
+          summary: "Logout current staff session",
+          responses: {
+            "204": {
+              description: "Refresh token revoked and cookies cleared. Idempotent."
+            },
+            "403": {
+              description: "Missing or invalid CSRF token when a refresh cookie is present."
+            }
+          }
+        }
+      },
+      "/api/v1/auth/me": {
+        get: {
+          summary: "Current staff identity",
+          responses: {
+            "200": {
+              description: "Returns current staff context from a bearer access token."
+            },
+            "401": {
+              description: "Missing, invalid, expired or stale access token."
+            }
+          }
+        }
       }
     }
   } as const;

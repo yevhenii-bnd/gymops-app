@@ -10,7 +10,11 @@ describe("loadApiConfig", () => {
       commitSha: "local",
       buildTime: "local",
       corsOrigin: "http://localhost:3000",
-      defaultTimezone: "Europe/Kyiv"
+      defaultTimezone: "Europe/Kyiv",
+      authJwtSecret: "local-dev-auth-secret-change-me",
+      accessTokenTtlSeconds: 900,
+      refreshTokenTtlDays: 30,
+      authCookieSecure: false
     });
   });
 });

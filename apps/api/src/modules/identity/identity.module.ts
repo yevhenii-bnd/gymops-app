@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
 
-import { ScryptPasswordHasher } from "./security/password-hasher.js";
+import { AuthModule } from "./auth/auth.module.js";
 
 @Module({
-  providers: [{ provide: "PasswordHasher", useClass: ScryptPasswordHasher }],
-  exports: ["PasswordHasher"]
+  imports: [AuthModule],
+  exports: [AuthModule]
 })
 export class IdentityModule {}
