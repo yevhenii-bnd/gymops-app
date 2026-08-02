@@ -87,6 +87,30 @@ http://localhost:4000/api/openapi.json
 http://localhost:4000/api/docs
 ```
 
+## Run The Web App Locally
+
+The Phase 3 frontend shell runs as a Next.js app.
+
+```powershell
+npm run dev:web
+```
+
+Useful local routes:
+
+```text
+http://localhost:3000/login
+http://localhost:3000/app/dashboard
+http://localhost:3000/app/reception
+http://localhost:3000/403
+http://localhost:3000/404
+```
+
+Install the Playwright browser once before running browser UI tests on a fresh machine:
+
+```powershell
+npx playwright install chromium
+```
+
 ## Quality Gates
 
 Phase 1 foundation:
@@ -99,6 +123,12 @@ Phase 2 API and database foundation:
 
 ```powershell
 npm run verify:phase2
+```
+
+Phase 3 frontend shell foundation:
+
+```powershell
+npm run verify:phase3
 ```
 
 Security audit for runtime dependencies:
