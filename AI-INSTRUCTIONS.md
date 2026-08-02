@@ -98,18 +98,18 @@ AI не повинен:
 
 ## 4. Реєстр документів і їх призначення
 
-| Файл | Для чого використовується | Що в ньому є source of truth |
-|---|---|---|
-| `AI-INSTRUCTIONS.md` | Правила роботи AI | Порядок читання, execution protocol, change control |
-| `implementation-plan.md` | Roadmap і dependency order | Stage, phase, scope, prerequisites, exit criteria, unlocks |
-| `requirements.md` | Product і platform requirements | User stories, acceptance criteria, dependencies, release scope, verification |
-| `architecture.md` | Технічні рішення | Stack, boundaries, repository structure, layering, environments, CI/CD, AWS |
-| `ui-contract.md` | Canonical UI registry | Stable UI IDs, Figma roots, routes, React components, target files |
-| `ui-flows.md` | UX specification | Pages, dialogs, fields, actions, states, role flows, HeroUI minimum |
-| `figma-make-prompts.md` | Figma Make generation | Prompts, semantic node names, normalization rules |
-| `api-requirements.md` | HTTP contract | API IDs, methods, paths, request/response schemas, errors, tokens, authorization |
-| `database-requirements.md` | Physical data contract | DB IDs, tables, fields, PK/FK, constraints, indexes, migrations, retention |
-| `plan-audit.md` | Consistency evidence | Останній audit roadmap, dependencies і traceability |
+| Файл                       | Для чого використовується       | Що в ньому є source of truth                                                     |
+| -------------------------- | ------------------------------- | -------------------------------------------------------------------------------- |
+| `AI-INSTRUCTIONS.md`       | Правила роботи AI               | Порядок читання, execution protocol, change control                              |
+| `implementation-plan.md`   | Roadmap і dependency order      | Stage, phase, scope, prerequisites, exit criteria, unlocks                       |
+| `requirements.md`          | Product і platform requirements | User stories, acceptance criteria, dependencies, release scope, verification     |
+| `architecture.md`          | Технічні рішення                | Stack, boundaries, repository structure, layering, environments, CI/CD, AWS      |
+| `ui-contract.md`           | Canonical UI registry           | Stable UI IDs, Figma roots, routes, React components, target files               |
+| `ui-flows.md`              | UX specification                | Pages, dialogs, fields, actions, states, role flows, HeroUI minimum              |
+| `figma-make-prompts.md`    | Figma Make generation           | Prompts, semantic node names, normalization rules                                |
+| `api-requirements.md`      | HTTP contract                   | API IDs, methods, paths, request/response schemas, errors, tokens, authorization |
+| `database-requirements.md` | Physical data contract          | DB IDs, tables, fields, PK/FK, constraints, indexes, migrations, retention       |
+| `plan-audit.md`            | Consistency evidence            | Останній audit roadmap, dependencies і traceability                              |
 
 ### Не плутати призначення
 
@@ -153,13 +153,13 @@ AI **не повинен мовчки примиряти конфлікт**.
 
 У проєкті використовуються стабільні IDs:
 
-| Тип | Приклад | Джерело |
-|---|---|---|
-| Story ID | `VISIT-01`, `CICD-01` | `requirements.md` |
-| UI screen ID | `SCR-REC-001` | `ui-contract.md` |
-| UI overlay ID | `OVL-VISIT-001` | `ui-contract.md` |
-| API ID | `API-VISIT-001` | `api-requirements.md` |
-| Database ID | `DB-OPS-002` | `database-requirements.md` |
+| Тип           | Приклад               | Джерело                    |
+| ------------- | --------------------- | -------------------------- |
+| Story ID      | `VISIT-01`, `CICD-01` | `requirements.md`          |
+| UI screen ID  | `SCR-REC-001`         | `ui-contract.md`           |
+| UI overlay ID | `OVL-VISIT-001`       | `ui-contract.md`           |
+| API ID        | `API-VISIT-001`       | `api-requirements.md`      |
+| Database ID   | `DB-OPS-002`          | `database-requirements.md` |
 
 Типовий ланцюг:
 

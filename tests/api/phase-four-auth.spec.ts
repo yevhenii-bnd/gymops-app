@@ -179,7 +179,9 @@ test.describe("Phase 4 staff authentication API", () => {
       WHERE action = 'STAFF_LOGIN_SUCCEEDED'
         AND actor_staff_user_id = '44444444-4444-4444-8444-444444444444'::uuid
     `;
-    expect(Number(auditCountAfter[0]?.count ?? 0n)).toBeGreaterThan(Number(auditCountBefore[0]?.count ?? 0n));
+    expect(Number(auditCountAfter[0]?.count ?? 0n)).toBeGreaterThan(
+      Number(auditCountBefore[0]?.count ?? 0n)
+    );
     await api.dispose();
   });
 
@@ -207,7 +209,9 @@ test.describe("Phase 4 staff authentication API", () => {
       })
     );
     expect(missing.status()).toBe(401);
-    await expect(missing.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_TOKEN_MISSING" }));
+    await expect(missing.json()).resolves.toEqual(
+      expect.objectContaining({ code: "AUTH_TOKEN_MISSING" })
+    );
     await api.dispose();
   });
 
@@ -269,7 +273,9 @@ test.describe("Phase 4 staff authentication API", () => {
       const staff = await prisma.staffUser.findUniqueOrThrow({ where: { emailNormalized: email } });
 
       expect(locked.status()).toBe(429);
-      await expect(locked.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_RATE_LIMITED" }));
+      await expect(locked.json()).resolves.toEqual(
+        expect.objectContaining({ code: "AUTH_RATE_LIMITED" })
+      );
       expect(staff.failedLoginCount).toBe(5);
       expect(staff.lockedUntil).toBeInstanceOf(Date);
     } finally {
@@ -279,7 +285,9 @@ test.describe("Phase 4 staff authentication API", () => {
   });
 
   test("POST /api/v1/auth/login denies deactivated staff", async () => {
-    await prisma.staffUser.deleteMany({ where: { emailNormalized: "deactivated.api-test@gymops.local" } });
+    await prisma.staffUser.deleteMany({
+      where: { emailNormalized: "deactivated.api-test@gymops.local" }
+    });
     await prisma.staffUser.create({
       data: {
         id: "99999999-9999-4999-8999-999999999998",
@@ -306,9 +314,13 @@ test.describe("Phase 4 staff authentication API", () => {
       });
 
       expect(response.status()).toBe(401);
-      await expect(response.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_INVALID_CREDENTIALS" }));
+      await expect(response.json()).resolves.toEqual(
+        expect.objectContaining({ code: "AUTH_INVALID_CREDENTIALS" })
+      );
     } finally {
-      await prisma.staffUser.deleteMany({ where: { emailNormalized: "deactivated.api-test@gymops.local" } });
+      await prisma.staffUser.deleteMany({
+        where: { emailNormalized: "deactivated.api-test@gymops.local" }
+      });
       await api.dispose();
     }
   });
@@ -338,9 +350,13 @@ test.describe("Phase 4 staff authentication API", () => {
       });
 
       expect(expired.status()).toBe(401);
-      await expect(expired.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_TOKEN_EXPIRED" }));
+      await expect(expired.json()).resolves.toEqual(
+        expect.objectContaining({ code: "AUTH_TOKEN_EXPIRED" })
+      );
       expect(malformed.status()).toBe(401);
-      await expect(malformed.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_TOKEN_INVALID" }));
+      await expect(malformed.json()).resolves.toEqual(
+        expect.objectContaining({ code: "AUTH_TOKEN_INVALID" })
+      );
     } finally {
       await expiredApi.dispose();
       await api.dispose();
@@ -373,11 +389,15 @@ test.describe("Phase 4 staff authentication API", () => {
     });
 
     expect(refresh.status()).toBe(200);
-    await expect(refresh.json()).resolves.toEqual(expect.objectContaining({ accessToken: expect.any(String) }));
+    await expect(refresh.json()).resolves.toEqual(
+      expect.objectContaining({ accessToken: expect.any(String) })
+    );
     expect(newCookies).toContain("gymops_refresh=");
     expect(newCookies).not.toEqual(oldCookies);
     expect(reused.status()).toBe(401);
-    await expect(reused.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_REFRESH_REUSED" }));
+    await expect(reused.json()).resolves.toEqual(
+      expect.objectContaining({ code: "AUTH_REFRESH_REUSED" })
+    );
     await api.dispose();
   });
 
@@ -412,7 +432,9 @@ test.describe("Phase 4 staff authentication API", () => {
     });
 
     expect(expired.status()).toBe(401);
-    await expect(expired.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_REFRESH_EXPIRED" }));
+    await expect(expired.json()).resolves.toEqual(
+      expect.objectContaining({ code: "AUTH_REFRESH_EXPIRED" })
+    );
     expect(stored.revokeReason).toBe("EXPIRED");
     expect(stored.revokedAt).toBeInstanceOf(Date);
     await api.dispose();
@@ -441,9 +463,13 @@ test.describe("Phase 4 staff authentication API", () => {
     });
 
     expect(refresh.status()).toBe(403);
-    await expect(refresh.json()).resolves.toEqual(expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" }));
+    await expect(refresh.json()).resolves.toEqual(
+      expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" })
+    );
     expect(logout.status()).toBe(403);
-    await expect(logout.json()).resolves.toEqual(expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" }));
+    await expect(logout.json()).resolves.toEqual(
+      expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" })
+    );
     await api.dispose();
   });
 

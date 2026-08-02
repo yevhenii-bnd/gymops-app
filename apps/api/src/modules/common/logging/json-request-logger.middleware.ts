@@ -6,7 +6,8 @@ export class JsonRequestLoggerMiddleware {
 
     response.on("finish", () => {
       const locals = response.locals as Record<string, unknown>;
-      const correlationId = typeof locals["correlationId"] === "string" ? locals["correlationId"] : null;
+      const correlationId =
+        typeof locals["correlationId"] === "string" ? locals["correlationId"] : null;
       const log = {
         level: "info",
         message: "http_request",

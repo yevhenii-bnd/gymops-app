@@ -1,10 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus
-} from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import type { Request, Response } from "express";
 
 type ProblemDetails = {
@@ -28,7 +22,8 @@ export class ProblemDetailsFilter implements ExceptionFilter {
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
     const code = this.resolveCode(exception, status);
     const locals = response.locals as Record<string, unknown>;
-    const correlationId = typeof locals["correlationId"] === "string" ? locals["correlationId"] : null;
+    const correlationId =
+      typeof locals["correlationId"] === "string" ? locals["correlationId"] : null;
     const problem: ProblemDetails = {
       type: `https://api.gymops.example/problems/${code.toLowerCase().replaceAll("_", "-")}`,
       title: this.resolveTitle(exception, status),
@@ -78,7 +73,10 @@ export class ProblemDetailsFilter implements ExceptionFilter {
     return status >= 500 ? "An unexpected error occurred." : "The request could not be processed.";
   }
 
-  private hasProblemField(value: unknown, field: "code" | "detail"): value is Record<typeof field, unknown> {
+  private hasProblemField(
+    value: unknown,
+    field: "code" | "detail"
+  ): value is Record<typeof field, unknown> {
     return typeof value === "object" && value !== null && field in value;
   }
 }

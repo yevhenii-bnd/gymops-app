@@ -9,6 +9,7 @@
     "packages/*"
   ],
   "scripts": {
+    "prepare": "node scripts/configure-git-hooks.mjs",
     "lint": "eslint .",
     "format": "prettier . --check",
     "typecheck": "tsc -b --pretty false",
