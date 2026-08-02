@@ -62,8 +62,8 @@ jobs:
       - name: Build workspace packages
         run: npm run build
 
-      - name: Run unit tests
-        run: npm run test:unit
+      - name: Run unit tests with coverage
+        run: npm run test:unit:coverage
 
   build:
     name: build

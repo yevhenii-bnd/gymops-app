@@ -104,6 +104,7 @@ AI не повинен:
 | `implementation-plan.md` | Roadmap і dependency order | Stage, phase, scope, prerequisites, exit criteria, unlocks |
 | `requirements.md` | Product і platform requirements | User stories, acceptance criteria, dependencies, release scope, verification |
 | `architecture.md` | Технічні рішення | Stack, boundaries, repository structure, layering, environments, CI/CD, AWS |
+| `quality-strategy.md` | QA strategy | Quality gates, test strategy, coverage policy, release evidence, monitoring roadmap |
 | `ui-contract.md` | Canonical UI registry | Stable UI IDs, Figma roots, routes, React components, target files |
 | `ui-flows.md` | UX specification | Pages, dialogs, fields, actions, states, role flows, HeroUI minimum |
 | `figma-make-prompts.md` | Figma Make generation | Prompts, semantic node names, normalization rules |
@@ -324,6 +325,8 @@ Controllers не повинні містити business logic.
 - concurrency — duplicate client/key operations;
 - migration — empty database та upgrade path.
 
+Кожна зміна продуктового, API, database або UI коду повинна додавати або оновлювати відповідний рівень automated tests у тому ж change set. Якщо тест не додається, AI повинен явно пояснити, який existing test/gate вже покриває зміну і чому нового тесту не потрібно.
+
 ### Step 8 — Evidence
 
 До завершення change set надати:
@@ -499,6 +502,10 @@ Canonical details — у `database-requirements.md`.
 
 Не дублювати однакову перевірку на кожному рівні без причини.
 
+Unit tests повинні перевіряти observable behavior через assertions, а не лише виконувати код заради покриття. Для unit-testable runtime logic coverage gate має блокувати падіння нижче поточного baseline; ціль після MVP hardening — `80/75/80/80` для statements/branches/functions/lines.
+
+Новий unit-testable business, policy, config, security або client код повинен або мати unit tests, або бути явно покритий integration/API/UI gate, якщо unit-рівень не є правильним рівнем перевірки.
+
 Орієнтир:
 
 ```text
@@ -517,7 +524,7 @@ MVP release command:
 npm ci
 npm run lint
 npm run typecheck
-npm run test:unit
+npm run test:unit:coverage
 npm run test:integration
 npm run build
 npm run test:api -- --grep @mvp
