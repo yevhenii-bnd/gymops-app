@@ -98,7 +98,10 @@ type RequestOptions = {
 export function createGymOpsApiClient(options: ClientOptions): GymOpsApiClient {
   const fetcher = options.fetcher ?? fetch;
 
-  async function request<TResponse>(path: string, requestOptions: RequestOptions = {}): Promise<TResponse> {
+  async function request<TResponse>(
+    path: string,
+    requestOptions: RequestOptions = {}
+  ): Promise<TResponse> {
     const headers = new Headers({
       accept: "application/json"
     });

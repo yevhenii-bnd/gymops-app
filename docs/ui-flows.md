@@ -26,8 +26,8 @@ AI-асистент не повинен додавати нові сторінк
 
 ---
 
-
 <!-- BEGIN GENERATED UI CONTRACT REFERENCE -->
+
 ## 1.1. Canonical UI IDs and implementation mapping
 
 Exact Figma root names, routes, React component names and target frontend paths are maintained in `ui-contract.md`.
@@ -65,14 +65,14 @@ The detailed generation prompts and required child layer names are stored in `fi
 
 ### 2.1. Базовий набір HeroUI
 
-| Призначення | HeroUI components |
-|---|---|
-| Actions | `Button`, `ButtonGroup`, `CloseButton`, `Toolbar` |
-| Forms | `Form`, `TextField`, `Input`, `SearchField`, `NumberField`, `TextArea`, `Select`, `ComboBox`, `Autocomplete`, `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `DatePicker`, `DateRangePicker`, `TimeField`, `Fieldset`, `Label`, `FieldError` |
-| Data display | `Table`, `Card`, `Chip`, `Badge`, `Avatar`, `Typography`, `Separator` |
-| Navigation | `Tabs`, `Breadcrumbs`, `Pagination`, `Link`, `Accordion` |
-| Overlays | `Modal`, `Drawer`, `AlertDialog`, `Popover`, `Tooltip`, `Toast`, `Dropdown` |
-| Feedback | `Alert`, `Spinner`, `Skeleton`, `ProgressBar`, `ProgressCircle` |
+| Призначення  | HeroUI components                                                                                                                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Actions      | `Button`, `ButtonGroup`, `CloseButton`, `Toolbar`                                                                                                                                                                                                  |
+| Forms        | `Form`, `TextField`, `Input`, `SearchField`, `NumberField`, `TextArea`, `Select`, `ComboBox`, `Autocomplete`, `Checkbox`, `CheckboxGroup`, `RadioGroup`, `Switch`, `DatePicker`, `DateRangePicker`, `TimeField`, `Fieldset`, `Label`, `FieldError` |
+| Data display | `Table`, `Card`, `Chip`, `Badge`, `Avatar`, `Typography`, `Separator`                                                                                                                                                                              |
+| Navigation   | `Tabs`, `Breadcrumbs`, `Pagination`, `Link`, `Accordion`                                                                                                                                                                                           |
+| Overlays     | `Modal`, `Drawer`, `AlertDialog`, `Popover`, `Tooltip`, `Toast`, `Dropdown`                                                                                                                                                                        |
+| Feedback     | `Alert`, `Spinner`, `Skeleton`, `ProgressBar`, `ProgressCircle`                                                                                                                                                                                    |
 
 ### 2.2. Вибір між SearchField, ComboBox, Autocomplete і Select
 
@@ -306,11 +306,11 @@ Authenticate SUPER_ADMIN, GYM_ADMIN або EMPLOYEE.
 
 ### Fields
 
-| Field | Type | Required | Rules |
-|---|---|---:|---|
-| Email | email input | yes | normalize lowercase, basic email validation |
-| Password | password input | yes | no client-side disclosure of password policy during login |
-| Remember session | checkbox | optional | post-MVP or omitted in MVP |
+| Field            | Type           | Required | Rules                                                     |
+| ---------------- | -------------- | -------: | --------------------------------------------------------- |
+| Email            | email input    |      yes | normalize lowercase, basic email validation               |
+| Password         | password input |      yes | no client-side disclosure of password policy during login |
+| Remember session | checkbox       | optional | post-MVP or omitted in MVP                                |
 
 ### Actions
 
@@ -512,15 +512,15 @@ Columns:
 
 ### Fields
 
-| Field | Component | Required | Notes |
-|---|---|---:|---|
-| Display name | `TextField` | yes | user-facing name |
-| Legal name | `TextField` | yes | may equal display name |
-| Slug | `TextField` | yes | unique, lowercase format |
-| Timezone | `Autocomplete` | yes | IANA timezone |
-| Status | `Select` | yes | default `ACTIVE` |
-| Contact email | `TextField` | no | operational contact |
-| Contact phone | `TextField` | no | normalized |
+| Field         | Component      | Required | Notes                    |
+| ------------- | -------------- | -------: | ------------------------ |
+| Display name  | `TextField`    |      yes | user-facing name         |
+| Legal name    | `TextField`    |      yes | may equal display name   |
+| Slug          | `TextField`    |      yes | unique, lowercase format |
+| Timezone      | `Autocomplete` |      yes | IANA timezone            |
+| Status        | `Select`       |      yes | default `ACTIVE`         |
+| Contact email | `TextField`    |       no | operational contact      |
+| Contact phone | `TextField`    |       no | normalized               |
 
 ### Actions
 
@@ -546,15 +546,15 @@ Minimum content:
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| Branch name | `TextField` | yes |
-| Branch code | `TextField` | yes |
-| Address | `TextArea` | yes |
-| Timezone | `Autocomplete` | yes |
-| Status | `Select` | yes |
-| Phone | `TextField` | no |
-| Email | `TextField` | no |
+| Field       | Component      | Required |
+| ----------- | -------------- | -------: |
+| Branch name | `TextField`    |      yes |
+| Branch code | `TextField`    |      yes |
+| Address     | `TextArea`     |      yes |
+| Timezone    | `Autocomplete` |      yes |
+| Status      | `Select`       |      yes |
+| Phone       | `TextField`    |       no |
+| Email       | `TextField`    |       no |
 
 ### Deactivate Branch AlertDialog
 
@@ -653,16 +653,16 @@ No chart is mandatory before `REPORT-01`.
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| First name | `TextField` | yes |
-| Last name | `TextField` | yes |
-| Email | `TextField` | yes |
-| Phone | `TextField` | no |
-| Organization | read-only or `Autocomplete` | yes |
-| Role | read-only `Chip` = GYM_ADMIN | yes |
-| Invitation mode | `RadioGroup` | yes |
-| Temporary password | password field | conditional |
+| Field              | Component                    |    Required |
+| ------------------ | ---------------------------- | ----------: |
+| First name         | `TextField`                  |         yes |
+| Last name          | `TextField`                  |         yes |
+| Email              | `TextField`                  |         yes |
+| Phone              | `TextField`                  |          no |
+| Organization       | read-only or `Autocomplete`  |         yes |
+| Role               | read-only `Chip` = GYM_ADMIN |         yes |
+| Invitation mode    | `RadioGroup`                 |         yes |
+| Temporary password | password field               | conditional |
 
 Invitation modes:
 
@@ -675,15 +675,15 @@ Invitation modes:
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| First name | `TextField` | yes |
-| Last name | `TextField` | yes |
-| Email | `TextField` | yes |
-| Phone | `TextField` | no |
-| Role | read-only `Chip` = EMPLOYEE | yes |
+| Field              | Component                                      |          Required |
+| ------------------ | ---------------------------------------------- | ----------------: |
+| First name         | `TextField`                                    |               yes |
+| Last name          | `TextField`                                    |               yes |
+| Email              | `TextField`                                    |               yes |
+| Phone              | `TextField`                                    |                no |
+| Role               | read-only `Chip` = EMPLOYEE                    |               yes |
 | Branch assignments | `Autocomplete` multi-select or `CheckboxGroup` | yes, at least one |
-| Status | `Select` | edit only |
+| Status             | `Select`                                       |         edit only |
 
 ## 9.5. Deactivate Employee AlertDialog
 
@@ -832,16 +832,16 @@ Columns:
 
 ### Fields
 
-| Field | Component | Required | Notes |
-|---|---|---:|---|
-| First name | `TextField` | yes | |
-| Last name | `TextField` | yes | |
-| Phone | `TextField` | conditional | at least phone or email |
-| Email | `TextField` | conditional | at least phone or email |
-| Home branch | `Autocomplete` | no | only allowed branches |
-| Date of birth | `DatePicker` | no | optional CRM field |
-| Notes | `TextArea` | no | internal only |
-| Status | `Select` | edit only | ACTIVE/BLOCKED |
+| Field         | Component      |    Required | Notes                   |
+| ------------- | -------------- | ----------: | ----------------------- |
+| First name    | `TextField`    |         yes |                         |
+| Last name     | `TextField`    |         yes |                         |
+| Phone         | `TextField`    | conditional | at least phone or email |
+| Email         | `TextField`    | conditional | at least phone or email |
+| Home branch   | `Autocomplete` |          no | only allowed branches   |
+| Date of birth | `DatePicker`   |          no | optional CRM field      |
+| Notes         | `TextArea`     |          no | internal only           |
+| Status        | `Select`       |   edit only | ACTIVE/BLOCKED          |
 
 ### Duplicate warning flow
 
@@ -912,16 +912,16 @@ Must warn that blocked client cannot check in.
 
 ### Fields
 
-| Field | Component | Required | Rules |
-|---|---|---:|---|
-| Name | `TextField` | yes | |
-| Type | `Select` | yes | UNLIMITED, VISIT_LIMIT, SINGLE_VISIT, TRIAL |
-| Validity value | `NumberField` | yes | positive |
-| Validity unit | `Select` | yes | days/months |
-| Visit limit | `NumberField` | conditional | required for limited types |
-| Allowed branches | `Autocomplete` multi-select | yes | at least one or all branches policy |
-| Active | `Switch` | yes | default on |
-| Description | `TextArea` | no | |
+| Field            | Component                   |    Required | Rules                                       |
+| ---------------- | --------------------------- | ----------: | ------------------------------------------- |
+| Name             | `TextField`                 |         yes |                                             |
+| Type             | `Select`                    |         yes | UNLIMITED, VISIT_LIMIT, SINGLE_VISIT, TRIAL |
+| Validity value   | `NumberField`               |         yes | positive                                    |
+| Validity unit    | `Select`                    |         yes | days/months                                 |
+| Visit limit      | `NumberField`               | conditional | required for limited types                  |
+| Allowed branches | `Autocomplete` multi-select |         yes | at least one or all branches policy         |
+| Active           | `Switch`                    |         yes | default on                                  |
+| Description      | `TextArea`                  |          no |                                             |
 
 ## 11.3. Assign Membership Modal
 
@@ -931,15 +931,15 @@ Opened from Client Profile.
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| Client | read-only summary | yes |
-| Membership plan | `Autocomplete` | yes |
-| Start date | `DatePicker` | yes |
-| End date | calculated/read-only, optionally editable by policy | yes |
-| Allowed visits | `NumberField` | conditional |
-| Allowed branches | read-only from plan or controlled override | yes |
-| Notes | `TextArea` | no |
+| Field            | Component                                           |    Required |
+| ---------------- | --------------------------------------------------- | ----------: |
+| Client           | read-only summary                                   |         yes |
+| Membership plan  | `Autocomplete`                                      |         yes |
+| Start date       | `DatePicker`                                        |         yes |
+| End date         | calculated/read-only, optionally editable by policy |         yes |
+| Allowed visits   | `NumberField`                                       | conditional |
+| Allowed branches | read-only from plan or controlled override          |         yes |
+| Notes            | `TextArea`                                          |          no |
 
 ### Warnings
 
@@ -1028,13 +1028,13 @@ HeroUI:
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| Key number | `TextField` | yes |
-| Locker number | `TextField` | yes |
-| Branch | `Autocomplete` | yes |
-| Initial status | read-only AVAILABLE on create | yes |
-| Notes | `TextArea` | no |
+| Field          | Component                     | Required |
+| -------------- | ----------------------------- | -------: |
+| Key number     | `TextField`                   |      yes |
+| Locker number  | `TextField`                   |      yes |
+| Branch         | `Autocomplete`                |      yes |
+| Initial status | read-only AVAILABLE on create |      yes |
+| Notes          | `TextArea`                    |       no |
 
 ## 12.3. Change Key Status Modal
 
@@ -1169,15 +1169,15 @@ sequenceDiagram
 
 ### Fields
 
-| Field | Component | Required | Notes |
-|---|---|---:|---|
-| Client | read-only card | yes | selected before modal |
-| Branch | read-only or allowed selector | yes | current context |
-| Membership | read-only eligibility summary | yes | revalidated on submit |
-| Locker key | `Autocomplete` | yes | only AVAILABLE in current branch |
-| Start date/time | `DatePicker` + `TimeField` | yes | defaults to now |
-| Manual time override | `Checkbox` | conditional | permission-based |
-| Notes | `TextArea` | no | operational note |
+| Field                | Component                     |    Required | Notes                            |
+| -------------------- | ----------------------------- | ----------: | -------------------------------- |
+| Client               | read-only card                |         yes | selected before modal            |
+| Branch               | read-only or allowed selector |         yes | current context                  |
+| Membership           | read-only eligibility summary |         yes | revalidated on submit            |
+| Locker key           | `Autocomplete`                |         yes | only AVAILABLE in current branch |
+| Start date/time      | `DatePicker` + `TimeField`    |         yes | defaults to now                  |
+| Manual time override | `Checkbox`                    | conditional | permission-based                 |
+| Notes                | `TextArea`                    |          no | operational note                 |
 
 ### Confirmation summary
 
@@ -1364,18 +1364,18 @@ stateDiagram-v2
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| Original values | read-only card | yes |
-| Start date | `DatePicker` | yes |
-| Start time | `TimeField` | yes |
-| End date | `DatePicker` | conditional |
-| End time | `TimeField` | conditional |
-| Visit status | `Select` | yes |
-| Locker key | `Autocomplete` | conditional |
-| Membership consumption adjustment | `RadioGroup` or read-only policy result | yes |
-| Correction reason | `TextArea` | yes |
-| Override conflict | `Checkbox` | permission-based |
+| Field                             | Component                               |         Required |
+| --------------------------------- | --------------------------------------- | ---------------: |
+| Original values                   | read-only card                          |              yes |
+| Start date                        | `DatePicker`                            |              yes |
+| Start time                        | `TimeField`                             |              yes |
+| End date                          | `DatePicker`                            |      conditional |
+| End time                          | `TimeField`                             |      conditional |
+| Visit status                      | `Select`                                |              yes |
+| Locker key                        | `Autocomplete`                          |      conditional |
+| Membership consumption adjustment | `RadioGroup` or read-only policy result |              yes |
+| Correction reason                 | `TextArea`                              |              yes |
+| Override conflict                 | `Checkbox`                              | permission-based |
 
 ### Validation
 
@@ -1449,15 +1449,15 @@ Use `RadioGroup` or `Select`:
 
 ### Fields
 
-| Field | Component | Required |
-|---|---|---:|
-| Incident type | `Select` | yes |
-| Branch | read-only/current or `Autocomplete` | yes |
-| Key | `ComboBox` | conditional |
-| Active visit | read-only linked summary | conditional |
-| Client | read-only linked summary | conditional |
-| Action on visit | `RadioGroup` | conditional |
-| Notes/reason | `TextArea` | yes |
+| Field           | Component                           |    Required |
+| --------------- | ----------------------------------- | ----------: |
+| Incident type   | `Select`                            |         yes |
+| Branch          | read-only/current or `Autocomplete` |         yes |
+| Key             | `ComboBox`                          | conditional |
+| Active visit    | read-only linked summary            | conditional |
+| Client          | read-only linked summary            | conditional |
+| Action on visit | `RadioGroup`                        | conditional |
+| Notes/reason    | `TextArea`                          |         yes |
 
 ### Lost key flow
 
@@ -1806,28 +1806,28 @@ Must not show:
 
 ## 19.1. Required MVP modals
 
-| Modal | Related stories |
-|---|---|
-| Create/Edit Organization | `ORG-01`, `ORG-02` |
-| Deactivate Organization | `ORG-03` |
-| Create/Edit Branch | `BRANCH-01`, `BRANCH-02` |
-| Create Gym Admin | `STAFF-01` |
-| Create/Edit Employee | `STAFF-02`, `STAFF-03` |
-| Deactivate Employee | `STAFF-04` |
-| Create/Edit Client | `CLIENT-01`, `CLIENT-04` |
-| Possible Duplicate | `CLIENT-01` |
-| Block/Unblock Client | `CLIENT-05` |
-| Create/Edit Membership Plan | `PLAN-01` |
-| Assign Membership | `MEMBERSHIP-01` |
-| Freeze Membership | `MEMBERSHIP-03` |
-| Add/Edit Key | `KEY-01` |
-| Change Key Status | `KEY-03` |
-| Check-in | `VISIT-01..04` |
-| Checkout by Key | `VISIT-06`, `VISIT-07` |
-| Correct Visit | `VISIT-09` |
-| Report Incident | `INCIDENT-01`, `INCIDENT-02` |
-| Resolve Incident | `INCIDENT-03` |
-| Session Expired | `AUTH-03` |
+| Modal                       | Related stories              |
+| --------------------------- | ---------------------------- |
+| Create/Edit Organization    | `ORG-01`, `ORG-02`           |
+| Deactivate Organization     | `ORG-03`                     |
+| Create/Edit Branch          | `BRANCH-01`, `BRANCH-02`     |
+| Create Gym Admin            | `STAFF-01`                   |
+| Create/Edit Employee        | `STAFF-02`, `STAFF-03`       |
+| Deactivate Employee         | `STAFF-04`                   |
+| Create/Edit Client          | `CLIENT-01`, `CLIENT-04`     |
+| Possible Duplicate          | `CLIENT-01`                  |
+| Block/Unblock Client        | `CLIENT-05`                  |
+| Create/Edit Membership Plan | `PLAN-01`                    |
+| Assign Membership           | `MEMBERSHIP-01`              |
+| Freeze Membership           | `MEMBERSHIP-03`              |
+| Add/Edit Key                | `KEY-01`                     |
+| Change Key Status           | `KEY-03`                     |
+| Check-in                    | `VISIT-01..04`               |
+| Checkout by Key             | `VISIT-06`, `VISIT-07`       |
+| Correct Visit               | `VISIT-09`                   |
+| Report Incident             | `INCIDENT-01`, `INCIDENT-02` |
+| Resolve Incident            | `INCIDENT-03`                |
+| Session Expired             | `AUTH-03`                    |
 
 ## 19.2. Required drawers
 
@@ -1967,27 +1967,27 @@ All statuses use `Chip` with consistent color mapping across the application.
 
 # 22. Story-to-screen traceability
 
-| Story group | Primary pages/modals |
-|---|---|
-| `AUTH-01..05` | Login, global shell, branch selector, 403, session modal |
-| `ORG-01..03` | Organizations List, Organization Details, Organization modals |
-| `BRANCH-01..02` | Organization Details → Branches tab, Branch modal |
-| `STAFF-01..04` | Staff List, Staff Drawer, Staff modals |
-| `CLIENT-01..05` | Clients List, Client Profile, Client modals |
-| `PLAN-01` | Membership Plans page and modal |
+| Story group         | Primary pages/modals                                                            |
+| ------------------- | ------------------------------------------------------------------------------- |
+| `AUTH-01..05`       | Login, global shell, branch selector, 403, session modal                        |
+| `ORG-01..03`        | Organizations List, Organization Details, Organization modals                   |
+| `BRANCH-01..02`     | Organization Details → Branches tab, Branch modal                               |
+| `STAFF-01..04`      | Staff List, Staff Drawer, Staff modals                                          |
+| `CLIENT-01..05`     | Clients List, Client Profile, Client modals                                     |
+| `PLAN-01`           | Membership Plans page and modal                                                 |
 | `MEMBERSHIP-01..04` | Client Profile → Memberships tab, Assign/Freeze modals, Check-in eligibility UI |
-| `KEY-01..03` | Locker Keys page, Key Drawer, Key modals |
-| `VISIT-01..04` | Reception, Check-in Modal |
-| `VISIT-05` | Active Visits page |
-| `VISIT-06..07` | Checkout by Key Modal |
-| `VISIT-08` | Client Profile → Visit History |
-| `VISIT-09` | Visit Details, Correct Visit Modal |
-| `VISIT-10` | Active Visits warning/filter, Visit Details |
-| `INCIDENT-01..03` | Incidents page, Report/Resolve modals |
-| `AUDIT-01..02` | Audit page, Audit Drawer, entity audit tabs |
-| `REPORT-01..03` | Reports Landing and three report pages |
-| `PORTAL-01..02` | Client Portal Login, Dashboard, Visit History |
-| `EVENT-01..02` | Report freshness indicator, no operational blocking UI |
+| `KEY-01..03`        | Locker Keys page, Key Drawer, Key modals                                        |
+| `VISIT-01..04`      | Reception, Check-in Modal                                                       |
+| `VISIT-05`          | Active Visits page                                                              |
+| `VISIT-06..07`      | Checkout by Key Modal                                                           |
+| `VISIT-08`          | Client Profile → Visit History                                                  |
+| `VISIT-09`          | Visit Details, Correct Visit Modal                                              |
+| `VISIT-10`          | Active Visits warning/filter, Visit Details                                     |
+| `INCIDENT-01..03`   | Incidents page, Report/Resolve modals                                           |
+| `AUDIT-01..02`      | Audit page, Audit Drawer, entity audit tabs                                     |
+| `REPORT-01..03`     | Reports Landing and three report pages                                          |
+| `PORTAL-01..02`     | Client Portal Login, Dashboard, Visit History                                   |
+| `EVENT-01..02`      | Report freshness indicator, no operational blocking UI                          |
 
 ---
 
@@ -2077,7 +2077,6 @@ Do not add before explicit approval:
 - dark mode as a blocking requirement;
 - complex drag-and-drop;
 - custom design system replacing HeroUI.
-
 
 ## API contract usage in UI implementation
 

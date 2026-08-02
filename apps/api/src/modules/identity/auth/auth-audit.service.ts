@@ -61,7 +61,8 @@ export class AuthAuditService {
   private resolveCorrelationId(request: Request): { value: string; requestId?: string } {
     const response = request.res;
     const locals = response?.locals as Record<string, unknown> | undefined;
-    const candidate = typeof locals?.["correlationId"] === "string" ? locals["correlationId"] : null;
+    const candidate =
+      typeof locals?.["correlationId"] === "string" ? locals["correlationId"] : null;
 
     if (candidate !== null && UUID_REGEX.test(candidate)) {
       return { value: candidate };
@@ -81,7 +82,7 @@ export class AuthAuditService {
     const forwardedFor = request.header("x-forwarded-for");
     const forwardedIp = forwardedFor?.split(",")[0]?.trim();
 
-    return forwardedIp !== undefined && forwardedIp.length > 0 ? forwardedIp : request.ip ?? null;
+    return forwardedIp !== undefined && forwardedIp.length > 0 ? forwardedIp : (request.ip ?? null);
   }
 
   private hashNullable(value: string | null): string | null {

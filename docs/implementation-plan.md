@@ -166,33 +166,33 @@ MVP user stories:
 
 ## 4.1. MVP UI
 
-| Phase | UI ID | Route / opened from | React component |
-|---|---|---|---|
-| 3–4 | `SCR-AUTH-001` | `/login` | `StaffLoginPage` |
-| 3–4 | `SCR-SYS-403` | `/403` | `ForbiddenPage` |
-| 3–4 | `SCR-SYS-404` | `/404` | `NotFoundPage` |
-| 4 | `SCR-PLATFORM-001` | `/super-admin/dashboard` | Minimal `PlatformDashboardPage`; no organization CRUD |
-| 5 | `SCR-STAFF-001` | `/app/staff` | `StaffPage` |
-| 5 | `OVL-STAFF-002` | `SCR-STAFF-001` | `CreateEmployeeModal` |
-| 5 | `SCR-CLIENT-001` | `/app/clients` | `ClientsPage` |
-| 5 | `SCR-CLIENT-002` | `/app/clients/[clientId]` | `ClientProfilePage` |
-| 5 | `OVL-CLIENT-001` | clients/reception | `CreateClientModal` |
-| 5 | `OVL-CLIENT-003` | create client | `PossibleDuplicateClientModal` |
-| 6 | `SCR-PLAN-001` | `/app/membership-plans` | `MembershipPlansPage` |
-| 6 | `OVL-PLAN-001` | plans | `CreateMembershipPlanModal` |
-| 6 | `OVL-PLAN-002` | plans | `EditMembershipPlanModal` |
-| 6 | `OVL-MEM-001` | client profile | `AssignMembershipModal` |
-| 6 | `OVL-MEM-003` | client profile | `CancelMembershipAlertDialog` |
-| 6 | `SCR-KEY-001` | `/app/locker-keys` | `LockerKeysPage` |
-| 6 | `OVL-KEY-001` | locker keys | `AddLockerKeyModal` |
-| 6 | `OVL-KEY-002` | locker keys | `EditLockerKeyModal` |
-| 6 | `DRW-KEY-001` | locker keys | `LockerKeyDetailsDrawer` |
-| 7 | `SCR-REC-001` | `/app/reception` | `ReceptionPage` |
-| 7 | `SCR-VISIT-001` | `/app/active-visits` | `ActiveVisitsPage` |
-| 7 | `OVL-VISIT-001` | reception | `CheckInModal` |
-| 7 | `OVL-VISIT-002` | check-in | `CheckInSuccessModal` |
-| 7 | `OVL-VISIT-003` | reception/active visits | `CheckoutByKeyModal` |
-| 7 | `DRW-VISIT-001` | active visits/client profile | `VisitDetailsDrawer` |
+| Phase | UI ID              | Route / opened from          | React component                                       |
+| ----- | ------------------ | ---------------------------- | ----------------------------------------------------- |
+| 3–4   | `SCR-AUTH-001`     | `/login`                     | `StaffLoginPage`                                      |
+| 3–4   | `SCR-SYS-403`      | `/403`                       | `ForbiddenPage`                                       |
+| 3–4   | `SCR-SYS-404`      | `/404`                       | `NotFoundPage`                                        |
+| 4     | `SCR-PLATFORM-001` | `/super-admin/dashboard`     | Minimal `PlatformDashboardPage`; no organization CRUD |
+| 5     | `SCR-STAFF-001`    | `/app/staff`                 | `StaffPage`                                           |
+| 5     | `OVL-STAFF-002`    | `SCR-STAFF-001`              | `CreateEmployeeModal`                                 |
+| 5     | `SCR-CLIENT-001`   | `/app/clients`               | `ClientsPage`                                         |
+| 5     | `SCR-CLIENT-002`   | `/app/clients/[clientId]`    | `ClientProfilePage`                                   |
+| 5     | `OVL-CLIENT-001`   | clients/reception            | `CreateClientModal`                                   |
+| 5     | `OVL-CLIENT-003`   | create client                | `PossibleDuplicateClientModal`                        |
+| 6     | `SCR-PLAN-001`     | `/app/membership-plans`      | `MembershipPlansPage`                                 |
+| 6     | `OVL-PLAN-001`     | plans                        | `CreateMembershipPlanModal`                           |
+| 6     | `OVL-PLAN-002`     | plans                        | `EditMembershipPlanModal`                             |
+| 6     | `OVL-MEM-001`      | client profile               | `AssignMembershipModal`                               |
+| 6     | `OVL-MEM-003`      | client profile               | `CancelMembershipAlertDialog`                         |
+| 6     | `SCR-KEY-001`      | `/app/locker-keys`           | `LockerKeysPage`                                      |
+| 6     | `OVL-KEY-001`      | locker keys                  | `AddLockerKeyModal`                                   |
+| 6     | `OVL-KEY-002`      | locker keys                  | `EditLockerKeyModal`                                  |
+| 6     | `DRW-KEY-001`      | locker keys                  | `LockerKeyDetailsDrawer`                              |
+| 7     | `SCR-REC-001`      | `/app/reception`             | `ReceptionPage`                                       |
+| 7     | `SCR-VISIT-001`    | `/app/active-visits`         | `ActiveVisitsPage`                                    |
+| 7     | `OVL-VISIT-001`    | reception                    | `CheckInModal`                                        |
+| 7     | `OVL-VISIT-002`    | check-in                     | `CheckInSuccessModal`                                 |
+| 7     | `OVL-VISIT-003`    | reception/active visits      | `CheckoutByKeyModal`                                  |
+| 7     | `DRW-VISIT-001`    | active visits/client profile | `VisitDetailsDrawer`                                  |
 
 Required states for every MVP screen:
 
@@ -272,22 +272,22 @@ Canonical bodies, responses, Problem Details errors, headers, JWT claims, refres
 
 ## 4.3. MVP database objects
 
-| DB ID | Physical object | MVP role |
-|---|---|---|
-| `DB-ORG-001` | `identity.organizations` | Bootstrap organization and tenant boundary |
-| `DB-ORG-002` | `identity.branches` | Bootstrap branch and branch scope |
-| `DB-IDN-001` | `identity.staff_users` | Staff accounts and roles |
-| `DB-IDN-002` | `identity.staff_branch_assignments` | Branch access |
-| `DB-IDN-003` | `identity.refresh_tokens` | Refresh rotation/revocation |
-| `DB-CRM-001` | `crm.clients` | Client CRM/search |
-| `DB-MEM-001` | `membership.membership_plans` | Plan definition |
-| `DB-MEM-002` | `membership.membership_plan_branches` | Allowed branches |
-| `DB-MEM-003` | `membership.memberships` | Assigned memberships/snapshot |
-| `DB-MEM-005` | `membership.membership_usage_ledger` | Atomic visit consumption |
-| `DB-OPS-001` | `operations.locker_keys` | Locker-key inventory |
-| `DB-OPS-002` | `operations.visit_sessions` | Active/completed visits |
-| `DB-COM-001` | `platform.idempotency_records` | Safe command retries |
-| `DB-AUD-001` | `audit.audit_logs` | Backend audit evidence |
+| DB ID        | Physical object                       | MVP role                                   |
+| ------------ | ------------------------------------- | ------------------------------------------ |
+| `DB-ORG-001` | `identity.organizations`              | Bootstrap organization and tenant boundary |
+| `DB-ORG-002` | `identity.branches`                   | Bootstrap branch and branch scope          |
+| `DB-IDN-001` | `identity.staff_users`                | Staff accounts and roles                   |
+| `DB-IDN-002` | `identity.staff_branch_assignments`   | Branch access                              |
+| `DB-IDN-003` | `identity.refresh_tokens`             | Refresh rotation/revocation                |
+| `DB-CRM-001` | `crm.clients`                         | Client CRM/search                          |
+| `DB-MEM-001` | `membership.membership_plans`         | Plan definition                            |
+| `DB-MEM-002` | `membership.membership_plan_branches` | Allowed branches                           |
+| `DB-MEM-003` | `membership.memberships`              | Assigned memberships/snapshot              |
+| `DB-MEM-005` | `membership.membership_usage_ledger`  | Atomic visit consumption                   |
+| `DB-OPS-001` | `operations.locker_keys`              | Locker-key inventory                       |
+| `DB-OPS-002` | `operations.visit_sessions`           | Active/completed visits                    |
+| `DB-COM-001` | `platform.idempotency_records`        | Safe command retries                       |
+| `DB-AUD-001` | `audit.audit_logs`                    | Backend audit evidence                     |
 
 Deferred database objects:
 
@@ -1435,27 +1435,27 @@ Prepare:
 
 ## 5. Product and platform story-to-phase traceability
 
-| Phase | Stories completed |
-|---|---|
-| 0–3 | No product stories; technical/design foundation |
-| 4 | `AUTH-01..04`; technical branch guard foundation |
-| 5 | `STAFF-02`, `CLIENT-01..02`; foundation for `CLIENT-03` |
-| 6 | `PLAN-01`, `MEMBERSHIP-01..02`, `KEY-01..02`; foundation for `MEMBERSHIP-04` |
-| 7 | `CLIENT-03`, `MEMBERSHIP-04`, `VISIT-01..08`, MVP completion of `AUDIT-01` |
-| 8 | No new product story; MVP QA hardening and release candidate |
-| 9 | `PLATFORM-01`, `PLATFORM-02` |
-| 10 | `CICD-01` |
-| 11 | `CLOUD-01` |
-| 12 | `CICD-02`, `CICD-03`, `QAOPS-01`, `REL-01` |
-| 13 | `QAOPS-02` |
-| 14 | `ORG-01..03`, `BRANCH-01..02`, `STAFF-01` |
-| 15 | `AUTH-05`, `STAFF-03..04`, `CLIENT-04..05` |
-| 16 | `MEMBERSHIP-03`, `KEY-03` |
-| 17 | `VISIT-09..10`, `INCIDENT-01..03` |
-| 18 | `AUDIT-02`, `REPORT-01..03` |
-| 19 | `PORTAL-01..02` optional |
-| 20 | `EVENT-01..02` |
-| 21–23 | No new product stories |
+| Phase | Stories completed                                                            |
+| ----- | ---------------------------------------------------------------------------- |
+| 0–3   | No product stories; technical/design foundation                              |
+| 4     | `AUTH-01..04`; technical branch guard foundation                             |
+| 5     | `STAFF-02`, `CLIENT-01..02`; foundation for `CLIENT-03`                      |
+| 6     | `PLAN-01`, `MEMBERSHIP-01..02`, `KEY-01..02`; foundation for `MEMBERSHIP-04` |
+| 7     | `CLIENT-03`, `MEMBERSHIP-04`, `VISIT-01..08`, MVP completion of `AUDIT-01`   |
+| 8     | No new product story; MVP QA hardening and release candidate                 |
+| 9     | `PLATFORM-01`, `PLATFORM-02`                                                 |
+| 10    | `CICD-01`                                                                    |
+| 11    | `CLOUD-01`                                                                   |
+| 12    | `CICD-02`, `CICD-03`, `QAOPS-01`, `REL-01`                                   |
+| 13    | `QAOPS-02`                                                                   |
+| 14    | `ORG-01..03`, `BRANCH-01..02`, `STAFF-01`                                    |
+| 15    | `AUTH-05`, `STAFF-03..04`, `CLIENT-04..05`                                   |
+| 16    | `MEMBERSHIP-03`, `KEY-03`                                                    |
+| 17    | `VISIT-09..10`, `INCIDENT-01..03`                                            |
+| 18    | `AUDIT-02`, `REPORT-01..03`                                                  |
+| 19    | `PORTAL-01..02` optional                                                     |
+| 20    | `EVENT-01..02`                                                               |
+| 21–23 | No new product stories                                                       |
 
 ---
 

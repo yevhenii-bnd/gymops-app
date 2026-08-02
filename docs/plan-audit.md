@@ -40,15 +40,14 @@ MVP requirements
 
 No MVP core story depends on a story scheduled after its completion phase. Full branch assignment, organization management, corrections, incidents, reports, portal and microservices remain preserved after the CI/CD milestone.
 
-
 ## Platform story traceability
 
-| Phase | Stories |
-|---|---|
-| 9 | `PLATFORM-01`, `PLATFORM-02` |
-| 10 | `CICD-01` |
-| 11 | `CLOUD-01` |
-| 12 | `CICD-02`, `CICD-03`, `QAOPS-01`, `REL-01` |
-| 13 | `QAOPS-02` |
+| Phase | Stories                                    |
+| ----- | ------------------------------------------ |
+| 9     | `PLATFORM-01`, `PLATFORM-02`               |
+| 10    | `CICD-01`                                  |
+| 11    | `CLOUD-01`                                 |
+| 12    | `CICD-02`, `CICD-03`, `QAOPS-01`, `REL-01` |
+| 13    | `QAOPS-02`                                 |
 
 The Jenkins/Docker/AWS requirements are now acceptance-criteria-driven platform stories rather than roadmap prose only.
