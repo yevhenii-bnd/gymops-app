@@ -14,11 +14,11 @@ Runs on:
 
 Jobs:
 
-- `static-quality` runs ESLint and TypeScript type checking.
-- `unit-tests` runs Jest unit tests.
-- `build` runs the TypeScript build and the Next.js production build.
-- `api-integration` starts PostgreSQL as a GitHub Actions service, generates the Prisma client, applies migrations, seeds deterministic data, then runs integration and API tests.
-- `ui-smoke` installs Playwright Chromium, starts the web app through the existing UI test runner, runs browser smoke tests, and uploads the UI Playwright report artifact.
+- `static-quality` generates the Prisma client, then runs ESLint and TypeScript type checking.
+- `unit-tests` generates the Prisma client, builds workspace packages, then runs Jest unit tests.
+- `build` generates the Prisma client, runs the TypeScript build, and runs the Next.js production build.
+- `api-integration` starts PostgreSQL as a GitHub Actions service, generates the Prisma client, applies migrations, seeds deterministic data, builds workspace packages, then runs integration and API tests.
+- `ui-smoke` generates the Prisma client, builds workspace packages, installs Playwright Chromium, starts the web app through the existing UI test runner, runs browser smoke tests, and uploads the UI Playwright report artifact.
 
 Recommended first required checks:
 
@@ -45,15 +45,15 @@ Runs on:
 Jobs:
 
 - `dependency-audit` runs `npm audit --omit=dev --audit-level=critical` against production dependencies. High advisories are still visible in logs, but only critical advisories block the workflow at the current project stage.
-- `trivy-scan` runs Trivy filesystem scanning for critical vulnerabilities, secrets, and misconfigurations, then uploads SARIF results to GitHub code scanning.
+- `trivy-scan` runs Trivy filesystem scanning for critical vulnerabilities, secrets, and misconfigurations, then uploads SARIF results to GitHub code scanning. The job is advisory and does not fail the workflow on findings; GitHub code scanning rules should decide whether new alerts in changed code block a pull request.
 
 Recommended first required check:
 
 - `dependency-audit`
 
-Recommended required check after the first green security run:
+Recommended code scanning gate after the first green security run:
 
-- `trivy-scan`
+- `Code scanning results / Trivy`
 
 ## Related Automation
 

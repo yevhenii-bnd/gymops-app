@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npm run db:generate
+
       - name: Lint
         run: npm run lint
 
@@ -53,6 +56,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Build workspace packages
+        run: npm run build
+
       - name: Run unit tests
         run: npm run test:unit
 
@@ -71,6 +80,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run db:generate
 
       - name: Build TypeScript packages
         run: npm run build
@@ -117,6 +129,9 @@ jobs:
       - name: Seed deterministic data
         run: npm run db:seed
 
+      - name: Build workspace packages
+        run: npm run build
+
       - name: Run integration tests
         run: npm run test:integration
 
@@ -138,6 +153,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Build workspace packages
+        run: npm run build
 
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium

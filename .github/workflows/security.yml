@@ -51,7 +51,7 @@ jobs:
           scan-ref: .
           scanners: vuln,secret,misconfig
           severity: CRITICAL
-          exit-code: "1"
+          exit-code: "0"
           format: sarif
           output: trivy-results.sarif
 
