@@ -1,15 +1,13 @@
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 const databaseUrl =
   process.env["DATABASE_URL"] ?? "postgresql://gymops:gymops@localhost:54329/gymops?schema=public";
+process.env["DATABASE_URL"] = databaseUrl;
 
 describe("Phase 2 PostgreSQL foundation", () => {
   const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: databaseUrl
-      }
-    }
+    adapter: new PrismaPg({ connectionString: databaseUrl })
   });
 
   afterAll(async () => {
@@ -43,8 +41,8 @@ describe("Phase 2 PostgreSQL foundation", () => {
 
     expect(organizationCount).toBe(1);
     expect(branchCount).toBe(1);
-    expect(staffCount).toBe(2);
-    expect(assignmentCount).toBe(1);
+    expect(staffCount).toBe(3);
+    expect(assignmentCount).toBe(2);
   });
 
   it("enforces duplicate organization code at the database level", async () => {
@@ -70,7 +68,7 @@ describe("Phase 2 PostgreSQL foundation", () => {
       }
     });
 
-    expect(staff).toHaveLength(2);
+    expect(staff).toHaveLength(3);
     expect(staff.every((user) => user.passwordHash.startsWith("scrypt:"))).toBe(true);
     expect(staff.some((user) => user.passwordHash.includes("LocalOnly!ChangeMe123"))).toBe(false);
   });

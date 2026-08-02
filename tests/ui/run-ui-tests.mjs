@@ -7,7 +7,8 @@ const rootDir = path.resolve(testDir, "../..");
 const nextBin = path.join(rootDir, "node_modules", "next", "dist", "bin", "next");
 const playwrightCli = path.join(rootDir, "node_modules", "@playwright", "test", "cli.js");
 const webDir = path.join(rootDir, "apps", "web");
-const baseUrl = "http://127.0.0.1:3100";
+const managedBaseUrl = "http://127.0.0.1:3100";
+const existingBaseUrl = "http://localhost:3000";
 
 function stopProcessTree(child) {
   if (child.pid === undefined) {
@@ -22,8 +23,8 @@ function stopProcessTree(child) {
   child.kill("SIGTERM");
 }
 
-async function waitForServer() {
-  const deadline = Date.now() + 60_000;
+async function waitForServer(baseUrl, timeoutMs = 60_000) {
+  const deadline = Date.now() + timeoutMs;
   let lastError;
 
   while (Date.now() < deadline) {
@@ -45,18 +46,27 @@ async function waitForServer() {
   throw new Error(`Timed out waiting for ${baseUrl}/login: ${String(lastError)}`);
 }
 
-const server = spawn(
-  process.execPath,
-  [nextBin, "dev", webDir, "--hostname", "127.0.0.1", "--port", "3100"],
-  {
-    cwd: rootDir,
-    env: {
-      ...process.env,
-      NEXT_TELEMETRY_DISABLED: "1"
-    },
-    stdio: "inherit"
+async function findExistingServer() {
+  try {
+    await waitForServer(existingBaseUrl, 2_000);
+    return existingBaseUrl;
+  } catch {
+    return null;
   }
-);
+}
+
+const existingServerUrl = await findExistingServer();
+const server =
+  existingServerUrl === null
+    ? spawn(process.execPath, [nextBin, "dev", webDir, "--hostname", "127.0.0.1", "--port", "3100"], {
+        cwd: rootDir,
+        env: {
+          ...process.env,
+          NEXT_TELEMETRY_DISABLED: "1"
+        },
+        stdio: "inherit"
+      })
+    : null;
 
 let isStopping = false;
 
@@ -66,7 +76,9 @@ function shutdown(code = 0) {
   }
 
   isStopping = true;
-  stopProcessTree(server);
+  if (server !== null) {
+    stopProcessTree(server);
+  }
   process.exit(code);
 }
 
@@ -74,14 +86,21 @@ process.on("SIGINT", () => shutdown(130));
 process.on("SIGTERM", () => shutdown(143));
 
 try {
-  await waitForServer();
+  const baseUrl = existingServerUrl ?? managedBaseUrl;
+
+  if (existingServerUrl === null) {
+    await waitForServer(baseUrl);
+  }
 
   const tests = spawn(
     process.execPath,
     [playwrightCli, "test", "--config", "tests/ui/playwright.config.ts"],
     {
       cwd: rootDir,
-      env: process.env,
+      env: {
+        ...process.env,
+        PLAYWRIGHT_BASE_URL: baseUrl
+      },
       stdio: "inherit"
     }
   );

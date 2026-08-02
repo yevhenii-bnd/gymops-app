@@ -19,6 +19,7 @@ type AppShellProps = {
   branches: readonly BranchOption[];
   currentBranch: string;
   staffName: string;
+  onSignOut?: () => void | Promise<void>;
 };
 
 export function AppShell({
@@ -27,7 +28,8 @@ export function AppShell({
   organization,
   branches,
   currentBranch,
-  staffName
+  staffName,
+  onSignOut
 }: AppShellProps) {
   const pathname = usePathname();
   const navigationItems = navigationForRole(role);
@@ -81,11 +83,24 @@ export function AppShell({
             <div className="flex items-center gap-3">
               <BranchSelector branches={branches} isReadOnly value={currentBranch} />
               <Chip color="accent" size="sm" variant="soft">
-                Phase 3
+                Phase 4
               </Chip>
-              <Button isIconOnly aria-label="Sign out" variant="ghost">
-                <LogOut size={18} />
-              </Button>
+              {onSignOut === undefined ? (
+                <Button isIconOnly aria-label="Sign out" variant="ghost">
+                  <LogOut size={18} />
+                </Button>
+              ) : (
+                <Button
+                  isIconOnly
+                  aria-label="Sign out"
+                  variant="ghost"
+                  onPress={() => {
+                    void onSignOut();
+                  }}
+                >
+                  <LogOut size={18} />
+                </Button>
+              )}
             </div>
           </header>
 

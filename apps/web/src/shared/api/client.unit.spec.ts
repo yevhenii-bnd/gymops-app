@@ -21,9 +21,11 @@ describe("createGymOpsApiClient", () => {
     const client = createGymOpsApiClient({ apiOrigin: "http://localhost:4000/", fetcher });
 
     await expect(client.version()).resolves.toMatchObject({ service: "gymops-api" });
-    expect(fetcher).toHaveBeenCalledWith("http://localhost:4000/version", {
-      headers: { accept: "application/json" }
-    });
+    const [, init] = fetcher.mock.calls[0] ?? [];
+    expect(fetcher).toHaveBeenCalledWith("http://localhost:4000/version", expect.objectContaining({ method: "GET" }));
+    expect(init?.credentials).toBe("include");
+    expect(init?.headers).toBeInstanceOf(Headers);
+    expect((init?.headers as Headers).get("accept")).toBe("application/json");
   });
 
   it("maps Problem Details responses to a stable client error", async () => {
@@ -50,5 +52,42 @@ describe("createGymOpsApiClient", () => {
         correlationId: "request-1"
       }
     });
+  });
+
+  it("posts staff login credentials to the auth API", async () => {
+    const fetcher = jest.fn<ReturnType<typeof fetch>, Parameters<typeof fetch>>().mockResolvedValue(
+      jsonResponse({
+        accessToken: "access-token",
+        expiresAt: "2026-08-02T12:00:00.000Z",
+        csrfToken: "csrf-token",
+        staff: {
+          id: "44444444-4444-4444-8444-444444444444",
+          email: "gym.admin@gymops.local",
+          firstName: "Dmytro",
+          lastName: "Shevchenko",
+          role: "GYM_ADMIN",
+          organizationId: "11111111-1111-4111-8111-111111111111",
+          status: "ACTIVE",
+          branches: [],
+          primaryBranchId: null
+        }
+      })
+    );
+    const client = createGymOpsApiClient({ apiOrigin: "http://localhost:4000", fetcher });
+
+    await expect(client.login({ email: "gym.admin@gymops.local", password: "secret" })).resolves.toMatchObject({
+      accessToken: "access-token",
+      csrfToken: "csrf-token"
+    });
+
+    const [, init] = fetcher.mock.calls[0] ?? [];
+    expect(fetcher).toHaveBeenCalledWith(
+      "http://localhost:4000/api/v1/auth/login",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ email: "gym.admin@gymops.local", password: "secret" })
+      })
+    );
+    expect((init?.headers as Headers).get("content-type")).toBe("application/json");
   });
 });

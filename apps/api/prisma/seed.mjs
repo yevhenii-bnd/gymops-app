@@ -1,14 +1,24 @@
 import { createHash, scryptSync } from "node:crypto";
 
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL;
+if (connectionString === undefined) {
+  throw new Error("DATABASE_URL is required.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString })
+});
 
 const organizationId = "11111111-1111-4111-8111-111111111111";
 const branchId = "22222222-2222-4222-8222-222222222222";
 const superAdminId = "33333333-3333-4333-8333-333333333333";
 const gymAdminId = "44444444-4444-4444-8444-444444444444";
 const gymAdminBranchAssignmentId = "55555555-5555-4555-8555-555555555555";
+const employeeId = "66666666-6666-4666-8666-666666666666";
+const employeeBranchAssignmentId = "77777777-7777-4777-8777-777777777777";
 
 function hashLocalPassword(password, salt) {
   const derived = scryptSync(password, salt, 64);
@@ -130,8 +140,54 @@ async function main() {
     }
   });
 
+  await prisma.staffUser.upsert({
+    where: { id: employeeId },
+    update: {
+      organizationId,
+      email: "employee@gymops.local",
+      emailNormalized: "employee@gymops.local",
+      passwordHash,
+      firstName: "Olena",
+      lastName: "Koval",
+      role: "EMPLOYEE",
+      status: "ACTIVE"
+    },
+    create: {
+      id: employeeId,
+      organizationId,
+      email: "employee@gymops.local",
+      emailNormalized: "employee@gymops.local",
+      passwordHash,
+      firstName: "Olena",
+      lastName: "Koval",
+      role: "EMPLOYEE",
+      status: "ACTIVE",
+      createdByStaffUserId: gymAdminId
+    }
+  });
+
+  await prisma.staffBranchAssignment.upsert({
+    where: { id: employeeBranchAssignmentId },
+    update: {
+      organizationId,
+      staffUserId: employeeId,
+      branchId,
+      isPrimary: true,
+      assignedByStaffUserId: gymAdminId,
+      revokedAt: null
+    },
+    create: {
+      id: employeeBranchAssignmentId,
+      organizationId,
+      staffUserId: employeeId,
+      branchId,
+      isPrimary: true,
+      assignedByStaffUserId: gymAdminId
+    }
+  });
+
   const seedFingerprint = createHash("sha256")
-    .update(`${organizationId}:${branchId}:${superAdminId}:${gymAdminId}`)
+    .update(`${organizationId}:${branchId}:${superAdminId}:${gymAdminId}:${employeeId}`)
     .digest("hex");
 
   console.log(
@@ -140,8 +196,13 @@ async function main() {
       branchId,
       superAdminId,
       gymAdminId,
+      employeeId,
       seedFingerprint,
-      localCredentialUsers: ["super.admin@gymops.local", "gym.admin@gymops.local"]
+      localCredentialUsers: [
+        "super.admin@gymops.local",
+        "gym.admin@gymops.local",
+        "employee@gymops.local"
+      ]
     })
   );
 }

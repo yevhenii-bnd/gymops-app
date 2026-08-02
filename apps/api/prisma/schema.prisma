@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
   schemas  = ["identity", "crm", "membership", "operations", "platform", "audit"]
 }
 
@@ -42,6 +41,15 @@ enum StaffStatus {
 
   @@map("staff_status")
   @@schema("identity")
+}
+
+enum AuditActorType {
+  STAFF_USER
+  CLIENT_ACCOUNT
+  SYSTEM
+
+  @@map("audit_actor_type")
+  @@schema("audit")
 }
 
 model Organization {
@@ -166,4 +174,28 @@ model RefreshToken {
   @@unique([tokenHash])
   @@map("refresh_tokens")
   @@schema("identity")
+}
+
+model AuditLog {
+  id                   String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId       String?        @map("organization_id") @db.Uuid
+  branchId             String?        @map("branch_id") @db.Uuid
+  actorType            AuditActorType @default(STAFF_USER) @map("actor_type")
+  actorStaffUserId     String?        @map("actor_staff_user_id") @db.Uuid
+  actorClientAccountId String?        @map("actor_client_account_id") @db.Uuid
+  actorRole            String?        @map("actor_role") @db.VarChar(50)
+  action               String         @db.VarChar(120)
+  entityType           String         @map("entity_type") @db.VarChar(80)
+  entityId             String?        @map("entity_id") @db.Uuid
+  oldValues            Json?          @map("old_values") @db.JsonB
+  newValues            Json?          @map("new_values") @db.JsonB
+  reason               String?        @db.VarChar(1000)
+  correlationId        String         @map("correlation_id") @db.Uuid
+  requestId            String?        @map("request_id") @db.VarChar(120)
+  ipHash               String?        @map("ip_hash") @db.VarChar(128)
+  userAgent            String?        @map("user_agent") @db.VarChar(500)
+  createdAt            DateTime       @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("audit_logs")
+  @@schema("audit")
 }
