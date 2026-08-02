@@ -104,6 +104,7 @@ AI не повинен:
 | `implementation-plan.md` | Roadmap і dependency order | Stage, phase, scope, prerequisites, exit criteria, unlocks |
 | `requirements.md` | Product і platform requirements | User stories, acceptance criteria, dependencies, release scope, verification |
 | `architecture.md` | Технічні рішення | Stack, boundaries, repository structure, layering, environments, CI/CD, AWS |
+| `quality-strategy.md` | QA strategy | Quality gates, test strategy, coverage policy, release evidence, monitoring roadmap |
 | `ui-contract.md` | Canonical UI registry | Stable UI IDs, Figma roots, routes, React components, target files |
 | `ui-flows.md` | UX specification | Pages, dialogs, fields, actions, states, role flows, HeroUI minimum |
 | `figma-make-prompts.md` | Figma Make generation | Prompts, semantic node names, normalization rules |
