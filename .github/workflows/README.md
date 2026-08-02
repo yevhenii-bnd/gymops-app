@@ -15,7 +15,7 @@ Runs on:
 Jobs:
 
 - `static-quality` generates the Prisma client, then runs ESLint and TypeScript type checking.
-- `unit-tests` generates the Prisma client, builds workspace packages, then runs Jest unit tests.
+- `unit-tests` generates the Prisma client, builds workspace packages, then runs Jest unit tests with coverage thresholds.
 - `build` generates the Prisma client, runs the TypeScript build, and runs the Next.js production build.
 - `api-integration` starts PostgreSQL as a GitHub Actions service, generates the Prisma client, applies migrations, seeds deterministic data, builds workspace packages, then runs integration and API tests.
 - `ui-smoke` generates the Prisma client, builds workspace packages, installs Playwright Chromium, starts the web app through the existing UI test runner, runs browser smoke tests, and uploads the UI Playwright report artifact.
@@ -30,9 +30,11 @@ Why it exists: catches unsafe TypeScript, missing generated Prisma types, bad im
 
 #### `PR Quality / unit-tests`
 
-What it verifies: generates Prisma Client, builds workspace packages so `@gymops/*` imports resolve from a clean checkout, then runs Jest unit tests.
+What it verifies: generates Prisma Client, builds workspace packages so `@gymops/*` imports resolve from a clean checkout, then runs Jest unit tests with coverage thresholds.
 
-Why it exists: proves isolated business/config/client logic still behaves correctly and that tests do not depend on local `dist` artifacts left from a previous developer build.
+Why it exists: proves isolated business/config/client logic still behaves correctly, executes meaningful assertions over unit-testable code, and prevents coverage from silently dropping below the current quality floor.
+
+Current gate: `75/65/75/75` for statements/branches/functions/lines. Target after MVP hardening: `80/75/80/80`.
 
 #### `PR Quality / build`
 

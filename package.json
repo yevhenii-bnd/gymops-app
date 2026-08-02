@@ -13,6 +13,7 @@
     "format": "prettier . --check",
     "typecheck": "tsc -b --pretty false",
     "test:unit": "jest --config jest.unit.config.cjs",
+    "test:unit:coverage": "jest --config jest.unit.config.cjs --coverage",
     "test:integration": "cross-env DATABASE_URL=postgresql://gymops:gymops@localhost:54329/gymops?schema=public jest --config jest.integration.config.cjs",
     "test:api": "npm run build --workspace @gymops/api && cross-env DATABASE_URL=postgresql://gymops:gymops@localhost:54329/gymops?schema=public playwright test --config tests/api/playwright.config.ts",
     "test:ui": "node tests/ui/run-ui-tests.mjs",
@@ -26,9 +27,9 @@
     "db:up": "docker compose -f docker-compose.db.yml up -d database",
     "db:down": "docker compose -f docker-compose.db.yml down",
     "db:test:reset": "cross-env DATABASE_URL=postgresql://gymops:gymops@localhost:54329/gymops?schema=public prisma migrate reset --schema apps/api/prisma/schema.prisma --force --skip-seed && npm run db:seed",
-    "verify:phase1": "npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:api && npm run test:ui && npm run build",
-    "verify:phase2": "npm run db:generate && npm run db:migrate && npm run db:seed && npm run lint && npm run typecheck && npm run test:unit && npm run test:integration && npm run test:api && npm run build",
-    "verify:phase3": "npm run lint && npm run typecheck && npm run test:unit && npm run test:ui && npm run build && npm run build:web"
+    "verify:phase1": "npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:integration && npm run test:api && npm run test:ui",
+    "verify:phase2": "npm run db:generate && npm run db:migrate && npm run db:seed && npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:integration && npm run test:api",
+    "verify:phase3": "npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:ui && npm run build:web"
   },
   "engines": {
     "node": ">=22.0.0",
