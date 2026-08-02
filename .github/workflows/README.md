@@ -78,10 +78,17 @@ Runs on:
 
 Jobs:
 
+- `gitleaks` runs Gitleaks against the repository history and pull request content to detect committed secrets.
 - `dependency-audit` runs `npm audit --omit=dev --audit-level=critical` against production dependencies. High advisories are still visible in logs, but only critical advisories block the workflow at the current project stage.
 - `trivy-scan` runs Trivy filesystem scanning for critical vulnerabilities, secrets, and misconfigurations, then uploads SARIF results to GitHub code scanning. The job is advisory and does not fail the workflow on findings; GitHub code scanning rules should decide whether new alerts in changed code block a pull request.
 
 ### Security Checks
+
+#### `Security / gitleaks`
+
+What it verifies: checks committed repository content and pull request changes for hardcoded secrets such as API keys, GitHub tokens, private keys, cloud credentials, and service tokens.
+
+Why it exists: blocks a merge before sensitive credentials become part of the public project history. If this check ever finds a real secret, the secret must be rotated even if the code is later removed.
 
 #### `Security / dependency-audit`
 
@@ -103,6 +110,7 @@ Why it exists: blocks only when GitHub detects relevant code scanning alerts in 
 
 Recommended first required check:
 
+- `gitleaks`
 - `dependency-audit`
 
 Recommended code scanning gate after the first green security run:

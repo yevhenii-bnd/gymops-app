@@ -13,6 +13,8 @@
     "lint": "eslint .",
     "lint:staged": "lint-staged",
     "format": "prettier . --check",
+    "security:secrets": "node scripts/scan-secrets.mjs --tracked",
+    "security:secrets:staged": "node scripts/scan-secrets.mjs --staged",
     "typecheck": "tsc -b --pretty false",
     "test:unit": "jest --config jest.unit.config.cjs",
     "test:unit:coverage": "jest --config jest.unit.config.cjs --coverage",
@@ -33,7 +35,7 @@
     "verify:phase2": "npm run db:generate && npm run db:migrate && npm run db:seed && npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:integration && npm run test:api",
     "verify:phase3": "npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:ui && npm run build:web",
     "verify:phase4": "npm run db:generate && npm run db:migrate && npm run db:seed && npm run lint && npm run typecheck && npm run build && npm run test:unit:coverage && npm run test:integration && npm run test:api && npm run test:ui && npm run build:web",
-    "verify:pre-push": "npm run typecheck && npm run test:unit:coverage"
+    "verify:pre-push": "npm run security:secrets && npm run typecheck && npm run test:unit:coverage"
   },
   "engines": {
     "node": ">=22.0.0",
