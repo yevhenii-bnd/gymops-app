@@ -20,6 +20,16 @@ Jobs:
 - `api-integration` starts PostgreSQL as a GitHub Actions service, generates the Prisma client, applies migrations, seeds deterministic data, builds workspace packages, then runs integration and API tests.
 - `ui-smoke` generates the Prisma client, builds workspace packages, installs Playwright Chromium, starts the web app through the existing UI test runner, runs browser smoke tests, and uploads the UI Playwright report artifact.
 
+### PR Quality Checks
+
+| Check                          | What it verifies                                                                                                                                                               | Why it exists                                                                                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PR Quality / static-quality`  | Generates Prisma Client, runs ESLint, and runs TypeScript project type checking.                                                                                               | Catches unsafe TypeScript, missing generated Prisma types, bad imports, dead code patterns, and strict typing regressions before runtime tests start.                                 |
+| `PR Quality / unit-tests`      | Generates Prisma Client, builds workspace packages so `@gymops/*` imports resolve from a clean checkout, then runs Jest unit tests.                                            | Proves isolated business/config/client logic still behaves correctly and that tests do not depend on local `dist` artifacts left from a previous developer build.                     |
+| `PR Quality / build`           | Generates Prisma Client, runs the monorepo TypeScript build, then runs the Next.js production build.                                                                           | Confirms the repo can compile from scratch, package references produce publishable `dist` output, and the web app can be built in production mode.                                    |
+| `PR Quality / api-integration` | Starts PostgreSQL 16, generates Prisma Client, applies Prisma migrations, seeds deterministic data, builds workspace packages, then runs integration and Playwright API tests. | Proves migrations apply on an empty database, seeded data is valid, database-backed invariants work, and public API/system endpoints behave against real PostgreSQL instead of mocks. |
+| `PR Quality / ui-smoke`        | Generates Prisma Client, builds workspace packages, installs Playwright Chromium, starts the Next.js app, and runs browser smoke tests.                                        | Proves critical routes render in a real browser, accessible locators remain stable, and the frontend shell works from a clean CI machine.                                             |
+
 Recommended first required checks:
 
 - `static-quality`
@@ -46,6 +56,14 @@ Jobs:
 
 - `dependency-audit` runs `npm audit --omit=dev --audit-level=critical` against production dependencies. High advisories are still visible in logs, but only critical advisories block the workflow at the current project stage.
 - `trivy-scan` runs Trivy filesystem scanning for critical vulnerabilities, secrets, and misconfigurations, then uploads SARIF results to GitHub code scanning. The job is advisory and does not fail the workflow on findings; GitHub code scanning rules should decide whether new alerts in changed code block a pull request.
+
+### Security Checks
+
+| Check                           | What it verifies                                                                                                | Why it exists                                                                                                                                  |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Security / dependency-audit`   | Runs `npm audit --omit=dev --audit-level=critical` against runtime dependencies.                                | Blocks merges only for critical production dependency advisories while still showing high advisories in logs for follow-up triage.             |
+| `Security / trivy-scan`         | Runs Trivy filesystem scanning for vulnerabilities, secrets, and misconfigurations, then uploads SARIF results. | Produces GitHub Code Scanning evidence and keeps security findings visible in the PR without duplicating the dedicated code scanning gate.     |
+| `Code scanning results / Trivy` | Evaluates uploaded Trivy SARIF results against GitHub code scanning rules for the pull request.                 | Blocks only when GitHub detects relevant code scanning alerts in changed code, avoiding noisy failures from existing or unrelated scan output. |
 
 Recommended first required check:
 
