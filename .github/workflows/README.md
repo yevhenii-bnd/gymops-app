@@ -14,7 +14,7 @@ Runs on:
 
 Jobs:
 
-- `static-quality` generates the Prisma client, then runs ESLint and TypeScript type checking.
+- `static-quality` generates the Prisma client, then runs Prettier formatting checks, ESLint, and TypeScript type checking.
 - `unit-tests` generates the Prisma client, builds workspace packages, then runs Jest unit tests.
 - `build` generates the Prisma client, runs the TypeScript build, and runs the Next.js production build.
 - `api-integration` starts PostgreSQL as a GitHub Actions service, generates the Prisma client, applies migrations, seeds deterministic data, builds workspace packages, then runs integration and API tests.
@@ -24,9 +24,9 @@ Jobs:
 
 #### `PR Quality / static-quality`
 
-What it verifies: generates Prisma Client, runs ESLint, and runs TypeScript project type checking.
+What it verifies: generates Prisma Client, runs Prettier formatting checks, runs ESLint, and runs TypeScript project type checking.
 
-Why it exists: catches unsafe TypeScript, missing generated Prisma types, bad imports, dead code patterns, and strict typing regressions before runtime tests start.
+Why it exists: catches unformatted files, unsafe TypeScript, missing generated Prisma types, bad imports, dead code patterns, and strict typing regressions before runtime tests start.
 
 #### `PR Quality / unit-tests`
 
