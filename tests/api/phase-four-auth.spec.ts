@@ -3,12 +3,14 @@ import { createHash, scryptSync } from "node:crypto";
 import { once } from "node:events";
 import { createServer } from "node:net";
 
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 import { request, expect, test, type APIResponse } from "@playwright/test";
 
 const seededPassword = "LocalOnly!ChangeMe123";
 const databaseUrl =
   process.env["DATABASE_URL"] ?? "postgresql://gymops:gymops@localhost:54329/gymops?schema=public";
+process.env["DATABASE_URL"] = databaseUrl;
 
 function hashLocalPassword(password: string): string {
   const derived = scryptSync(password, "phase2-local-seed", 64);
@@ -119,11 +121,7 @@ function hashRefreshToken(rawToken: string): string {
 
 test.describe("Phase 4 staff authentication API", () => {
   const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: databaseUrl
-      }
-    }
+    adapter: new PrismaPg({ connectionString: databaseUrl })
   });
   let apiProcess: ChildProcess;
   let baseURL: string;

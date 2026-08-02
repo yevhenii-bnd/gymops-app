@@ -42,7 +42,7 @@ export default tseslint.config(
     }
   },
   {
-    files: ["**/*.config.js", "**/*.config.cjs", "**/*.mjs"],
+    files: ["**/*.config.js", "**/*.config.cjs", "**/*.mjs", "prisma.config.ts"],
     extends: [tseslint.configs.disableTypeChecked],
     languageOptions: {
       globals: globals.node

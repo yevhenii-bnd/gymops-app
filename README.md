@@ -124,6 +124,8 @@ npx playwright install chromium
 
 ## Quality Gates
 
+Quality strategy and future QA roadmap are documented in [`docs/quality-strategy.md`](docs/quality-strategy.md).
+
 Phase 1 foundation:
 
 ```powershell

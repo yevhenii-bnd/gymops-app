@@ -1,8 +1,16 @@
 import { createHash, scryptSync } from "node:crypto";
 
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL;
+if (connectionString === undefined) {
+  throw new Error("DATABASE_URL is required.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({ connectionString })
+});
 
 const organizationId = "11111111-1111-4111-8111-111111111111";
 const branchId = "22222222-2222-4222-8222-222222222222";

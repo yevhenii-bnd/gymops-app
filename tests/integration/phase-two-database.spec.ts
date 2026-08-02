@@ -1,15 +1,13 @@
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 const databaseUrl =
   process.env["DATABASE_URL"] ?? "postgresql://gymops:gymops@localhost:54329/gymops?schema=public";
+process.env["DATABASE_URL"] = databaseUrl;
 
 describe("Phase 2 PostgreSQL foundation", () => {
   const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: databaseUrl
-      }
-    }
+    adapter: new PrismaPg({ connectionString: databaseUrl })
   });
 
   afterAll(async () => {
