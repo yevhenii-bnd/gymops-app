@@ -65,4 +65,40 @@ describe("Hs256JwtTokenService", () => {
 
     expect(() => service.verifyAccessToken(signed.token)).toThrow(new JwtVerificationError("expired"));
   });
+
+  it("rejects tokens with non-access claims", async () => {
+    const service = new Hs256JwtTokenService();
+    const token = await service.sign({
+      sub: staff.id,
+      role: staff.role,
+      organizationId: staff.organizationId,
+      branchIds: ["22222222-2222-4222-8222-222222222222"],
+      primaryBranchId: staff.primaryBranchId,
+      tokenUse: "refresh",
+      iss: "gymops-api",
+      aud: "gymops-staff",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 900
+    });
+
+    expect(() => service.verifyAccessToken(token)).toThrow(new JwtVerificationError("invalid"));
+  });
+
+  it("rejects tokens with the wrong audience", async () => {
+    const service = new Hs256JwtTokenService();
+    const token = await service.sign({
+      sub: staff.id,
+      role: staff.role,
+      organizationId: staff.organizationId,
+      branchIds: ["22222222-2222-4222-8222-222222222222"],
+      primaryBranchId: staff.primaryBranchId,
+      tokenUse: "access",
+      iss: "gymops-api",
+      aud: "unexpected-audience",
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 900
+    });
+
+    expect(() => service.verifyAccessToken(token)).toThrow(new JwtVerificationError("invalid"));
+  });
 });

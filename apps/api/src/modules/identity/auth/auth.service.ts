@@ -121,51 +121,80 @@ export class AuthService {
     const refreshToken = this.requireRefreshTokenWithCsrf(request);
     const tokenHash = this.hashRefreshToken(refreshToken);
     const now = new Date();
+    const current = await this.prisma.refreshToken.findUnique({
+      where: { tokenHash },
+      include: { staffUser: true }
+    });
+
+    if (current === null || current.staffUserId === null || current.staffUser === null) {
+      throw refreshInvalid();
+    }
+
+    if (current.revokedAt !== null) {
+      if (current.replacedByTokenId !== null) {
+        await this.prisma.refreshToken.updateMany({
+          where: {
+            familyId: current.familyId,
+            revokedAt: null
+          },
+          data: {
+            revokedAt: now,
+            revokeReason: "REUSED"
+          }
+        });
+        throw refreshReused();
+      }
+
+      throw refreshInvalid();
+    }
+
+    if (current.expiresAt <= now) {
+      await this.prisma.refreshToken.update({
+        where: { id: current.id },
+        data: {
+          revokedAt: now,
+          revokeReason: "EXPIRED"
+        }
+      });
+      throw refreshExpired();
+    }
 
     const result = await this.prisma.$transaction(async (tx) => {
-      const current = await tx.refreshToken.findUnique({
+      const tokenForRotation = await tx.refreshToken.findUnique({
         where: { tokenHash },
         include: { staffUser: true }
       });
 
-      if (current === null || current.staffUserId === null || current.staffUser === null) {
+      if (
+        tokenForRotation === null ||
+        tokenForRotation.staffUserId === null ||
+        tokenForRotation.staffUser === null
+      ) {
         throw refreshInvalid();
       }
 
-      if (current.revokedAt !== null) {
-        if (current.replacedByTokenId !== null) {
-          await tx.refreshToken.updateMany({
-            where: {
-              familyId: current.familyId,
-              revokedAt: null
-            },
-            data: {
-              revokedAt: now,
-              revokeReason: "REUSED"
-            }
-          });
+      if (tokenForRotation.revokedAt !== null) {
+        if (tokenForRotation.replacedByTokenId !== null) {
           throw refreshReused();
         }
 
         throw refreshInvalid();
       }
 
-      if (current.expiresAt <= now) {
-        await tx.refreshToken.update({
-          where: { id: current.id },
-          data: {
-            revokedAt: now,
-            revokeReason: "EXPIRED"
-          }
-        });
+      if (tokenForRotation.expiresAt <= now) {
         throw refreshExpired();
       }
 
-      const session = await this.buildStaffSession(tx, current.staffUserId);
-      const next = await this.issueRefreshToken(tx, current.staffUserId, request, current.familyId);
+      const session = await this.buildStaffSession(tx, tokenForRotation.staffUserId);
+      const next = await this.issueRefreshToken(
+        tx,
+        tokenForRotation.staffUserId,
+        request,
+        tokenForRotation.familyId
+      );
 
       await tx.refreshToken.update({
-        where: { id: current.id },
+        where: { id: tokenForRotation.id },
         data: {
           revokedAt: now,
           revokeReason: "ROTATED",
@@ -173,7 +202,7 @@ export class AuthService {
         }
       });
 
-      return { session, next, current };
+      return { session, next, current: tokenForRotation };
     });
 
     const authResponse = this.createAccessTokenResponse(result.session, result.next.csrfToken);

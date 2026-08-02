@@ -1,5 +1,5 @@
 import { spawn, type ChildProcess } from "node:child_process";
-import { scryptSync } from "node:crypto";
+import { createHash, scryptSync } from "node:crypto";
 import { once } from "node:events";
 import { createServer } from "node:net";
 
@@ -29,7 +29,9 @@ async function getFreePort(): Promise<number> {
   return address.port;
 }
 
-async function startApiServer(): Promise<{ process: ChildProcess; baseURL: string }> {
+async function startApiServer(
+  envOverrides: Record<string, string> = {}
+): Promise<{ process: ChildProcess; baseURL: string }> {
   const port = await getFreePort();
   const child = spawn("node", ["apps/api/dist/main.js"], {
     cwd: process.cwd(),
@@ -45,7 +47,8 @@ async function startApiServer(): Promise<{ process: ChildProcess; baseURL: strin
       AUTH_JWT_SECRET: "phase-four-api-test-secret",
       ACCESS_TOKEN_TTL_SECONDS: "900",
       REFRESH_TOKEN_TTL_DAYS: "30",
-      AUTH_COOKIE_SECURE: "false"
+      AUTH_COOKIE_SECURE: "false",
+      ...envOverrides
     },
     stdio: ["ignore", "pipe", "pipe"]
   });
@@ -108,6 +111,10 @@ function cookieValue(cookies: string, name: string): string {
   }
 
   return decodeURIComponent(match.slice(name.length + 1));
+}
+
+function hashRefreshToken(rawToken: string): string {
+  return `sha256:${createHash("sha256").update(rawToken).digest("hex")}`;
 }
 
 test.describe("Phase 4 staff authentication API", () => {
@@ -223,7 +230,56 @@ test.describe("Phase 4 staff authentication API", () => {
     await api.dispose();
   });
 
+  test("POST /api/v1/auth/login temporarily locks staff after repeated failed attempts", async () => {
+    const email = "lockout.api-test@gymops.local";
+    await prisma.staffUser.deleteMany({ where: { emailNormalized: email } });
+    await prisma.staffUser.create({
+      data: {
+        id: "99999999-9999-4999-8999-999999999997",
+        organizationId: "11111111-1111-4111-8111-111111111111",
+        email,
+        emailNormalized: email,
+        passwordHash: hashLocalPassword(seededPassword),
+        firstName: "Lockout",
+        lastName: "Staff",
+        role: "EMPLOYEE",
+        status: "ACTIVE"
+      }
+    });
+
+    const api = await request.newContext({ baseURL });
+
+    try {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const failed = await api.post("/api/v1/auth/login", {
+          data: {
+            email,
+            password: "wrong-password"
+          }
+        });
+        expect(failed.status()).toBe(401);
+      }
+
+      const locked = await api.post("/api/v1/auth/login", {
+        data: {
+          email,
+          password: seededPassword
+        }
+      });
+      const staff = await prisma.staffUser.findUniqueOrThrow({ where: { emailNormalized: email } });
+
+      expect(locked.status()).toBe(429);
+      await expect(locked.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_RATE_LIMITED" }));
+      expect(staff.failedLoginCount).toBe(5);
+      expect(staff.lockedUntil).toBeInstanceOf(Date);
+    } finally {
+      await api.dispose();
+      await prisma.staffUser.deleteMany({ where: { emailNormalized: email } });
+    }
+  });
+
   test("POST /api/v1/auth/login denies deactivated staff", async () => {
+    await prisma.staffUser.deleteMany({ where: { emailNormalized: "deactivated.api-test@gymops.local" } });
     await prisma.staffUser.create({
       data: {
         id: "99999999-9999-4999-8999-999999999998",
@@ -240,17 +296,56 @@ test.describe("Phase 4 staff authentication API", () => {
     });
 
     const api = await request.newContext({ baseURL });
-    const response = await api.post("/api/v1/auth/login", {
-      data: {
-        email: "deactivated.api-test@gymops.local",
-        password: seededPassword
-      }
-    });
 
-    expect(response.status()).toBe(401);
-    await expect(response.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_INVALID_CREDENTIALS" }));
-    await prisma.staffUser.delete({ where: { emailNormalized: "deactivated.api-test@gymops.local" } });
-    await api.dispose();
+    try {
+      const response = await api.post("/api/v1/auth/login", {
+        data: {
+          email: "deactivated.api-test@gymops.local",
+          password: seededPassword
+        }
+      });
+
+      expect(response.status()).toBe(401);
+      await expect(response.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_INVALID_CREDENTIALS" }));
+    } finally {
+      await prisma.staffUser.deleteMany({ where: { emailNormalized: "deactivated.api-test@gymops.local" } });
+      await api.dispose();
+    }
+  });
+
+  test("GET /api/v1/auth/me rejects expired and malformed access tokens", async () => {
+    const expiredServer = await startApiServer({ ACCESS_TOKEN_TTL_SECONDS: "-1" });
+    const expiredApi = await request.newContext({ baseURL: expiredServer.baseURL });
+    const api = await request.newContext({ baseURL });
+
+    try {
+      const login = await expiredApi.post("/api/v1/auth/login", {
+        data: {
+          email: "employee@gymops.local",
+          password: seededPassword
+        }
+      });
+      const loginBody = (await login.json()) as { accessToken: string };
+      const expired = await expiredApi.get("/api/v1/auth/me", {
+        headers: {
+          authorization: `Bearer ${loginBody.accessToken}`
+        }
+      });
+      const malformed = await api.get("/api/v1/auth/me", {
+        headers: {
+          authorization: "Bearer not-a-jwt"
+        }
+      });
+
+      expect(expired.status()).toBe(401);
+      await expect(expired.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_TOKEN_EXPIRED" }));
+      expect(malformed.status()).toBe(401);
+      await expect(malformed.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_TOKEN_INVALID" }));
+    } finally {
+      await expiredApi.dispose();
+      await api.dispose();
+      await stopApiServer(expiredServer.process);
+    }
   });
 
   test("POST /api/v1/auth/refresh rotates refresh cookies and rejects old token reuse", async () => {
@@ -283,6 +378,72 @@ test.describe("Phase 4 staff authentication API", () => {
     expect(newCookies).not.toEqual(oldCookies);
     expect(reused.status()).toBe(401);
     await expect(reused.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_REFRESH_REUSED" }));
+    await api.dispose();
+  });
+
+  test("POST /api/v1/auth/refresh rejects expired refresh tokens", async () => {
+    const api = await request.newContext({ baseURL });
+    const login = await api.post("/api/v1/auth/login", {
+      data: {
+        email: "gym.admin@gymops.local",
+        password: seededPassword
+      }
+    });
+    const cookies = cookieHeader(login);
+    const rawRefreshToken = cookieValue(cookies, "gymops_refresh");
+    const csrf = cookieValue(cookies, "gymops_csrf");
+
+    await prisma.refreshToken.update({
+      where: { tokenHash: hashRefreshToken(rawRefreshToken) },
+      data: {
+        issuedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+        expiresAt: new Date(Date.now() - 24 * 60 * 60 * 1000)
+      }
+    });
+
+    const expired = await api.post("/api/v1/auth/refresh", {
+      headers: {
+        cookie: cookies,
+        "x-csrf-token": csrf
+      }
+    });
+    const stored = await prisma.refreshToken.findUniqueOrThrow({
+      where: { tokenHash: hashRefreshToken(rawRefreshToken) }
+    });
+
+    expect(expired.status()).toBe(401);
+    await expect(expired.json()).resolves.toEqual(expect.objectContaining({ code: "AUTH_REFRESH_EXPIRED" }));
+    expect(stored.revokeReason).toBe("EXPIRED");
+    expect(stored.revokedAt).toBeInstanceOf(Date);
+    await api.dispose();
+  });
+
+  test("POST /api/v1/auth/refresh and logout reject invalid CSRF tokens", async () => {
+    const api = await request.newContext({ baseURL });
+    const login = await api.post("/api/v1/auth/login", {
+      data: {
+        email: "gym.admin@gymops.local",
+        password: seededPassword
+      }
+    });
+    const cookies = cookieHeader(login);
+    const refresh = await api.post("/api/v1/auth/refresh", {
+      headers: {
+        cookie: cookies,
+        "x-csrf-token": "wrong-csrf-token"
+      }
+    });
+    const logout = await api.post("/api/v1/auth/logout", {
+      headers: {
+        cookie: cookies,
+        "x-csrf-token": "wrong-csrf-token"
+      }
+    });
+
+    expect(refresh.status()).toBe(403);
+    await expect(refresh.json()).resolves.toEqual(expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" }));
+    expect(logout.status()).toBe(403);
+    await expect(logout.json()).resolves.toEqual(expect.objectContaining({ code: "CSRF_VALIDATION_FAILED" }));
     await api.dispose();
   });
 
