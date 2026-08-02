@@ -8,7 +8,11 @@ const apiEnvSchema = {
   COMMIT_SHA: { required: true, defaultValue: "local" },
   BUILD_TIME: { required: true, defaultValue: "local" },
   CORS_ORIGIN: { required: true, defaultValue: "http://localhost:3000" },
-  DEFAULT_TIMEZONE: { required: true, defaultValue: "Europe/Kyiv" }
+  DEFAULT_TIMEZONE: { required: true, defaultValue: "Europe/Kyiv" },
+  AUTH_JWT_SECRET: { required: true, defaultValue: "local-dev-auth-secret-change-me" },
+  ACCESS_TOKEN_TTL_SECONDS: { required: true, defaultValue: "900" },
+  REFRESH_TOKEN_TTL_DAYS: { required: true, defaultValue: "30" },
+  AUTH_COOKIE_SECURE: { required: true, defaultValue: "false" }
 } satisfies EnvSchema;
 
 function requiredValue(values: Record<string, string>, key: string): string {
@@ -36,6 +40,10 @@ export function loadApiConfig(source: Record<string, string | undefined> = proce
     commitSha: requiredValue(result.values, "COMMIT_SHA"),
     buildTime: requiredValue(result.values, "BUILD_TIME"),
     corsOrigin: requiredValue(result.values, "CORS_ORIGIN"),
-    defaultTimezone: requiredValue(result.values, "DEFAULT_TIMEZONE")
+    defaultTimezone: requiredValue(result.values, "DEFAULT_TIMEZONE"),
+    authJwtSecret: requiredValue(result.values, "AUTH_JWT_SECRET"),
+    accessTokenTtlSeconds: Number(requiredValue(result.values, "ACCESS_TOKEN_TTL_SECONDS")),
+    refreshTokenTtlDays: Number(requiredValue(result.values, "REFRESH_TOKEN_TTL_DAYS")),
+    authCookieSecure: requiredValue(result.values, "AUTH_COOKIE_SECURE") === "true"
   };
 }

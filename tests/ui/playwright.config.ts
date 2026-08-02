@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 30_000,
   reporter: [["list"], ["html", { outputFolder: "../../playwright-report/ui", open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:3100"
+    baseURL: process.env["PLAYWRIGHT_BASE_URL"] ?? "http://127.0.0.1:3100"
   },
   projects: [
     {

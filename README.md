@@ -1,6 +1,6 @@
 # GymOps
 
-GymOps is a production-oriented training mini-ERP/CRM for gyms. The current codebase is in the Lean MVP foundation stage: monorepo, local QA, PostgreSQL, Prisma, and the API skeleton.
+GymOps is a production-oriented training mini-ERP/CRM for gyms. The current codebase is in the Lean MVP foundation stage: monorepo, local QA, PostgreSQL, Prisma, API skeleton, frontend shell, and staff authentication foundation.
 
 ## Prerequisites
 
@@ -16,6 +16,7 @@ Use this flow after cloning the repository or pulling a fresh `main`.
 git checkout main
 git pull
 npm install
+npm run db:generate
 ```
 
 Start the local PostgreSQL database:
@@ -36,10 +37,10 @@ Seed deterministic local test data:
 npm run db:seed
 ```
 
-Run the full Phase 2 verification gate:
+Run the current Phase 4 verification gate:
 
 ```powershell
-npm run verify:phase2
+npm run verify:phase4
 ```
 
 ## Local Database
@@ -77,6 +78,14 @@ npm run build --workspace @gymops/api
 npm run start --workspace @gymops/api
 ```
 
+The local auth defaults are listed in `.env.example`. For development, the seed creates these users with password `LocalOnly!ChangeMe123`:
+
+```text
+super.admin@gymops.local
+gym.admin@gymops.local
+employee@gymops.local
+```
+
 Useful local endpoints:
 
 ```text
@@ -85,11 +94,13 @@ http://localhost:4000/ready
 http://localhost:4000/version
 http://localhost:4000/api/openapi.json
 http://localhost:4000/api/docs
+http://localhost:4000/api/v1/auth/login
+http://localhost:4000/api/v1/auth/me
 ```
 
 ## Run The Web App Locally
 
-The Phase 3 frontend shell runs as a Next.js app.
+The Phase 4 frontend shell runs as a Next.js app. Keep the API running on `http://localhost:4000` for real login.
 
 ```powershell
 npm run dev:web
@@ -129,6 +140,12 @@ Phase 3 frontend shell foundation:
 
 ```powershell
 npm run verify:phase3
+```
+
+Phase 4 authentication, roles and branch context:
+
+```powershell
+npm run verify:phase4
 ```
 
 Security audit for runtime dependencies:
